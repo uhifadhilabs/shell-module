@@ -28,7 +28,7 @@ use Uhifadhi\Shell\UhifadhiShellBundle;
  * not a testing convenience: it is the boundary. A layout that cannot render
  * without a connection has stopped being a layout.
  *
- * Note also what is missing and is NOT the boundary: a trunk. The shell does
+ * Note also what is missing and is NOT the boundary: a seam. The shell does
  * not require one (see the README's boundary ruling) — module rows and module
  * cards reach it as data, through the seams, from whoever composed them. This
  * kernel proves it by booting a crown with no seam runtime under it at all.

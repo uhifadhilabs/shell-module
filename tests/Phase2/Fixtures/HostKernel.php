@@ -24,7 +24,7 @@ use Uhifadhi\Shell\UhifadhiShellBundle;
  * convenience.
  *
  * This kernel is an application that implements the crown's seams and has
- * nothing else at all: no areas, no modules, no trunk, no database, no user. If
+ * nothing else at all: no areas, no modules, no seam, no database, no user. If
  * the crown can be driven to a complete page by THIS, then the seams are real
  * seams rather than a polite name for reaching into the application, and the
  * "standalone" in the shell's charter is a fact about the code.

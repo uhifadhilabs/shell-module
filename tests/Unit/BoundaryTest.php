@@ -39,7 +39,7 @@ use PHPUnit\Framework\TestCase;
  *     URL space, its permission gates and its entity resolution are the host's.
  *  5. THE SHELL REQUIRES NO OTHER RING. Least obvious and most load-bearing:
  *     see the README's boundary ruling on why the crown does not depend on the
- *     trunk even though it draws the trunk's answers.
+ *     seam even though it draws the seam's answers.
  */
 final class BoundaryTest extends TestCase
 {
@@ -101,7 +101,7 @@ final class BoundaryTest extends TestCase
      */
     public function testTheShellOwnsNoData(): void
     {
-        self::assertDirectoryDoesNotExist(self::ROOT.'/src/Entity', 'Entities belong to the trunk and the branches.');
+        self::assertDirectoryDoesNotExist(self::ROOT.'/src/Entity', 'Entities belong to the seam and the branches.');
         self::assertDirectoryDoesNotExist(self::ROOT.'/src/Repository', 'A crown reads what it is handed.');
         self::assertDirectoryDoesNotExist(self::ROOT.'/migrations', 'A crown owns no schema.');
 
@@ -147,10 +147,10 @@ final class BoundaryTest extends TestCase
     /**
      * THE SHELL REQUIRES NO OTHER RING, and this is the ruling worth arguing —
      * the README argues it at length. The short form: the crown draws the
-     * trunk's answers but does not read them. They arrive already composed,
+     * seam's answers but does not read them. They arrive already composed,
      * because composing them needs an area, a viewer and a department lens,
-     * none of which the trunk has either. A require here would make the crown
-     * unusable on an installation with no module seam, and would put trunk
+     * none of which the seam has either. A require here would make the crown
+     * unusable on an installation with no module seam, and would put seam
      * entities inside templates, which is exactly where a `module.getSlug()`
      * comparison gets typed.
      */

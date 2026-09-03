@@ -21,7 +21,7 @@ use Uhifadhi\Shell\Model\NavSection;
 /**
  * A host's nav, in the smallest honest form: something that answers "what goes
  * in the sidebar" and nothing else. A real one folds areas, the viewer's
- * permissions and the trunk's per-area ledger into the same answer; that it can
+ * permissions and the seam's per-area ledger into the same answer; that it can
  * be replaced by four lines of fixture is the seam working.
  *
  * Read at call time, never at construction — the same-day promise.

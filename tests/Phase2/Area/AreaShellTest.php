@@ -32,7 +32,7 @@ use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
  *
  *   THE CROWN OWNS NOT ONE TAB. Overview, Modules, Zones and Settings are not
  *   layout — they are the host's model of what an area is, and one of them
- *   (Modules) is the trunk's. A crown carrying that list would be a crown that
+ *   (Modules) is the seam's. A crown carrying that list would be a crown that
  *   has to be released whenever the host grows a screen, and the first
  *   deployment that wants a fifth tab would have to fork it.
  *

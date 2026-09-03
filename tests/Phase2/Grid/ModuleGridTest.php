@@ -21,7 +21,7 @@ use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
 /**
  * SPEC 5 — THE MODULE GRID.
  *
- * THE OWNERSHIP RULING. The trunk explicitly declined the grid and named the
+ * THE OWNERSHIP RULING. The seam explicitly declined the grid and named the
  * shell as its claimant, so this bundle had to answer rather than inherit. The
  * answer is a split, and the independent-life test is what splits it:
  *
@@ -36,7 +36,7 @@ use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
  *   for a particular viewer on a particular area, and it needs three things the
  *   crown does not have and must not acquire: the area, the viewer's identity,
  *   and the department lens. The host's ModuleGridService already does exactly
- *   this and stays where it is; the trunk's README argued the same boundary
+ *   this and stays where it is; the seam's README argued the same boundary
  *   from the other side.
  *
  *   THE URL IS NOT, EITHER. /areas/{uuid}/modules is the host's URL space,
@@ -51,13 +51,13 @@ use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
  *   the end of "the layout can be rendered from a fixture with no database".
  *   The host keeps the customize screen; the crown will draw its cards for it.
  *
- * SO THE CROWN DEPENDS ON NO TRUNK. It draws the trunk's answers and never
+ * SO THE CROWN DEPENDS ON NO SEAM. It draws the seam's answers and never
  * reads them: they arrive as ModuleGroup/ModuleCard, composed by whoever had
  * the area and the viewer. This is where the twig-bundle → framework-bundle
  * analogy breaks down and is worth saying why, since it is the obvious defence
  * of the opposite ruling: twig-bundle depends on framework-bundle for
  * MACHINERY — the kernel, the config pass — not to read its domain data. The
- * crown would be requiring the trunk to read data, and the moment a trunk
+ * crown would be requiring the seam to read data, and the moment a seam
  * entity is in scope inside a template, somebody writes
  * `{% if module.slug == 'overview' %}` and the module-blindness both rings
  * promise is gone. A value object cannot be interrogated that way.
@@ -128,7 +128,7 @@ final class ModuleGridTest extends Phase2TestCase
      * The status chip's vocabulary is the crown's, because it is a visual
      * vocabulary shared with every chip on every other page — live/ok,
      * template/warn, anything else/idle. What a module's status IS remains the
-     * trunk's; how "live" looks is the crown's.
+     * seam's; how "live" looks is the crown's.
      */
     public function testTheStatusChipSpeaksThePlatformsOneChipVocabulary(): void
     {
@@ -141,7 +141,7 @@ final class ModuleGridTest extends Phase2TestCase
     }
 
     /**
-     * ZERO MODULES IS A WORKING AREA — the trunk's rule, at the surface where a
+     * ZERO MODULES IS A WORKING AREA — the seam's rule, at the surface where a
      * person meets it. An area with nothing installed gets a sentence, not a
      * blank plate and not an error.
      */

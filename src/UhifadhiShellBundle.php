@@ -22,7 +22,7 @@ use Uhifadhi\Shell\DependencyInjection\ShellConfiguration;
 /**
  * The SHELL — the visible crown every uhifadhi page grows into.
  *
- * The seed is planted, the trunk carries, the branches are the modules and this
+ * The seed is planted, the seam carries, the branches are the modules and this
  * is what you see: the document, the shell (sidebar + top bar), the page frame
  * (breadcrumbs, page head, actions, tabs, flashes, body), the navigation seams
  * and the theme. A module writes a page by filling this bundle's blocks; it
@@ -40,7 +40,7 @@ use Uhifadhi\Shell\DependencyInjection\ShellConfiguration;
  * A shell that needed a connection to draw a page would have acquired a
  * domain; Unit/BoundaryTest fails the build if one appears.
  *
- * IT KNOWS NO MODULE BY NAME — the same rule the trunk holds, for the same
+ * IT KNOWS NO MODULE BY NAME — the same rule the seam holds, for the same
  * reason and enforced by the same kind of sweep. A module's row in the sidebar
  * and its card in the grid arrive as DATA, through the seams in src/Contract;
  * the shell renders whatever it is handed and recognises no slug.

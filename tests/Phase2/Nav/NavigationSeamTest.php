@@ -32,16 +32,16 @@ use Uhifadhi\Shell\UhifadhiShellBundle;
  * nav's CONTENT. Content arrives through {@see NavigationSourceInterface},
  * implemented by whoever knows something worth putting there:
  *
- *   - the HOST implements one, and that is where trunk data enters the crown.
- *     The host has the areas, the viewer, the permission voters and the trunk's
+ *   - the HOST implements one, and that is where seam data enters the crown.
+ *     The host has the areas, the viewer, the permission voters and the seam's
  *     per-area ledger; folding those four into "these rows, in this order" is a
  *     reading for a person on a page, which is the host's job by the same
- *     argument the trunk used to hand the module grid away.
+ *     argument the seam used to hand the module grid away.
  *   - a MODULE BUNDLE may implement one too, tagged shell.nav_section, for the
  *     rare platform-wide row that belongs to nobody's area.
  *
  * The crown never asks "which modules are installed", because it has no way to
- * ask that question that does not end in requiring the trunk. It asks "what
+ * ask that question that does not end in requiring the seam. It asks "what
  * goes in the nav", and whatever answers, answers.
  *
  * THE ENFORCEMENT is negative and it is in Unit/BoundaryTest: no module slug
@@ -90,7 +90,7 @@ final class NavigationSeamTest extends Phase2TestCase
 
     /**
      * SECTIONS COME OUT IN THE ORDER THEY WERE PUT IN. Registration order, and
-     * a declared position as the tie-break — the trunk's ruling about
+     * a declared position as the tie-break — the seam's ruling about
      * position() applies here for the same reason it applied there: a contract
      * field nothing reads is a lie in the contract.
      */
@@ -232,7 +232,7 @@ final class NavigationSeamTest extends Phase2TestCase
     }
 
     /**
-     * UNINSTALLING TAKES THE ROW WITH IT, THIS REQUEST. The trunk's
+     * UNINSTALLING TAKES THE ROW WITH IT, THIS REQUEST. The seam's
      * attention-list promise, at the crown's end: sources are read live, per
      * render, from the container's tagged iterator — nothing between the source
      * and the sidebar is allowed to cache, or "switch the module off" becomes
@@ -252,7 +252,7 @@ final class NavigationSeamTest extends Phase2TestCase
     }
 
     /**
-     * The tag is a published constant on the bundle, for the reason the trunk's
+     * The tag is a published constant on the bundle, for the reason the seam's
      * is: a contributor writes the string by hand (a reusable bundle's services
      * are not autoconfigured) and should not be retyping it.
      */
@@ -263,7 +263,7 @@ final class NavigationSeamTest extends Phase2TestCase
     }
 
     /**
-     * ZERO SOURCES IS A WORKING INSTALLATION — the trunk's rule, inherited. A
+     * ZERO SOURCES IS A WORKING INSTALLATION — the seam's rule, inherited. A
      * crown with nothing to navigate renders a sidebar with a brand and no
      * rows, not an error and not a hole where the aside should be.
      */
