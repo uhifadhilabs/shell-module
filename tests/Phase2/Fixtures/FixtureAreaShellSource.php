@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Phase2\Fixtures;
+namespace Uhifadhi\Canopy\Tests\Phase2\Fixtures;
 
-use UhifadhiLabs\Canopy\Contract\AreaShellSourceInterface;
+use Uhifadhi\Canopy\Contract\AreaShellSourceInterface;
 
 /**
  * A host's answer to "which sibling screens does the thing I am currently

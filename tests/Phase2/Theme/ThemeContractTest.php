@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Phase2\Theme;
+namespace Uhifadhi\Canopy\Tests\Phase2\Theme;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use UhifadhiLabs\Canopy\Contract\LayoutContract;
-use UhifadhiLabs\Canopy\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Canopy\Contract\LayoutContract;
+use Uhifadhi\Canopy\Tests\Phase2\Phase2TestCase;
 
 /**
  * SPEC 4 — THE THEME CONTRACT.

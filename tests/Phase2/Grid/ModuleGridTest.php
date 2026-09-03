@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Phase2\Grid;
+namespace Uhifadhi\Canopy\Tests\Phase2\Grid;
 
-use UhifadhiLabs\Canopy\Contract\LayoutContract;
-use UhifadhiLabs\Canopy\Model\ModuleCard;
-use UhifadhiLabs\Canopy\Model\ModuleGroup;
-use UhifadhiLabs\Canopy\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Canopy\Contract\LayoutContract;
+use Uhifadhi\Canopy\Model\ModuleCard;
+use Uhifadhi\Canopy\Model\ModuleGroup;
+use Uhifadhi\Canopy\Tests\Phase2\Phase2TestCase;
 
 /**
  * SPEC 5 — THE MODULE GRID.
@@ -161,7 +161,7 @@ final class ModuleGridTest extends Phase2TestCase
      */
     public function testTheGridIsAddressableByConstantAndIsAPartialNotAPage(): void
     {
-        self::assertSame('@UhifadhiLabsCanopy/_module_grid.html.twig', LayoutContract::MODULE_GRID);
+        self::assertSame('@UhifadhiCanopy/_module_grid.html.twig', LayoutContract::MODULE_GRID);
         self::assertContains(LayoutContract::MODULE_GRID, LayoutContract::PARTIALS);
 
         // A partial: it extends nothing and declares no socket. A grid that was

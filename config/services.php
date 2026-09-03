@@ -18,7 +18,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *
  * PHP (not YAML) on purpose: a reusable bundle must not force symfony/yaml onto
  * hosts, and FQCN references stay refactor-safe and phpstan-checked. Imported by
- * UhifadhiLabsCanopyBundle::loadExtension(), which keeps only the config-DRIVEN
+ * UhifadhiCanopyBundle::loadExtension(), which keeps only the config-DRIVEN
  * definitions.
  *
  * Everything defined here is defined EXPLICITLY — no autowire(), no autoconfigure(),

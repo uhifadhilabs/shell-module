@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Phase2\Area;
+namespace Uhifadhi\Canopy\Tests\Phase2\Area;
 
-use UhifadhiLabs\Canopy\Contract\AreaShellSourceInterface;
-use UhifadhiLabs\Canopy\Model\AreaTab;
-use UhifadhiLabs\Canopy\Tests\Phase2\Fixtures\HostKernel;
-use UhifadhiLabs\Canopy\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Canopy\Contract\AreaShellSourceInterface;
+use Uhifadhi\Canopy\Model\AreaTab;
+use Uhifadhi\Canopy\Tests\Phase2\Fixtures\HostKernel;
+use Uhifadhi\Canopy\Tests\Phase2\Phase2TestCase;
 
 /**
  * SPEC 3 — THE AREA SHELL.

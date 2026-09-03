@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Phase2;
+namespace Uhifadhi\Canopy\Tests\Phase2;
 
 use Symfony\Component\DomCrawler\Crawler;
-use UhifadhiLabs\Canopy\Tests\Integration\CanopyKernelTestCase;
-use UhifadhiLabs\Canopy\Tests\Phase2\Fixtures\HostKernel;
+use Uhifadhi\Canopy\Tests\Integration\CanopyKernelTestCase;
+use Uhifadhi\Canopy\Tests\Phase2\Fixtures\HostKernel;
 
 /**
  * Shared plumbing for the contract specification.

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Phase2\Fixtures;
+namespace Uhifadhi\Canopy\Tests\Phase2\Fixtures;
 
-use UhifadhiLabs\Canopy\Contract\NavigationSourceInterface;
-use UhifadhiLabs\Canopy\Model\AreaTab;
-use UhifadhiLabs\Canopy\Model\NavItem;
-use UhifadhiLabs\Canopy\Model\NavSection;
+use Uhifadhi\Canopy\Contract\NavigationSourceInterface;
+use Uhifadhi\Canopy\Model\AreaTab;
+use Uhifadhi\Canopy\Model\NavItem;
+use Uhifadhi\Canopy\Model\NavSection;
 
 /**
  * A host's nav, in the smallest honest form: something that answers "what goes

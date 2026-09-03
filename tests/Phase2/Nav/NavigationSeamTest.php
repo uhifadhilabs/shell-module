@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Phase2\Nav;
+namespace Uhifadhi\Canopy\Tests\Phase2\Nav;
 
-use UhifadhiLabs\Canopy\Contract\NavigationSourceInterface;
-use UhifadhiLabs\Canopy\Model\NavItem;
-use UhifadhiLabs\Canopy\Model\NavSection;
-use UhifadhiLabs\Canopy\Service\Navigation;
-use UhifadhiLabs\Canopy\Tests\Phase2\Fixtures\HostKernel;
-use UhifadhiLabs\Canopy\Tests\Phase2\Phase2TestCase;
-use UhifadhiLabs\Canopy\UhifadhiLabsCanopyBundle;
+use Uhifadhi\Canopy\Contract\NavigationSourceInterface;
+use Uhifadhi\Canopy\Model\NavItem;
+use Uhifadhi\Canopy\Model\NavSection;
+use Uhifadhi\Canopy\Service\Navigation;
+use Uhifadhi\Canopy\Tests\Phase2\Fixtures\HostKernel;
+use Uhifadhi\Canopy\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Canopy\UhifadhiCanopyBundle;
 
 /**
  * SPEC 2 — THE NAV SEAM.
@@ -258,7 +258,7 @@ final class NavigationSeamTest extends Phase2TestCase
      */
     public function testTheSeamsTagIsPublished(): void
     {
-        self::assertSame('canopy.nav_section', UhifadhiLabsCanopyBundle::NAV_TAG);
+        self::assertSame('canopy.nav_section', UhifadhiCanopyBundle::NAV_TAG);
         self::assertTrue(interface_exists(NavigationSourceInterface::class));
     }
 

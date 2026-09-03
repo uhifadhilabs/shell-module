@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Phase2\Sockets;
+namespace Uhifadhi\Canopy\Tests\Phase2\Sockets;
 
-use UhifadhiLabs\Canopy\Contract\LayoutContract;
-use UhifadhiLabs\Canopy\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Canopy\Contract\LayoutContract;
+use Uhifadhi\Canopy\Tests\Phase2\Phase2TestCase;
 
 /**
  * SPEC 1b — WHAT THE FRAME DOES WITH WHAT IT IS GIVEN.
@@ -121,7 +121,7 @@ final class PageFrameTest extends Phase2TestCase
     {
         $html = $this->render(self::PAGE);
 
-        $crown = strpos($html, 'uhifadhilabscanopy/canopy.css');
+        $crown = strpos($html, 'uhifadhicanopy/canopy.css');
         $module = strpos($html, 'fixture-module.css');
 
         self::assertIsInt($crown);
@@ -175,6 +175,6 @@ final class PageFrameTest extends Phase2TestCase
     {
         // A module bundle's base extends exactly this string, and nothing else
         // about the crown's internals is public.
-        self::assertSame('@UhifadhiLabsCanopy/page.html.twig', LayoutContract::PAGE);
+        self::assertSame('@UhifadhiCanopy/page.html.twig', LayoutContract::PAGE);
     }
 }

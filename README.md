@@ -111,7 +111,7 @@ checked against `LayoutContract::BLOCKS`, so a rename fails the build from both
 ends: the manifest disagrees with the frozen list, or the templates disagree
 with the manifest. There is no way to move a socket without editing that test.
 
-**The document** — `@UhifadhiLabsCanopy/document.html.twig`. Symfony's own four
+**The document** — `@UhifadhiCanopy/document.html.twig`. Symfony's own four
 names, unchanged; a module that knows Twig already knows them.
 
 | Socket | Filled by |
@@ -122,7 +122,7 @@ names, unchanged; a module that knows Twig already knows them.
 | `importmap` | nobody, normally — here so a host can |
 | `body` | nobody: the shell owns it |
 
-**The shell** — `@UhifadhiLabsCanopy/shell.html.twig`. Furniture. A module fills
+**The shell** — `@UhifadhiCanopy/shell.html.twig`. Furniture. A module fills
 none of these; they are the host's, because they need the viewer, the areas and
 whether this response is an impersonation.
 
@@ -139,7 +139,7 @@ whether this response is an impersonation.
 | `content` | **the compatibility socket** — see below |
 | `canopy_footer` | host — the one line under every page |
 
-**The page frame** — `@UhifadhiLabsCanopy/page.html.twig`. The module author's
+**The page frame** — `@UhifadhiCanopy/page.html.twig`. The module author's
 sockets, and the reason the bundle exists.
 
 | Socket | Filled by |
@@ -267,7 +267,7 @@ test splits it:
   marker on the group a department leads, an empty state — a layout, complete
   given a list of groups, and the same layout wherever it appears (the area's
   Modules tab, a department page, a future search result). One implementation, at
-  `@UhifadhiLabsCanopy/_module_grid.html.twig`.
+  `@UhifadhiCanopy/_module_grid.html.twig`.
 - **the grouping does not.** Which cards, in which groups, in which order, and
   which department leads one is a reading of the catalogue for a particular
   viewer on a particular area — it needs the area, the viewer and the department
@@ -342,7 +342,7 @@ because this is precisely the kind of ruling that gets quietly reversed by one
 
 | Piece | File |
 |---|---|
-| The Symfony plug, the stylesheet path, the nav tag | `src/UhifadhiLabsCanopyBundle.php` |
+| The Symfony plug, the stylesheet path, the nav tag | `src/UhifadhiCanopyBundle.php` |
 | Config tree (`canopy:`) | `src/DependencyInjection/CanopyConfiguration.php` |
 | Static service wiring, and the published ids | `config/services.php` |
 | The frozen manifest (phase 2) | `src/Contract/LayoutContract.php` |
@@ -360,7 +360,7 @@ composer require uhifadhi/canopy-module
 ```
 
 The bundle registers via Flex (`"type": "symfony-bundle"`), which adds
-`UhifadhiLabs\Canopy\UhifadhiLabsCanopyBundle` to `config/bundles.php`. A host
+`Uhifadhi\Canopy\UhifadhiCanopyBundle` to `config/bundles.php`. A host
 then implements the two seams and points the crown at them:
 
 ```php
@@ -372,7 +372,7 @@ $services->alias('canopy.area_shell_source', App\Canopy\AreaShell::class);
 …and its pages extend the frame:
 
 ```twig
-{% extends '@UhifadhiLabsCanopy/page.html.twig' %}
+{% extends '@UhifadhiCanopy/page.html.twig' %}
 {% block canopy_page_title %}Zones{% endblock %}
 {% block canopy_page %}…{% endblock %}
 ```

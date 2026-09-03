@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Integration;
+namespace Uhifadhi\Canopy\Tests\Integration;
 
 use Twig\Loader\FilesystemLoader;
-use UhifadhiLabs\Canopy\UhifadhiLabsCanopyBundle;
+use Uhifadhi\Canopy\UhifadhiCanopyBundle;
 
 /**
  * The smoke test: registering the canopy in a real kernel compiles a real
@@ -27,10 +27,10 @@ final class BundleBootTest extends CanopyKernelTestCase
     {
         $kernel = self::bootKernel();
 
-        self::assertArrayHasKey('UhifadhiLabsCanopyBundle', $kernel->getBundles());
+        self::assertArrayHasKey('UhifadhiCanopyBundle', $kernel->getBundles());
         self::assertInstanceOf(
-            UhifadhiLabsCanopyBundle::class,
-            $kernel->getBundle('UhifadhiLabsCanopyBundle'),
+            UhifadhiCanopyBundle::class,
+            $kernel->getBundle('UhifadhiCanopyBundle'),
         );
     }
 
@@ -42,7 +42,7 @@ final class BundleBootTest extends CanopyKernelTestCase
     {
         $kernel = self::bootKernel();
 
-        self::assertSame('canopy', $kernel->getBundle('UhifadhiLabsCanopyBundle')
+        self::assertSame('canopy', $kernel->getBundle('UhifadhiCanopyBundle')
             ->getContainerExtension()?->getAlias());
     }
 
@@ -59,7 +59,7 @@ final class BundleBootTest extends CanopyKernelTestCase
 
     /**
      * THE NAMESPACE IS THE ADDRESS OF THE CONTRACT. Every module page in the
-     * platform will name it — `{% extends '@UhifadhiLabsCanopy/page.html.twig' %}`
+     * platform will name it — `{% extends '@UhifadhiCanopy/page.html.twig' %}`
      * — so it is registered and asserted before the first template exists.
      * Symfony derives it from the bundle's name and the repository-root
      * templates/ directory; both halves of that are load-bearing and both are
@@ -71,9 +71,9 @@ final class BundleBootTest extends CanopyKernelTestCase
 
         $loader = $this->twig()->getLoader();
         self::assertInstanceOf(FilesystemLoader::class, $loader);
-        self::assertContains('UhifadhiLabsCanopy', $loader->getNamespaces());
+        self::assertContains('UhifadhiCanopy', $loader->getNamespaces());
 
-        $paths = $loader->getPaths('UhifadhiLabsCanopy');
+        $paths = $loader->getPaths('UhifadhiCanopy');
         self::assertNotSame([], $paths, 'The canopy must expose its templates/ directory to Twig.');
         foreach ($paths as $path) {
             self::assertDirectoryExists($path);
@@ -88,6 +88,6 @@ final class BundleBootTest extends CanopyKernelTestCase
      */
     public function testItPublishesItsStylesheetPath(): void
     {
-        self::assertSame('bundles/uhifadhilabscanopy/canopy.css', UhifadhiLabsCanopyBundle::STYLESHEET);
+        self::assertSame('bundles/uhifadhicanopy/canopy.css', UhifadhiCanopyBundle::STYLESHEET);
     }
 }

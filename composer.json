@@ -32,12 +32,12 @@
     },
     "autoload": {
         "psr-4": {
-            "UhifadhiLabs\\Canopy\\": "src/"
+            "Uhifadhi\\Canopy\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "UhifadhiLabs\\Canopy\\Tests\\": "tests/"
+            "Uhifadhi\\Canopy\\Tests\\": "tests/"
         }
     },
     "require-dev": {

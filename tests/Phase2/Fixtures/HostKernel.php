@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Phase2\Fixtures;
+namespace Uhifadhi\Canopy\Tests\Phase2\Fixtures;
 
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use UhifadhiLabs\Canopy\Model\AreaTab;
-use UhifadhiLabs\Canopy\Model\NavSection;
-use UhifadhiLabs\Canopy\Tests\Integration\TestKernel;
-use UhifadhiLabs\Canopy\UhifadhiLabsCanopyBundle;
+use Uhifadhi\Canopy\Model\AreaTab;
+use Uhifadhi\Canopy\Model\NavSection;
+use Uhifadhi\Canopy\Tests\Integration\TestKernel;
+use Uhifadhi\Canopy\UhifadhiCanopyBundle;
 
 /**
  * A STAND-IN HOST — and the specification's main claim, not a testing
@@ -77,7 +77,7 @@ final class HostKernel extends TestKernel
         // not autoconfigured. If this fixture needed autowiring to work, the
         // seam would not work for the bundles it exists for.
         $services->set(FixtureNavigationSource::class)
-            ->tag(UhifadhiLabsCanopyBundle::NAV_TAG)
+            ->tag(UhifadhiCanopyBundle::NAV_TAG)
             ->public();
 
         $services->set(FixtureAreaShellSource::class)

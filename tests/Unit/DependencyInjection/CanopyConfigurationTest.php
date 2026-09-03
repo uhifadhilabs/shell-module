@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Unit\DependencyInjection;
+namespace Uhifadhi\Canopy\Tests\Unit\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
-use UhifadhiLabs\Canopy\DependencyInjection\CanopyConfiguration;
+use Uhifadhi\Canopy\DependencyInjection\CanopyConfiguration;
 
 /**
  * The config tree, checked the way a host meets it: through a Processor, with

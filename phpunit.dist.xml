@@ -8,7 +8,7 @@
          failOnNotice="true"
          failOnWarning="true">
     <php>
-        <env name="KERNEL_CLASS" value="UhifadhiLabs\Canopy\Tests\Integration\TestKernel"/>
+        <env name="KERNEL_CLASS" value="Uhifadhi\Canopy\Tests\Integration\TestKernel"/>
         <!--
             THERE IS NO DATABASE ENV HERE, AND THERE WILL NOT BE ONE. The canopy
             draws; it does not remember. A canopy that needed a connection to

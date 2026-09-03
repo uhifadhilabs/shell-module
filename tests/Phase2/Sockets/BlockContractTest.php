@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Phase2\Sockets;
+namespace Uhifadhi\Canopy\Tests\Phase2\Sockets;
 
-use UhifadhiLabs\Canopy\Contract\LayoutContract;
-use UhifadhiLabs\Canopy\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Canopy\Contract\LayoutContract;
+use Uhifadhi\Canopy\Tests\Phase2\Phase2TestCase;
 
 /**
  * SPEC 1 — THE NAMED SOCKETS.
@@ -60,7 +60,7 @@ final class BlockContractTest extends Phase2TestCase
     {
         return [
             /*
-             * THE DOCUMENT — @UhifadhiLabsCanopy/document.html.twig
+             * THE DOCUMENT — @UhifadhiCanopy/document.html.twig
              * The four names Symfony's own skeleton uses, unchanged. A module
              * that already knows Twig knows these, and renaming them to
              * canopy_* would have bought consistency with confusion.
@@ -75,7 +75,7 @@ final class BlockContractTest extends Phase2TestCase
             //                 fills this has left the crown.
 
             /*
-             * THE SHELL — @UhifadhiLabsCanopy/shell.html.twig
+             * THE SHELL — @UhifadhiCanopy/shell.html.twig
              * The furniture around a page. A MODULE FILLS NONE OF THESE. They
              * are sockets for the HOST — the thing that knows who is signed in,
              * what an area is, and whether this response is an impersonation.
@@ -94,7 +94,7 @@ final class BlockContractTest extends Phase2TestCase
             'canopy_footer',          // host: the one line under every page.
 
             /*
-             * THE PAGE FRAME — @UhifadhiLabsCanopy/page.html.twig
+             * THE PAGE FRAME — @UhifadhiCanopy/page.html.twig
              * These are the module author's sockets, and the reason the bundle
              * exists. Filling them produces the platform's page shape — crumb,
              * page head, actions, tabs, flashes, body — without a module ever
@@ -178,9 +178,9 @@ final class BlockContractTest extends Phase2TestCase
      */
     public function testTheFramesAreAddressableByConstant(): void
     {
-        self::assertSame('@UhifadhiLabsCanopy/document.html.twig', LayoutContract::DOCUMENT);
-        self::assertSame('@UhifadhiLabsCanopy/shell.html.twig', LayoutContract::SHELL);
-        self::assertSame('@UhifadhiLabsCanopy/page.html.twig', LayoutContract::PAGE);
+        self::assertSame('@UhifadhiCanopy/document.html.twig', LayoutContract::DOCUMENT);
+        self::assertSame('@UhifadhiCanopy/shell.html.twig', LayoutContract::SHELL);
+        self::assertSame('@UhifadhiCanopy/page.html.twig', LayoutContract::PAGE);
 
         foreach ([LayoutContract::DOCUMENT, LayoutContract::SHELL, LayoutContract::PAGE] as $frame) {
             self::assertTrue($this->twig()->getLoader()->exists($frame));

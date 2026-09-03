@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy\Tests\Integration;
+namespace Uhifadhi\Canopy\Tests\Integration;
 
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -19,7 +19,7 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\UX\Icons\UXIconsBundle;
-use UhifadhiLabs\Canopy\UhifadhiLabsCanopyBundle;
+use Uhifadhi\Canopy\UhifadhiCanopyBundle;
 
 /**
  * THE SEED, PLUS THE CANOPY, AND NOTHING ELSE: framework + twig + ux-icons +
@@ -42,7 +42,7 @@ class TestKernel extends Kernel
         yield new FrameworkBundle();
         yield new TwigBundle();
         yield new UXIconsBundle();
-        yield new UhifadhiLabsCanopyBundle();
+        yield new UhifadhiCanopyBundle();
     }
 
     protected function configureContainer(ContainerConfigurator $container): void

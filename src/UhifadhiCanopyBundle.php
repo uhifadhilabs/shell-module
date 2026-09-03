@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace UhifadhiLabs\Canopy;
+namespace Uhifadhi\Canopy;
 
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use UhifadhiLabs\Canopy\DependencyInjection\CanopyConfiguration;
+use Uhifadhi\Canopy\DependencyInjection\CanopyConfiguration;
 
 /**
  * The CANOPY — the visible crown every uhifadhi page grows into.
@@ -51,7 +51,7 @@ use UhifadhiLabs\Canopy\DependencyInjection\CanopyConfiguration;
  * today is the plug: the bundle registers, its config is keyed under "canopy:",
  * and its template namespace resolves.
  */
-final class UhifadhiLabsCanopyBundle extends AbstractBundle
+final class UhifadhiCanopyBundle extends AbstractBundle
 {
     /**
      * The canopy's stylesheet, as a host and every module bundle must link it.
@@ -67,7 +67,7 @@ final class UhifadhiLabsCanopyBundle extends AbstractBundle
      *
      * @see https://symfony.com/doc/current/frontend/asset_mapper.html
      */
-    public const string STYLESHEET = 'bundles/uhifadhilabscanopy/canopy.css';
+    public const string STYLESHEET = 'bundles/uhifadhicanopy/canopy.css';
 
     /**
      * The tag a bundle carries to contribute a NAV SECTION to the shell.
