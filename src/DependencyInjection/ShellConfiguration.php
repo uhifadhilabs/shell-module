@@ -24,13 +24,20 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
  *     brand_name: Uhifadhi           # the wordmark beside the brand tile
  *     home_route: dashboard_index    # where the tile links
  *     default_theme: light           # light | dark | system
- *     dev_tools: false               # the socket gallery (when@dev / when@test)
  *
  * DELIBERATELY TINY, and it must stay that way — a layout bundle is where
  * configuration goes to breed. Every knob here is something the shell CANNOT
  * know: the deployment's name, the host's route names, and a first-visit
  * preference. Anything a designer would decide belongs in the stylesheet, and
  * anything a page would decide belongs in a block.
+ *
+ * A FOURTH KEY WAS HERE AND IS GONE. `dev_tools` reserved a flag for a dev-only
+ * socket gallery — every block and every token on one page — and the boundary
+ * this bundle is built on turned out to forbid the thing it gated: the gallery
+ * is a PAGE, a page needs a route and a controller, and the shell ships
+ * neither. A knob nothing reads is exactly the lie in a contract that this
+ * package's own rules name; it went rather than shipped. If a gallery is ever
+ * wanted, it is a template here and a dev-only route in the application.
  *
  * There is deliberately no key listing nav entries, no key listing area tabs
  * and no key listing modules. Those arrive as data through the seams in
@@ -66,10 +73,6 @@ final class ShellConfiguration
                     ->info('Theme a visitor who has never chosen one gets: light, dark, or the operating system\'s preference.')
                     ->values(self::THEMES)
                     ->defaultValue('light')
-                ->end()
-                ->booleanNode('dev_tools')
-                    ->info('Register the socket gallery — every block and every token on one page. The recipe enables this via when@dev/when@test.')
-                    ->defaultFalse()
                 ->end()
             ->end()
         ;

@@ -54,7 +54,7 @@ final class BundleBootTest extends ShellKernelTestCase
         self::assertSame('Uhifadhi', $container->getParameter('shell.brand_name'));
         self::assertSame('dashboard_index', $container->getParameter('shell.home_route'));
         self::assertSame('light', $container->getParameter('shell.default_theme'));
-        self::assertFalse($container->getParameter('shell.dev_tools'));
+        self::assertFalse($container->hasParameter('shell.dev_tools'), 'A knob nothing reads is a lie in the contract.');
     }
 
     /**

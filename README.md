@@ -484,7 +484,6 @@ shell:
     brand_name: Uhifadhi           # the wordmark beside the brand tile
     home_route: dashboard_index    # where the tile links
     default_theme: light           # light | dark | system
-    dev_tools: false               # the socket gallery (when@dev / when@test)
 ```
 
 Every key has a default and the tree is closed, so an unknown key fails loudly

@@ -35,7 +35,6 @@ final class ShellConfigurationTest extends TestCase
             'brand_name' => 'Uhifadhi',
             'home_route' => 'dashboard_index',
             'default_theme' => 'light',
-            'dev_tools' => false,
         ], $this->process([]));
     }
 

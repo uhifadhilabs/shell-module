@@ -145,10 +145,5 @@ final class UhifadhiShellBundle extends AbstractBundle
             'shell.default_theme',
             \is_string($config['default_theme'] ?? null) ? $config['default_theme'] : 'light',
         );
-
-        // Dev-only tooling — the socket gallery, which renders every block and
-        // every token on one page so a change to the contract is visible before
-        // it is shipped. Off in production: it is documentation that executes.
-        $builder->setParameter('shell.dev_tools', true === ($config['dev_tools'] ?? false));
     }
 }
