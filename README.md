@@ -151,6 +151,7 @@ The whole point, in the shortest page that works. A module bundle's page extends
 the frame, fills sockets, and types no furniture:
 
 ```twig
+{# templates/sightings/index.html.twig (your bundle) #}
 {% extends '@UhifadhiShell/page.html.twig' %}
 
 {% block shell_page %}
@@ -166,6 +167,7 @@ it does not — an empty block renders no element, so there is nothing to pay fo
 a subtitle you never wrote:
 
 ```twig
+{# templates/sightings/index.html.twig (your bundle) #}
 {% extends '@UhifadhiShell/page.html.twig' %}
 
 {% block title %}Sightings{% endblock %}
@@ -203,6 +205,7 @@ reason this package exists.
 **Your stylesheet goes after the shell's, and `parent()` is what puts it there.**
 
 ```twig
+{# templates/sightings/_base.html.twig (your bundle) #}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/sightings/sightings.css') }}">
@@ -222,6 +225,7 @@ sibling screens, with the right one lit. A page outside any place says so by
 saying nothing:
 
 ```twig
+{# templates/sightings/index.html.twig (your bundle) #}
 {% block shell_page_tabs %}{% endblock %}
 ```
 
@@ -441,12 +445,16 @@ because this is precisely the kind of ruling that gets quietly reversed by one
 composer require uhifadhi/shell-module
 ```
 
+Every code block below opens with a comment naming the file it belongs in. Where
+a block belongs to the application rather than to a module bundle, the comment
+says so.
+
 The bundle registers via Flex (`"type": "symfony-bundle"`), which adds
 `Uhifadhi\Shell\UhifadhiShellBundle` to `config/bundles.php`. A host
 then implements the two seams and points the shell at them:
 
 ```php
-// config/services.php
+// config/services.php (your application)
 $services->set(App\Shell\HostNavigation::class)->tag('shell.nav_section');
 $services->alias('shell.area_shell_source', App\Shell\AreaShell::class);
 ```
@@ -454,6 +462,7 @@ $services->alias('shell.area_shell_source', App\Shell\AreaShell::class);
 …and its pages extend the frame:
 
 ```twig
+{# templates/zones/index.html.twig (your application) #}
 {% extends '@UhifadhiShell/page.html.twig' %}
 {% block shell_page_title %}Zones{% endblock %}
 {% block shell_page %}…{% endblock %}
