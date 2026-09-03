@@ -11,10 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Shell\Tests\Phase2\Sockets;
+namespace Uhifadhi\Shell\Tests\Integration\Sockets;
 
 use Uhifadhi\Shell\Contract\LayoutContract;
-use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Shell\Model\AreaTab;
+use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
+use Uhifadhi\Shell\Tests\Integration\Fixtures\HostKernel;
 
 /**
  * SPEC 1b — WHAT THE FRAME DOES WITH WHAT IT IS GIVEN.
@@ -25,11 +27,11 @@ use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
  * workaround. So the frame's OUTPUT is pinned too — the shape, not the pixels.
  * Pixels are the design workspace's authority; structure is this file's.
  *
- * The fixture page (tests/Phase2/Fixtures/templates/module_page.html.twig) is
+ * The fixture page (tests/Integration/Fixtures/templates/module_page.html.twig) is
  * written the way a module bundle's page should be written after the
  * extraction: extend the frame, fill the sockets, type no furniture.
  */
-final class PageFrameTest extends Phase2TestCase
+final class PageFrameTest extends ContractTestCase
 {
     private const string PAGE = '@fixtures/module_page.html.twig';
 
@@ -51,6 +53,16 @@ final class PageFrameTest extends Phase2TestCase
 
     public function testTheFrameRendersEverySocketItIsGivenInTheDesignedOrder(): void
     {
+        // GIVEN is the operative word: the fixture page fills the sockets a
+        // module fills, and the stand-in host supplies the two the FRAME fills
+        // on a page's behalf — the strip and the flashes. Both are absent by
+        // default, which is the sibling assertion below.
+        HostKernel::$areaTabs = [
+            new AreaTab(label: 'Where you are', url: '/a', current: true),
+            new AreaTab(label: 'And its sibling', url: '/b'),
+        ];
+        HostKernel::$flashes = [['success', 'Saved.']];
+
         $crawler = $this->crawl(self::PAGE);
 
         $order = $crawler->filter('div.page > *')->each(
@@ -101,7 +113,12 @@ final class PageFrameTest extends Phase2TestCase
      */
     public function testFlashesAreRenderedByTheFrameSoEveryModuleSaysSavedTheSameWay(): void
     {
-        $crawler = $this->crawl(self::PAGE, [] /* the fixture host seeds a flash */);
+        // The stand-in host has a message pending. It seeds none by default, on
+        // purpose: a host that ALWAYS had one would make the sibling assertion
+        // — that an unfilled region leaves nothing behind — impossible to make.
+        HostKernel::$flashes = [['success', 'Saved.']];
+
+        $crawler = $this->crawl(self::PAGE);
 
         $flashes = $crawler->filter('div.flashes > div.c');
         self::assertCount(1, $flashes);

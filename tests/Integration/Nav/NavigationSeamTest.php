@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Shell\Tests\Phase2\Nav;
+namespace Uhifadhi\Shell\Tests\Integration\Nav;
 
 use Uhifadhi\Shell\Contract\NavigationSourceInterface;
 use Uhifadhi\Shell\Model\NavItem;
 use Uhifadhi\Shell\Model\NavSection;
 use Uhifadhi\Shell\Service\Navigation;
-use Uhifadhi\Shell\Tests\Phase2\Fixtures\HostKernel;
-use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
+use Uhifadhi\Shell\Tests\Integration\Fixtures\HostKernel;
 use Uhifadhi\Shell\UhifadhiShellBundle;
 
 /**
@@ -49,7 +49,7 @@ use Uhifadhi\Shell\UhifadhiShellBundle;
  * the tree has. This file is the positive half — that a nav can be fully built
  * out of names the crown has never heard of.
  */
-final class NavigationSeamTest extends Phase2TestCase
+final class NavigationSeamTest extends ContractTestCase
 {
     private function navigation(): Navigation
     {

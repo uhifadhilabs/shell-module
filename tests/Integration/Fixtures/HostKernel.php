@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Shell\Tests\Phase2\Fixtures;
+namespace Uhifadhi\Shell\Tests\Integration\Fixtures;
 
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Uhifadhi\Shell\Model\AreaTab;
@@ -49,15 +49,33 @@ final class HostKernel extends TestKernel
      */
     public static bool $mirrorAreaTabsIntoNav = false;
 
-    /** @var list<array{string, string}> label => message, seeded before a render */
-    public static array $flashes = [['success', 'Saved.']];
+    /**
+     * What the viewer is inside, in words — the middle segment of the page
+     * title. The area seam answers it, because it is the same question the tabs
+     * answer, asked for the title bar instead of the strip.
+     */
+    public static ?string $place = 'Test Area';
+
+    /**
+     * Flashes the host has pending, seeded into a real session by
+     * {@see \Uhifadhi\Shell\Tests\Integration\ContractTestCase} before a render.
+     *
+     * EMPTY BY DEFAULT, and that is the honest default: a host usually has
+     * nothing to say, and a stand-in host that always had a message pending
+     * would make "an unfilled region leaves nothing behind" impossible to
+     * assert. A test that is about flashes seeds one.
+     *
+     * @var list<array{string, string}> label, message
+     */
+    public static array $flashes = [];
 
     public static function reset(): void
     {
         self::$navSources = [];
         self::$areaTabs = [];
         self::$mirrorAreaTabsIntoNav = false;
-        self::$flashes = [['success', 'Saved.']];
+        self::$place = 'Test Area';
+        self::$flashes = [];
     }
 
     protected function configureContainer(ContainerConfigurator $container): void

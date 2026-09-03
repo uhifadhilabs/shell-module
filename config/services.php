@@ -13,6 +13,14 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Uhifadhi\Shell\Contract\LayoutContract;
+use Uhifadhi\Shell\Service\AreaShell;
+use Uhifadhi\Shell\Service\Navigation;
+use Uhifadhi\Shell\Service\Theme;
+use Uhifadhi\Shell\Twig\ShellExtension;
+use Uhifadhi\Shell\Twig\ShellRuntime;
+use Uhifadhi\Shell\UhifadhiShellBundle;
+
 /*
  * The bundle's static service wiring.
  *
@@ -39,24 +47,56 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  * functions and a RUNTIME that is constructed lazily, on the first call — i.e.
  * only when a template is actually rendered. The host learned this the hard
  * way with its sidebar; the crown inherits the lesson, not the bug.
- *
- * Empty in phase 1, and on purpose. The crown arrives by EXTRACTION from the
- * host in phase 2, against the failing specification in tests/Phase2; that
- * specification names the service ids it will land under, which is the whole
- * contract this file has to satisfy:
- *
- *   shell.contract          the frozen socket manifest: blocks, tokens, seams
- *   shell.navigation        the nav tree the shell renders, from tagged sources
- *   shell.area_shell        the area tab strip's model, from its source
- *   shell.theme             which theme this response opens in
- *   shell.module_grid       the catalogue picture: groups, cards, pills
- *   shell.twig.extension    declares shell_* functions and nothing else
- *   shell.twig.runtime      builds them, lazily, on first render
- *   shell.gallery           the dev-only socket gallery (shell.dev_tools)
- *
- * The file exists so the first of them lands in the right place, in the right
- * style, rather than being autowired into the host's habits.
  */
 return static function (ContainerConfigurator $container): void {
-    $container->services();
+    $services = $container->services();
+
+    // The frozen manifest, as a service, so a host or a module bundle can ask
+    // the container which contract version it is mounting rather than reading
+    // a constant off a class it had to guess the name of.
+    $services->set('shell.contract', LayoutContract::class);
+
+    /*
+     * THE NAV SEAM'S COLLECTOR. A tagged iterator, and nothing else: whatever
+     * carries the tag contributes, whether that is the host folding areas and
+     * permissions into rows or a module bundle adding one platform-wide row.
+     *
+     * The iterator is lazy and is walked on every render, which is what makes
+     * the seam's same-day promise true — switch a contributor off and its rows
+     * are gone on the next request, not after a deploy.
+     */
+    $services->set('shell.navigation', Navigation::class)
+        ->args([tagged_iterator(UhifadhiShellBundle::NAV_TAG)]);
+
+    /*
+     * THE AREA SEAM'S READER. One source, aliased by the host to the id below —
+     * an alias rather than a tagged collection because two things claiming to
+     * know where the viewer is, is exactly the disagreement this bundle exists
+     * to prevent.
+     *
+     * nullOnInvalid() is the ring gate written into the container: a freshly
+     * planted installation declares no such source, and it must get pages with
+     * no tab strip rather than a container that will not compile.
+     */
+    $services->set('shell.area_shell', AreaShell::class)
+        ->args([service('shell.area_shell_source')->nullOnInvalid()]);
+
+    // What a visitor who has never chosen a theme gets. Everything else about
+    // the theme is the browser's, resolved before the first paint.
+    $services->set('shell.theme', Theme::class)
+        ->args(['%shell.default_theme%']);
+
+    $services->set('shell.twig.extension', ShellExtension::class)
+        ->tag('twig.extension');
+
+    $services->set('shell.twig.runtime', ShellRuntime::class)
+        ->args([
+            service('shell.navigation'),
+            service('shell.area_shell'),
+            service('shell.theme'),
+            service('router'),
+            '%shell.brand_name%',
+            '%shell.home_route%',
+        ])
+        ->tag('twig.runtime');
 };

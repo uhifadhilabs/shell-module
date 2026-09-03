@@ -89,6 +89,33 @@ final class UhifadhiShellBundle extends AbstractBundle
     }
 
     /**
+     * THE CROWN'S OWN GLYPHS, registered under the `shell:` prefix.
+     *
+     * Four icons — the sidebar's collapse chevron, the tree's caret, the theme
+     * toggle and the catalogue's lens marker — shipped with the bundle and
+     * resolved from disk. This is the ring gate's lesson in the container: a
+     * freshly planted installation has configured no icon set, and a crown
+     * whose own chrome needed a network round trip to draw itself would not be
+     * a crown that works out of the box.
+     *
+     * It is a PREFIX OF ITS OWN, not an addition to the host's set: a bundle
+     * that quietly extended `lucide:` would be a bundle that decides what a
+     * host's icon names mean.
+     */
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        if (!$builder->hasExtension('ux_icons')) {
+            return;
+        }
+
+        $container->extension('ux_icons', [
+            'icon_sets' => [
+                'shell' => ['path' => \dirname(__DIR__).'/assets/icons/shell'],
+            ],
+        ]);
+    }
+
+    /**
      * @param array<string, mixed> $config
      */
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void

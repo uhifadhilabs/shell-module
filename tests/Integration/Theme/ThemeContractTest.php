@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Shell\Tests\Phase2\Theme;
+namespace Uhifadhi\Shell\Tests\Integration\Theme;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Uhifadhi\Shell\Contract\LayoutContract;
-use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
 
 /**
  * SPEC 4 — THE THEME CONTRACT.
@@ -39,7 +39,7 @@ use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
  * would be a palette the map bundle could not change without a crown release.
  * See the map legend contract.
  */
-final class ThemeContractTest extends Phase2TestCase
+final class ThemeContractTest extends ContractTestCase
 {
     /**
      * THE TOKEN LIST, VERSION 1. Typed out, for the reason the block list is:
@@ -175,14 +175,14 @@ final class ThemeContractTest extends Phase2TestCase
     public function testTheBrandTokensRideTheChannelsRatherThanBeingRestated(): void
     {
         $css = $this->stylesheet();
-        $dark = [];
+        $dark = '';
         if (1 === preg_match('/html\.dark\s*\{(.*?)\}/s', $css, $matches)) {
-            $dark = [$matches[1]];
+            $dark = $matches[1];
         }
-        self::assertNotSame([], $dark, 'There is no dark palette at all.');
+        self::assertNotSame('', $dark, 'There is no dark palette at all.');
 
         foreach (['--logo-tile', '--logo-child', '--logo-accent'] as $token) {
-            self::assertStringNotContainsString($token, $dark[0], \sprintf(
+            self::assertStringNotContainsString($token, $dark, \sprintf(
                 '%s is derived from --c-acc/--c-cv and must not be restated per theme.',
                 $token,
             ));

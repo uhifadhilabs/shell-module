@@ -4,17 +4,18 @@ The **shell**: the visible crown of an uhifadhi installation — the document, t
 page frame, the navigation seams and the theme every module's pages mount into.
 A [uhifadhi](https://github.com/uhifadhilabs) platform bundle.
 
-> **Status: phase 1 — the scaffold and the RED contract.** The crown itself is
-> still in the [uhifadhi](https://github.com/uhifadhilabs/uhifadhi) host,
-> working. It arrives here in phase 2 by extraction, against the failing
-> specification in `tests/Phase2`. See [How this is being
-> built](#how-this-is-being-built).
+> **Status: the shell is here and it renders.** The frames, the seams, the theme
+> and the catalogue picture were extracted out of the
+> [uhifadhi](https://github.com/uhifadhilabs/uhifadhi) host against a contract
+> written before the move — 89 tests that named templates, blocks, tokens,
+> interfaces and service ids that did not exist yet. See [How this was
+> built](#how-this-was-built).
 
 ## Contents
 
-- [The tree](#the-tree)
+- [The shape](#the-shape)
 - [Charter](#charter)
-- [How this is being built](#how-this-is-being-built)
+- [How this was built](#how-this-was-built)
 - [The socket contract](#the-socket-contract)
   - [1. The named sockets](#1-the-named-sockets)
   - [2. The nav seam](#2-the-nav-seam)
@@ -30,29 +31,18 @@ A [uhifadhi](https://github.com/uhifadhilabs) platform bundle.
 - [Development](#development)
 - [License](#license)
 
-## The tree
+## The shape
 
-Uhifadhi is structured like the thing it protects:
+**Uhifadhi is one skeleton and a set of bundles.**
+[`uhifadhi/uhifadhi`](https://github.com/uhifadhilabs/uhifadhi) is the project
+skeleton — copied once, never updated; everything else arrives as a bundle,
+updated forever. A module **registers with the seam**
+([`uhifadhi/seam-module`](https://github.com/uhifadhilabs/seam-module)) and
+**renders in the shell** ([`uhifadhi/shell-module`](https://github.com/uhifadhilabs/shell-module)
+— this repository); everything a deployment can do — patrols, incidents,
+rosters — is a module.
 
-> **the seed — [`uhifadhi/uhifadhi`](https://github.com/uhifadhilabs/uhifadhi)**
-> (planted once) → **the seam —
-> [`uhifadhi/seam-module`](https://github.com/uhifadhilabs/seam-module)** (where
-> every module registers) → **branches** (the modules) → **the shell —
-> [`uhifadhi/shell-module`](https://github.com/uhifadhilabs/shell-module)** (this
-> repository: what you see).
-
-The seed is copied once and is then yours forever. Everything above it is a
-bundle, updated through composer. This is the package you can see.
-
-**The tree is a picture, not a naming scheme.** It is kept here because it is
-the fastest way to explain the shape to somebody new, and it is kept *only*
-here — in prose. The packages themselves are named for what they do: a newcomer
-reading `Uhifadhi\Canopy\` cannot tell whether it draws pages or stores
-foliage surveys, and on a conservation platform that is a real question. This
-one was called `canopy-module` until that rule was written down, and the
-sentence the renames bought is the whole architecture in eight words:
-
-> **A module registers with the seam and renders in the shell.**
+This is the package you can see.
 
 ## Charter
 
@@ -65,7 +55,8 @@ sentence the renames bought is the whole architecture in eight words:
   outside, without the crown knowing what an area or a module is.
 - **The theme** — one token set, two complete palettes, both first-class.
 - **The shared pictures** — the module grid and the cards it is made of: the
-  drawings of other rings' answers that would otherwise be redrawn per page.
+  drawings of answers composed elsewhere, which would otherwise be redrawn once
+  per page that needs them.
 
 **It is a contract, not a convention.** Block names, seam interfaces and theme
 tokens are a versioned, test-enforced API — Symfony-extension-point grade. This
@@ -75,9 +66,9 @@ flash markup, so that a change to the page frame reached the copies somebody
 remembered. A convention is a contract that nothing checks.
 
 **It remembers nothing.** No entities, no repositories, no doctrine, no
-database. This is why this repository's CI is the only one in the tree with no
-postgres service: a crown with entities has failed its boundary. It is also why
-the whole test suite is "render this and look at it".
+database. This is why this repository's CI is the only one in the platform with
+no postgres service: a shell with entities has failed its boundary. It is also
+why the whole test suite is "render this and look at it".
 
 **It knows no module by name.** The seam's rule, inherited, and enforced by the
 same kind of sweep — extended to `templates/`, because a template is the easiest
@@ -88,29 +79,23 @@ later. A row in the sidebar and a card in the grid arrive as data.
 modules: the crown renders a sidebar with a brand and no rows, and a page. A
 layout that only works once the application is finished is not a layout.
 
-## How this is being built
+## How this was built
 
-The crown already exists, working, inside the host application:
-`templates/layout.html.twig`, the ported sidebar, the theme in
-`assets/styles/app.css`, the area tab strip, the module grid. This repository
-will extract it — and because this project is test-first, the specification is
-written *before* the move rather than after it: a suite that names templates,
-blocks, tokens, interfaces and service ids that do not exist yet, red by design,
-in a suite of its own so that "red by design" and "broken" can never be
-confused.
+The shell already existed, working, inside the host application:
+`templates/layout.html.twig`, the sidebar, the theme in `assets/styles/app.css`,
+the area tab strip, the module grid. This repository extracted it — and because
+this project is test-first, the specification was written *before* the move
+rather than after it: a suite naming templates, blocks, tokens, interfaces and
+service ids that did not exist yet, red by design, kept in a suite of its own so
+that "red by design" and "broken" could never be confused.
+
+The extraction landed, the suite went green, and the separation was deleted in
+the same commit — the contract now lives in `tests/Integration` beside
+everything else, because there is nothing left to keep apart.
 
 ```bash
-composer check        # cs -> phpstan max -> the SCAFFOLD suite. CI gates on this.
-composer test:phase2  # the contract. Red until the extraction lands.
+composer check   # cs -> phpstan max -> the whole suite. CI gates on this.
 ```
-
-**Three deletions mark the end of phase 2**, and until all three are gone the
-extraction is not finished:
-
-1. the `tests/Phase2` exclusion in `phpstan.dist.neon`
-2. the `phase2` testsuite in `phpunit.dist.xml` — its files move into
-   `tests/{Unit,Integration}`
-3. the `continue-on-error` step in `.github/workflows/ci.yml`
 
 ## The socket contract
 
@@ -119,7 +104,7 @@ Every row below is a test.
 ### 1. The named sockets
 
 Twenty-three blocks, in three frames that inherit from one another. The list is
-typed out literally in `Phase2/Sockets/BlockContractTest::contractV1()` and
+typed out literally in `Integration/Sockets/BlockContractTest::contractV1()` and
 checked against `LayoutContract::BLOCKS`, so a rename fails the build from both
 ends: the manifest disagrees with the frozen list, or the templates disagree
 with the manifest. There is no way to move a socket without editing that test.
@@ -228,7 +213,7 @@ enforces — `AreaTab` has no url-less form, so there is nothing to grey out.
 
 *Why not an area module?* The strip has no behaviour to own: it is markup plus a
 rule about lighting, and a bundle whose entire content is one Twig partial is a
-dependency, not a ring. If an area module is ever planted, it implements this
+dependency, not a module. If an area module is ever created, it implements this
 source; it does not take the strip.
 
 ### 4. The theme contract
@@ -256,7 +241,7 @@ dark one with no override, and a second definition is a second place the brand
 colour is decided.
 
 Also pinned: the dark selector is `html.dark` (module sheets write it too, so a
-move to a data attribute would silently unstyle the tree); the theme is resolved
+move to a data attribute would silently unstyle every module sheet); the theme is resolved
 by an inline script in `<head>` **before first paint**, not by a controller that
 connects after the first frame — a visitor who chose dark must not be shown a
 white page first, and today they are; `system` is a real third answer, not a
@@ -265,7 +250,7 @@ list must be prefixed `--_` as private, because a token a module can read is a
 token a module will read.
 
 Deliberately **not** here: the map chrome tokens (`--z-ink`, `--z-paper`,
-`--z-imagery`, `--z-aoi`). They belong to `uhifadhi/map-module`, the ring that
+`--z-imagery`, `--z-aoi`). They belong to `uhifadhi/map-module`, the module that
 owns how a layer draws; a legend palette in the crown could not be changed
 without a crown release.
 
@@ -325,8 +310,8 @@ a domain folder, it is this bundle's entire subject.
 This is the ruling worth arguing, because the obvious defence runs the other way.
 
 The Symfony analogy offered for a shell → seam require is `twig-bundle`
-depending on `framework-bundle`: a higher ring may depend on a lower one, and
-nothing about the tree forbids it. That analogy is real but it does not reach.
+depending on `framework-bundle`: one bundle may depend on another, and nothing
+about the platform's shape forbids it. That analogy is real but it does not reach.
 `twig-bundle` depends on `framework-bundle` for **machinery** — the kernel, the
 config pass, the container conventions. The crown would be requiring the seam to
 read **domain data**.
@@ -340,8 +325,8 @@ Three consequences decide it:
    as the crown could fetch a row. The require buys nothing.
 2. **Entities in templates are interrogated.** The moment a seam entity is in
    scope inside a Twig file, somebody writes `{% if module.slug == 'overview' %}`,
-   and the module-blindness both rings promise is gone. A `ModuleCard` value
-   object cannot be interrogated that way — there is nothing on it to branch on
+   and the module-blindness the seam and the shell both promise is gone. A `ModuleCard` value
+   object cannot be interrogated that way — there is nothing on it to switch on
    that is not also a thing every card has.
 3. **A crown that requires a seam runtime cannot crown an installation that has
    no modules.** `tests/Integration/TestKernel` is the proof: framework + twig +
@@ -358,13 +343,14 @@ because this is precisely the kind of ruling that gets quietly reversed by one
 | The Symfony plug, the stylesheet path, the nav tag | `src/UhifadhiShellBundle.php` |
 | Config tree (`shell:`) | `src/DependencyInjection/ShellConfiguration.php` |
 | Static service wiring, and the published ids | `config/services.php` |
-| The frozen manifest (phase 2) | `src/Contract/LayoutContract.php` |
-| The seams (phase 2) | `src/Contract/` |
-| The shapes that cross them (phase 2) | `src/Model/` |
-| The frames and partials (phase 2) | `templates/` |
-| The token set (phase 2) | `public/shell.css` |
+| The frozen manifest | `src/Contract/LayoutContract.php` |
+| The seams | `src/Contract/` |
+| The shapes that cross them | `src/Model/` |
+| The frames and partials | `templates/` |
+| The token set and the shell's own CSS | `public/shell.css` |
+| The four glyphs its chrome draws with | `assets/icons/shell/` |
 | Test host app | `tests/Integration/TestKernel.php` |
-| A host, minimally: two seam implementations and nothing else | `tests/Phase2/Fixtures/HostKernel.php` |
+| A host, minimally: two seam implementations and nothing else | `tests/Integration/Fixtures/HostKernel.php` |
 
 ## Installation
 
@@ -412,12 +398,12 @@ check ever reaches.
 
 ```bash
 composer install
-composer check   # cs:check -> phpstan (max) -> the scaffold suite
+composer check   # cs:check -> phpstan (max) -> the whole suite
 ```
 
 - PHP 8.4+, PHPStan level **max**, php-cs-fixer `@Symfony` + `@Symfony:risky`.
 - **Tests first, always.** This repository is that rule taken literally: the
-  whole contract is written before a line of the crown exists.
+  whole contract was written before a line of the shell existed.
 - `tests/Integration/TestKernel.php` is framework + twig + ux-icons + this
   bundle, with `strict_variables` on, and **no database** — that is the boundary,
   not a convenience.

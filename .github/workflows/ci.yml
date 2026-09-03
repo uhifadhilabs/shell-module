@@ -55,20 +55,8 @@ jobs:
       - name: Static analysis (PHPStan max)
         run: composer phpstan
 
-      # The scaffold suite. It is green and it stays green — a failure here is a
-      # broken build, never a pending feature.
+      # One suite: the scaffold and the socket contract together. It is green
+      # and it stays green — a failure here is a broken build, never a pending
+      # feature.
       - name: Tests (PHPUnit)
         run: composer test
-
-      # THE RED SPECIFICATION, REPORTED AND NOT ENFORCED. tests/Phase2 describes
-      # the socket contract that phase 2 extracts from the host; it fails today
-      # because the templates and the manifest do not exist yet, which is the
-      # point of writing it first. Running it here keeps the todo list visible
-      # in every build without ever letting "red by design" be mistaken for
-      # "broken" — the job does not fail on it.
-      #
-      # When the extraction lands, this step loses its `continue-on-error` and
-      # the files move into tests/{Unit,Integration}.
-      - name: Specification for phase 2 (expected to fail until the extraction)
-        run: composer test:phase2
-        continue-on-error: true

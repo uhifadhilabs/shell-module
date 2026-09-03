@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Shell\Tests\Phase2\Grid;
+namespace Uhifadhi\Shell\Tests\Integration\Grid;
 
 use Uhifadhi\Shell\Contract\LayoutContract;
 use Uhifadhi\Shell\Model\ModuleCard;
 use Uhifadhi\Shell\Model\ModuleGroup;
-use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
 
 /**
  * SPEC 5 — THE MODULE GRID.
@@ -62,7 +62,7 @@ use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
  * `{% if module.slug == 'overview' %}` and the module-blindness both rings
  * promise is gone. A value object cannot be interrogated that way.
  */
-final class ModuleGridTest extends Phase2TestCase
+final class ModuleGridTest extends ContractTestCase
 {
     /**
      * @return list<ModuleGroup>

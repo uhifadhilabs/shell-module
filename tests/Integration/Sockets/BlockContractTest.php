@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Shell\Tests\Phase2\Sockets;
+namespace Uhifadhi\Shell\Tests\Integration\Sockets;
 
 use Uhifadhi\Shell\Contract\LayoutContract;
-use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
 
 /**
  * SPEC 1 — THE NAMED SOCKETS.
@@ -47,7 +47,7 @@ use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
  * page frame reached the copies somebody remembered. The frame was a
  * convention, and a convention is a contract that nothing checks.
  */
-final class BlockContractTest extends Phase2TestCase
+final class BlockContractTest extends ContractTestCase
 {
     /**
      * THE SOCKET LIST, VERSION 1. Grouped by the template that declares it and

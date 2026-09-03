@@ -62,6 +62,17 @@ class TestKernel extends Kernel
         $container->extension('twig', [
             'strict_variables' => true,
         ]);
+
+        // NO NETWORK, for the reason there is no database: this suite renders,
+        // and a render that reaches the internet is a render that fails in a
+        // tunnel. Icons the crown ships resolve from its own `shell:` set; an
+        // icon a FIXTURE names (a host's own set, which this kernel does not
+        // have) resolves to nothing rather than to an HTTP request, because
+        // whether a host's icons are installed is not this bundle's contract.
+        $container->extension('ux_icons', [
+            'iconify' => ['enabled' => false],
+            'ignore_not_found' => true,
+        ]);
     }
 
     public function getCacheDir(): string

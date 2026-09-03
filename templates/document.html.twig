@@ -1,0 +1,57 @@
+{# THE BOTTOM RUNG — the document.
+
+   Symfony's own four block names, unchanged, because a module author who knows
+   Twig already knows them and renaming them to shell_* would have bought
+   consistency with confusion.
+
+   A page may extend THIS rung directly: a print view, a PDF export, an embedded
+   panel. It still carries the theme, because a printed page with no tokens is
+   black Times New Roman on white and does not look like the product it came
+   from. #}
+<!DOCTYPE html>
+<html lang="{{ shell_lang|default('en') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {# The page says what it is; the crown says where it is and whose it is. #}
+    {%- set _page %}{% block title %}{% endblock %}{% endset -%}
+    <title>{{ shell_title(_page) }}</title>
+
+    {# THE THEME, BEFORE THE FIRST PAINT — not by a controller that connects
+       after the first frame. A visitor who chose dark must never be shown a
+       white page first, and "system" is a real third answer rather than a
+       synonym for light: somebody who told their operating system which they
+       want has already answered.
+
+       This is inline, in the head, ABOVE the stylesheet, on purpose. It is the
+       one script in the crown, it is four lines, and every one of them is load-
+       bearing. #}
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('shell-theme');
+                var choice = stored || '{{ shell_default_theme()|e('js') }}';
+                var dark = choice === 'dark' || (choice === 'system'
+                    && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                document.documentElement.classList.toggle('dark', dark);
+            } catch (e) { /* a browser that refuses to remember still gets a themed page */ }
+        })();
+    </script>
+
+    {% block stylesheets %}
+        {# The crown's sheet, first. A module base calls parent() and then adds
+           its own, because its rules are written to override these. #}
+        <link rel="stylesheet" href="{{ asset('bundles/uhifadhishell/shell.css') }}">
+    {% endblock %}
+
+    {% block javascripts %}
+        {# Bundles cannot contribute importmap entries, so the crown declares the
+           socket and the host fills it with its own importmap line. #}
+        {% block importmap %}{% endblock %}
+    {% endblock %}
+</head>
+<body>
+{% block body %}{% endblock %}
+</body>
+</html>

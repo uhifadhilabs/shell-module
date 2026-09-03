@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Shell\Tests\Phase2\Area;
+namespace Uhifadhi\Shell\Tests\Integration\Area;
 
 use Uhifadhi\Shell\Contract\AreaShellSourceInterface;
 use Uhifadhi\Shell\Model\AreaTab;
-use Uhifadhi\Shell\Tests\Phase2\Fixtures\HostKernel;
-use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
+use Uhifadhi\Shell\Tests\Integration\Fixtures\HostKernel;
 
 /**
  * SPEC 3 — THE AREA SHELL.
@@ -49,7 +49,7 @@ use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
  * If an area module is ever planted, it implements this source; it does not
  * take the strip.
  */
-final class AreaShellTest extends Phase2TestCase
+final class AreaShellTest extends ContractTestCase
 {
     /**
      * @param list<AreaTab> $tabs

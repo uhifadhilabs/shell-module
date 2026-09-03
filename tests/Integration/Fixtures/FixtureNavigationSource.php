@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Shell\Tests\Phase2\Fixtures;
+namespace Uhifadhi\Shell\Tests\Integration\Fixtures;
 
 use Uhifadhi\Shell\Contract\NavigationSourceInterface;
 use Uhifadhi\Shell\Model\AreaTab;

@@ -18,30 +18,20 @@
     </php>
     <testsuites>
         <!--
-            GREEN, AND IT STAYS GREEN. The scaffold: the bundle boots, its
+            ONE SUITE, GREEN, AND IT STAYS GREEN. The bundle boots, its
             container compiles, its config tree holds, its Twig namespace
-            resolves, and the boundaries hold. This is what `composer test` and
-            CI run.
+            resolves, the boundaries hold — and the socket contract renders:
+            twenty-three blocks on three frames, twenty-three theme tokens, two
+            seams, the tab strip and the catalogue picture.
+
+            The contract was written first, as a separate suite that failed on
+            purpose, and it stayed separate exactly as long as it was red so
+            that "red by design" and "broken" could never be confused. The
+            extraction landed; there is nothing left to keep apart.
         -->
-        <testsuite name="scaffold">
+        <testsuite name="shell">
             <directory>tests/Unit</directory>
             <directory>tests/Integration</directory>
-        </testsuite>
-        <!--
-            RED BY DESIGN. The socket contract, written before the sockets
-            exist: phase 2 satisfies it by EXTRACTING the shell, the page frame,
-            the nav seams and the theme out of the host. Run it with
-            `composer test:phase2` and expect errors — a test here that passes
-            today would mean it asserts nothing.
-
-            It is a separate suite, not a skipped one, so "red by design" and
-            "broken" can never be confused: CI runs `scaffold` and must be
-            green; `phase2` is the todo list, and the extraction is done when
-            this suite is green and these files have moved into the two
-            directories above.
-        -->
-        <testsuite name="phase2">
-            <directory>tests/Phase2</directory>
         </testsuite>
     </testsuites>
     <source restrictNotices="true" restrictWarnings="true">
