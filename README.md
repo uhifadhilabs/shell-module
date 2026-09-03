@@ -31,6 +31,7 @@ A [uhifadhi](https://github.com/uhifadhilabs) platform bundle.
 - [What is here](#what-is-here)
 - [Installation](#installation)
   - [What a fresh installation shows](#what-a-fresh-installation-shows)
+  - [Upgrading from 0.4: one required line](#upgrading-from-04-one-required-line)
 - [Configuration](#configuration)
 - [Development](#development)
 - [License](#license)
@@ -640,6 +641,47 @@ through `shell_topbar_actions` and `shell_banner`, because those are the sockets
 whose content needs to know who is signed in. A shell that reached for a viewer
 would fail on every installation that has not grown a team yet, which is every
 installation on its first day.
+
+### Upgrading from 0.4: one required line
+
+**An installation on 0.4 must edit `config/routes/shell.yaml` when it takes 0.5.**
+This is the one step, and it is not optional: leaving the old file in place gives
+a 500 on `/`.
+
+On 0.4 the route was DEFINED in the application, pointing Symfony's
+`TemplateController` at the shell's template:
+
+```yaml
+# config/routes/shell.yaml — the 0.4 form. Replace it.
+welcome:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        template: '@UhifadhiShell/welcome.html.twig'
+```
+
+On 0.5 the welcome page has a controller of its own, because it has real work to
+do — it reads what is installed, live from Composer, and hands the list to the
+template. `TemplateController` renders the template with no variables, so the old
+route now serves a template whose data never arrives. Replace the file's contents
+with the import:
+
+```yaml
+# config/routes/shell.yaml — the 0.5 form.
+shell:
+    resource: '@UhifadhiShellBundle/config/routes/welcome.php'
+```
+
+Nothing else changes: the route is still named `welcome`, still at `/`, still
+yours to repoint or delete. An installation that had already replaced this file
+with a home screen of its own has nothing to do — it never had the welcome route
+and does not want it.
+
+Recipe `uhifadhi/shell-module` 0.5 writes the new form for a fresh installation.
+`composer recipes:update uhifadhi/shell-module` will offer it to an existing one,
+but it arrives as a git conflict rather than a clean replacement — the old file
+was written by an older recipe, or by hand — so the two-line edit above is the
+shorter road.
 
 ## Configuration
 
