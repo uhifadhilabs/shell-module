@@ -35,8 +35,11 @@ use PHPUnit\Framework\TestCase;
  *  3. THE SHELL REMEMBERS NOTHING. No entities, no repositories, no doctrine,
  *     no database. A shell with entities has failed its boundary, and the
  *     absence of a postgres service in CI is the same statement in another file.
- *  4. THE SHELL ROUTES NOWHERE. It draws pages; it does not own URLs. The area
- *     URL space, its permission gates and its entity resolution are the host's.
+ *  4. THE SHELL CLAIMS NO URL THE APPLICATION HAS NOT ASKED FOR. It ships one
+ *     route and one controller, as a resource this bundle never loads; an
+ *     application imports it in one line, or does not, and owns the address
+ *     either way. The area URL space, its permission gates and its entity
+ *     resolution stay the host's.
  *  5. THE SHELL REQUIRES NO OTHER RING. Least obvious and most load-bearing:
  *     see the README's boundary ruling on why the shell does not depend on the
  *     seam even though it draws the seam's answers.
@@ -121,27 +124,69 @@ final class BoundaryTest extends TestCase
     }
 
     /**
-     * THE SHELL ROUTES NOWHERE. The grid's UI is the shell's (see the README);
-     * the grid's URL is not. `/areas/{uuid}/modules` is the host's URL space,
-     * gated by the host's permissions and resolving the host's area entity — a
-     * controller here would drag all three across the boundary to save one
-     * template include.
+     * THE SHELL CLAIMS NO URL WITHOUT THE APPLICATION'S CONSENT.
+     *
+     * The shell ships a route and a controller — the welcome page's — and it
+     * loads neither. They are reachable only because an application imports
+     * `@UhifadhiShellBundle/config/routes/welcome.php` in its own
+     * config/routes/shell.yaml, in one line it can read and delete. The full
+     * proof is Integration/Routing/RouteResourceTest, which boots the same host
+     * with and without that line; what is checked here is the crude half a
+     * sweep can check — that no controller reaches for a base class it should
+     * not have, and that the URL space stays the application's.
+     *
+     * NOTE WHAT IS NOT ASSERTED, deliberately: neither the absence of
+     * src/Controller nor the absence of routes. Both were rules once and both
+     * were the wrong rule — they described the shell's habits rather than its
+     * boundary, and a page with real logic (the welcome screen's live reading
+     * of what is installed) earns a controller under the boundary as stated.
+     * A second Uhifadhi\Shell\Controller\* is ordinary work, not a rule change,
+     * so long as it is presentation only and reachable only via the import.
      */
-    public function testTheShellOwnsNoUrls(): void
+    public function testTheShellClaimsNoUrlWithoutTheApplicationsConsent(): void
     {
-        self::assertDirectoryDoesNotExist(self::ROOT.'/src/Controller', 'The shell draws pages; the host owns their URLs.');
-        self::assertFileDoesNotExist(self::ROOT.'/config/routes.php');
-        self::assertFileDoesNotExist(self::ROOT.'/config/routes.yaml');
+        self::assertFileExists(
+            self::ROOT.'/config/routes/welcome.php',
+            'The shell\'s routes exist as a resource an application imports.',
+        );
 
         $offenders = [];
         foreach (self::phpSources() as $path => $code) {
-            if (str_contains($code, 'Symfony\\Component\\Routing\\Attribute\\Route')
-                || str_contains($code, 'AbstractController')) {
+            if (str_contains($code, 'extends AbstractController')) {
                 $offenders[] = $path;
             }
         }
 
-        self::assertSame([], $offenders, 'The shell exposes blocks and seams; it registers no route.');
+        self::assertSame([], $offenders, \sprintf(
+            'A reusable bundle\'s controller takes its dependencies in its constructor: %s extends the host-application base class.',
+            implode(', ', $offenders),
+        ));
+    }
+
+    /**
+     * ITS CONTROLLERS ARE PRESENTATION, AND PRESENTATION IS ALL THEY MAY BE.
+     *
+     * What a shell controller may read is what the shell can read for itself:
+     * Composer's runtime metadata and the shell's own configured state. What it
+     * may not do is reach for domain data — an entity, a repository, the seam.
+     * Those arrive through the tagged source interfaces in src/Contract, the
+     * same way the sidebar's rows do, and the same way they will for whatever
+     * page comes next. testTheShellOwnsNoData and
+     * testTheShellRequiresNoOtherRingOfTheTree are the other two faces of this
+     * rule; this one says it about the layer where it is easiest to break.
+     */
+    public function testItsControllersReadNothingButTheShellsOwnState(): void
+    {
+        $offenders = [];
+        foreach (self::read(self::ROOT.'/src/Controller', 'src/Controller', ['php']) as $path => $code) {
+            foreach (['Doctrine\\', 'Repository', 'EntityManager', 'Uhifadhi\\Seam', 'Uhifadhi\\Module'] as $forbidden) {
+                if (str_contains($code, $forbidden)) {
+                    $offenders[] = $path.' → '.$forbidden;
+                }
+            }
+        }
+
+        self::assertSame([], $offenders, 'A shell controller renders the shell\'s own state. Domain data arrives through src/Contract.');
     }
 
     /**

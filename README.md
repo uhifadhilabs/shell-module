@@ -7,7 +7,8 @@ A [uhifadhi](https://github.com/uhifadhilabs) platform bundle.
 > Installs with `composer require uhifadhi/shell-module`, registers via Flex,
 > and provides three page frames with twenty-three named blocks, two navigation
 > seams, a twenty-three token theme in light and dark, the module grid, the
-> masterbrand tab icon and the Stimulus controllers its own furniture moves by.
+> masterbrand tab icon and the Stimulus controllers its own furniture moves by,
+> plus a welcome page an application may import at `/` in one line.
 > Needs no database and no other uhifadhi package.
 
 ## Contents
@@ -25,6 +26,7 @@ A [uhifadhi](https://github.com/uhifadhilabs) platform bundle.
   - [The module grid](#the-module-grid)
   - [Changing any of it](#changing-any-of-it)
 - [Boundaries: what the shell is not](#boundaries-what-the-shell-is-not)
+  - [The one URL, and the one line that grants it](#the-one-url-and-the-one-line-that-grants-it)
   - [Why the shell does not require the seam](#why-the-shell-does-not-require-the-seam)
 - [What is here](#what-is-here)
 - [Installation](#installation)
@@ -448,11 +450,60 @@ catch.
 ## Boundaries: what the shell is not
 
 Concretely, this bundle ships **no entities, no repositories, no doctrine
-dependency, no migrations, no controllers and no routes**, and
-`tests/Unit/BoundaryTest` fails the build if that changes. It also ships no
-`src/Domain`, `src/Application`, `src/Infrastructure` or `src/UI` — folders are
-named by technical kind. `templates/` is not an exception to that rule: it is not
-a domain folder, it is this bundle's entire subject.
+dependency and no migrations**, and `tests/Unit/BoundaryTest` fails the build if
+that changes. It also ships no `src/Domain`, `src/Application`,
+`src/Infrastructure` or `src/UI` — folders are named by technical kind.
+`templates/` is not an exception to that rule: it is not a domain folder, it is
+this bundle's entire subject.
+
+It ships **one route and one controller**, which is not an exception either —
+see below for the rule they live under.
+
+### The one URL, and the one line that grants it
+
+The boundary is **consent, not abstinence**: the shell claims no URL an
+application has not asked it to claim.
+
+The shell ships the welcome page's route as an importable resource — the pattern
+WebProfilerBundle uses for `/_profiler` and FrameworkBundle for its error pages —
+and loads it nowhere. An application accepts it in one line, in a file the
+application owns:
+
+```yaml
+# config/routes/shell.yaml (your application)
+shell:
+    resource: '@UhifadhiShellBundle/config/routes/welcome.php'
+```
+
+That import defines the route `welcome` at `/`. Edit it to point `/` at your own
+home screen, or delete it and the address is yours again — nothing is left
+behind, because nothing in the shell loads that resource or depends on the route
+existing. `tests/Integration/Routing/RouteResourceTest` boots the same host with
+and without the line and asserts exactly that: 404 without it, the welcome page
+with it.
+
+The resource is **PHP, not YAML**, for the reason `config/services.php` is: a
+reusable bundle must not force `symfony/yaml` onto the hosts that install it.
+
+Behind that route is `Uhifadhi\Shell\Controller\WelcomeController`, and the
+rule its successors live under is:
+
+- **Presentation only.** A shell controller reads what the shell can read for
+  itself — Composer's runtime metadata, the shell's own configured state — and
+  renders one of the shell's own templates. It reads no entity, opens no
+  connection and requires no seam; domain data reaches the shell through the
+  tagged source interfaces in `src/Contract`, exactly as the sidebar's rows do.
+- **Reachable only through the import.** A controller no application has
+  imported a route for is a controller nothing can call.
+- **No base class.** It does not extend `AbstractController`; it takes its
+  dependencies in its constructor and is wired explicitly in
+  `config/services.php`, like every other service here.
+
+A second `Uhifadhi\Shell\Controller\*` under those terms is ordinary work, not
+a change to this ruling. The area URL space, its permission gates and its entity
+resolution stay the host's: `/areas/{uuid}/modules` is the host's, gated by the
+host's permissions and resolving the host's area entity — a controller here would
+drag all three across the boundary to save one template include.
 
 ### Why the shell does not require the seam
 
@@ -497,6 +548,8 @@ because this is precisely the kind of ruling that gets quietly reversed by one
 | The shapes that cross them | `src/Model/` |
 | The frames and partials | `templates/` |
 | The welcome page a fresh installation serves at `/` | `templates/welcome.html.twig` |
+| The controller that renders it | `src/Controller/WelcomeController.php` |
+| The route resource an application imports to reach it | `config/routes/welcome.php` |
 | What this installation is made of, read from composer | `src/Service/Installation.php` |
 | The token set and the shell's own CSS | `public/shell.css` |
 | The tab icon: the masterbrand mark, both palettes in one SVG | `public/favicon.svg` |
@@ -550,30 +603,34 @@ welcome-404: a correct installation looking like a broken one, on its first
 minute. The page lists what is installed, says why the sidebar beside it is
 empty, and says that `composer require uhifadhi/<name>-module` is what fills it.
 
-**The list is read from composer at render time** — `Composer\InstalledVersions`,
-through the `shell_packages()` function — because a page whose whole job is to
+**The list is read from composer at request time** — `Composer\InstalledVersions`,
+through `src/Service/Installation.php` — because a page whose whole job is to
 report on an installation cannot report a list somebody typed: the first module
 anybody installs makes it wrong, and installing one is the instruction this same
 page gives. Two rows carry a line of description, the shell's own and the seam's,
 and no others do: a shell that described a module would be a shell that knew what
 modules are.
 
-This is a template, not a route — the shell still owns no URLs, and
-`tests/Unit/BoundaryTest` still fails the build if it acquires one. The
-application points a URL at it, which the project skeleton does in its own
-`config/routes/shell.yaml`:
+`WelcomeController` reads that list and hands it to the template as an ordinary
+variable. There is no `shell_packages()` Twig function: one page's data has no
+business being in scope on every page in the platform.
+
+**The route is the shell's; the address is yours.** The shell ships the route as
+a resource and loads it nowhere. The page is reachable because the application
+imports it, in one line, in `config/routes/shell.yaml` — which the project
+skeleton ships:
 
 ```yaml
 # config/routes/shell.yaml (your application)
-welcome:
-    path: /
-    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-    defaults:
-        template: '@UhifadhiShell/welcome.html.twig'
+shell:
+    resource: '@UhifadhiShellBundle/config/routes/welcome.php'
 ```
 
-Delete that file, or point it at your own template, the day the installation has
-a real home screen. Nothing in the shell depends on it.
+That defines the route `welcome` at `/`. Point `/` at your own home screen by
+editing that file, or delete the import, the day the installation has a real home
+screen. Nothing in the shell depends on the route name or on the route existing.
+See [the boundary](#the-one-url-and-the-one-line-that-grants-it) for why the
+mechanism is an import rather than something the bundle does for you.
 
 The rest is a boundary, not a courtesy. The shell's own furniture asks for no viewer:
 it never touches `app.user`, never calls `is_granted`, and generates the brand's

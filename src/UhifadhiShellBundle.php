@@ -81,6 +81,23 @@ final class UhifadhiShellBundle extends AbstractBundle
     public const string FAVICON = 'bundles/uhifadhishell/favicon.svg';
 
     /**
+     * THE SHELL'S ROUTES, as the one line an application writes to accept them.
+     *
+     * The shell ships a route — the welcome page's — the way WebProfilerBundle
+     * ships `/_profiler`: as a RESOURCE this bundle never loads. An application
+     * imports it in its own config/routes/shell.yaml and owns the decision:
+     *
+     *     shell:
+     *         resource: '@UhifadhiShellBundle/config/routes/welcome.php'
+     *
+     * Published as a constant for the reason the stylesheet's path is: this
+     * string is written in the recipe, in the skeleton, in the README and in
+     * every installation, and a path typed twice is a path that eventually
+     * differs.
+     */
+    public const string ROUTES = '@UhifadhiShellBundle/config/routes/welcome.php';
+
+    /**
      * The AssetMapper namespace this bundle's assets/ directory is mapped to.
      *
      * It is the npm-style form of the composer package name, and it has to be:

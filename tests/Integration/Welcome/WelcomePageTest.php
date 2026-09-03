@@ -13,29 +13,36 @@ declare(strict_types=1);
 
 namespace Uhifadhi\Shell\Tests\Integration\Welcome;
 
-use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
+use Uhifadhi\Shell\Tests\Integration\Fixtures\ImportingHostKernel;
+use Uhifadhi\Shell\Tests\Integration\ShellKernelTestCase;
 
 /**
- * THE FIRST PAGE A NEW INSTALLATION HAS.
+ * THE FIRST PAGE A NEW INSTALLATION HAS, served the way an installation
+ * actually serves it: over HTTP, through the shell's own controller, on a
+ * kernel whose only difference from a bare one is the import line in
+ * `config/routes/shell.yaml`.
  *
- * A fresh installation is the seam and the shell and nothing else, so it has no
- * routes, no controllers and — until now — no answer at `/` but Symfony's own
- * welcome-404. The shell cannot fix that with a route, because it owns no URLs
- * (Unit/BoundaryTest); it can ship the PAGE and let the application point a URL
- * at it, which is what the skeleton's config/routes/shell.yaml does with
- * Symfony's TemplateController.
+ * A fresh installation is the seam and the shell and nothing else, so before
+ * this page existed it answered `/` with Symfony's welcome-404 — a correct
+ * installation looking like a broken one, on its first minute. The shell ships
+ * the page, the controller behind it and the route resource that addresses it;
+ * the application decides, in one line it owns, whether any of that is reachable
+ * (see Integration/Routing/RouteResourceTest).
  *
- * So this template is not chrome and it is not a stub: it is the one screen
- * that explains, to the person who has just installed it, what they
- * are looking at. It is written to be deleted the day they grow a real home
- * screen.
- *
- * It renders with NOTHING under it — no seam, no nav sources, no areas, no
+ * It is written to be deleted the day the installation grows a real home screen,
+ * and it renders with NOTHING under it — no seam, no nav sources, no areas, no
  * user, no database — because that is exactly the installation it is for.
  */
-final class WelcomePageTest extends ContractTestCase
+final class WelcomePageTest extends ShellKernelTestCase
 {
-    private const string WELCOME = '@UhifadhiShell/welcome.html.twig';
+    protected static function getKernelClass(): string
+    {
+        return ImportingHostKernel::class;
+    }
 
     /**
      * It is a page in the frame, not a loose fragment: sidebar, main column,
@@ -44,7 +51,7 @@ final class WelcomePageTest extends ContractTestCase
      */
     public function testTheWelcomePageRendersInsideThePageFrame(): void
     {
-        $crawler = $this->crawl(self::WELCOME);
+        $crawler = $this->get('/');
 
         self::assertCount(1, $crawler->filter('aside.side'), 'The shell comes with the frame.');
         self::assertCount(1, $crawler->filter('main.main'));
@@ -68,8 +75,7 @@ final class WelcomePageTest extends ContractTestCase
      */
     public function testItListsEveryInstalledPackageRatherThanTheTwoItWasWrittenFor(): void
     {
-        $crawler = $this->crawl(self::WELCOME);
-        $rows = $crawler->filter('div.pgbody .wpkgs .wpkg-row');
+        $rows = $this->get('/')->filter('div.pgbody .wpkgs .wpkg-row');
 
         $installed = array_values(array_filter(
             \Composer\InstalledVersions::getInstalledPackages(),
@@ -86,6 +92,29 @@ final class WelcomePageTest extends ContractTestCase
     }
 
     /**
+     * THE LIST REACHES THE TEMPLATE AS A PLAIN VARIABLE, from the controller.
+     *
+     * It used to reach it through a `shell_packages()` Twig function, which put
+     * a global on every render in the platform to serve one page in the bundle
+     * that declared it. The controller earns its keep here: the page has real
+     * logic, the logic has one caller, and a template variable is where a
+     * page's own data belongs. The function is gone, and its absence is
+     * asserted rather than assumed — a leftover global is invisible until
+     * somebody uses it.
+     */
+    public function testTheControllerSuppliesTheListRatherThanAGlobalTwigFunction(): void
+    {
+        self::bootKernel();
+        $twig = self::getContainer()->get('twig');
+        self::assertInstanceOf(Environment::class, $twig);
+
+        self::assertNull(
+            $twig->getFunction('shell_packages'),
+            'The welcome page reads its own data through its own controller; the shell adds no global for it.',
+        );
+    }
+
+    /**
      * A NAME WITHOUT A VERSION IS HALF AN ANSWER — "which shell am I running"
      * is the question this page is looked at to answer on the day something is
      * wrong, and `composer show` is the second place somebody looks, not the
@@ -93,11 +122,11 @@ final class WelcomePageTest extends ContractTestCase
      */
     public function testEveryPackageIsShownWithItsVersion(): void
     {
-        $rows = $this->crawl(self::WELCOME)->filter('div.pgbody .wpkgs .wpkg-row');
+        $rows = $this->get('/')->filter('div.pgbody .wpkgs .wpkg-row');
 
         foreach ($rows as $row) {
-            $name = (new \Symfony\Component\DomCrawler\Crawler($row))->filter('.wpkg')->text();
-            $version = (new \Symfony\Component\DomCrawler\Crawler($row))->filter('.chip')->text();
+            $name = (new Crawler($row))->filter('.wpkg')->text();
+            $version = (new Crawler($row))->filter('.chip')->text();
 
             self::assertStringStartsWith('uhifadhi/', trim($name));
             self::assertNotSame('', trim($version), \sprintf('%s is listed with no version.', $name));
@@ -113,13 +142,11 @@ final class WelcomePageTest extends ContractTestCase
      */
     public function testTheTwoPackagesTheShellCanSpeakForAreDescribedOnTheirOwnRows(): void
     {
-        $crawler = $this->crawl(self::WELCOME);
-
-        $described = $crawler->filter('div.pgbody .wpkgs .wpkg-row:has(.wpkg-note)');
+        $described = $this->get('/')->filter('div.pgbody .wpkgs .wpkg-row:has(.wpkg-note)');
         self::assertGreaterThan(0, $described->count());
 
         foreach ($described as $row) {
-            $name = trim((new \Symfony\Component\DomCrawler\Crawler($row))->filter('.wpkg')->text());
+            $name = trim((new Crawler($row))->filter('.wpkg')->text());
             self::assertContains($name, ['uhifadhi/seam-module', 'uhifadhi/shell-module'], \sprintf(
                 'The shell described %s. It can speak for itself and for the seam, and for nothing else.',
                 $name,
@@ -140,9 +167,7 @@ final class WelcomePageTest extends ContractTestCase
      */
     public function testItSaysOnceThatAPackageWithoutRowsIsNotBroken(): void
     {
-        $text = $this->crawl(self::WELCOME)->filter('div.pgbody')->text();
-
-        self::assertStringContainsString('not a broken', $text);
+        self::assertStringContainsString('not a broken', $this->get('/')->filter('div.pgbody')->text());
     }
 
     /**
@@ -152,22 +177,24 @@ final class WelcomePageTest extends ContractTestCase
      */
     public function testItExplainsTheEmptySidebarAndHowToFillIt(): void
     {
-        $text = $this->crawl(self::WELCOME)->filter('div.pgbody')->text();
+        $text = $this->get('/')->filter('div.pgbody')->text();
 
         self::assertStringContainsString('composer require', $text);
         self::assertStringContainsString('sidebar', $text);
     }
 
     /**
-     * AND IT SAYS WHERE IT LIVES. The page is the application's to replace, so
-     * it names the file that puts it at `/` rather than leaving somebody to
-     * grep for it.
+     * AND IT SAYS WHERE ITS ADDRESS COMES FROM. The page is reachable because
+     * the application imported the shell's route resource in a file the
+     * application owns, and replacing the homepage means editing or deleting
+     * that one line — so the page names the file rather than leaving somebody
+     * to grep for it.
      */
     public function testItNamesTheFileThatPutsItAtTheRoot(): void
     {
         self::assertStringContainsString(
             'config/routes/shell.yaml',
-            $this->crawl(self::WELCOME)->filter('div.pgbody')->text(),
+            $this->get('/')->filter('div.pgbody')->text(),
         );
     }
 
@@ -178,9 +205,19 @@ final class WelcomePageTest extends ContractTestCase
      */
     public function testItRendersOnAnInstallationThatHasNothingUnderItYet(): void
     {
-        $crawler = $this->crawl(self::WELCOME);
+        $crawler = $this->get('/');
 
         self::assertCount(0, $crawler->filter('nav.nav .nav-hd'), 'A fresh installation has no rows to show, and shows none.');
         self::assertCount(0, $crawler->filter('div.atabs'), 'It is inside no place, and says so by saying nothing.');
+    }
+
+    private function get(string $path): Crawler
+    {
+        $kernel = self::bootKernel();
+        $response = $kernel->handle(Request::create($path), catch: false);
+
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode(), \sprintf('GET %s did not serve.', $path));
+
+        return new Crawler((string) $response->getContent());
     }
 }

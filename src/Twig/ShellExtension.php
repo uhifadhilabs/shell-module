@@ -43,8 +43,10 @@ final class ShellExtension extends AbstractExtension
             new TwigFunction('shell_default_theme', [ShellRuntime::class, 'defaultTheme']),
             // The wordmark beside the brand tile, and where the tile links.
             new TwigFunction('shell_brand', [ShellRuntime::class, 'brand']),
-            // What this installation is made of, read from composer.
-            new TwigFunction('shell_packages', [ShellRuntime::class, 'packages']),
+            // NOTHING HERE READS THE INSTALLATION. What is installed is one
+            // page's data, and it reaches that page from its own controller as
+            // an ordinary variable — a global that exists to serve one template
+            // is a global in scope on every page in the platform.
         ];
     }
 }

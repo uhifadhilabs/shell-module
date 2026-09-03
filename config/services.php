@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Uhifadhi\Shell\Contract\LayoutContract;
+use Uhifadhi\Shell\Controller\WelcomeController;
 use Uhifadhi\Shell\Service\AreaShell;
 use Uhifadhi\Shell\Service\Installation;
 use Uhifadhi\Shell\Service\Navigation;
@@ -93,6 +94,25 @@ return static function (ContainerConfigurator $container): void {
     // would be wrong the first time anybody installed a module.
     $services->set('shell.installation', Installation::class);
 
+    /*
+     * THE WELCOME PAGE, as a controller service.
+     *
+     * The `controller.service_arguments` tag is what lets the route address it
+     * by this id: the tag registers the service with the controller resolver's
+     * locator, which is how a controller stays a normal, explicitly wired
+     * service instead of a public one fished out of the container by class name.
+     *
+     * REACHABLE ONLY IF THE APPLICATION SAYS SO. Registering this service does
+     * not put it at an address — config/routes/welcome.php does that, and
+     * nothing here loads that file (see UhifadhiShellBundle::ROUTES).
+     */
+    $services->set('shell.controller.welcome', WelcomeController::class)
+        ->args([
+            service('twig'),
+            service('shell.installation'),
+        ])
+        ->tag('controller.service_arguments');
+
     $services->set('shell.twig.extension', ShellExtension::class)
         ->tag('twig.extension');
 
@@ -101,7 +121,6 @@ return static function (ContainerConfigurator $container): void {
             service('shell.navigation'),
             service('shell.area_shell'),
             service('shell.theme'),
-            service('shell.installation'),
             service('router'),
             '%shell.brand_name%',
             '%shell.home_route%',

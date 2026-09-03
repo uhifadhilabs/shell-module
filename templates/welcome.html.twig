@@ -1,15 +1,19 @@
 {# THE PAGE A FRESH INSTALLATION HAS BEFORE IT HAS ANYTHING ELSE.
 
-   A fresh installation is the seam and the shell and nothing else: no modules,
-   no routes, no controllers, so nothing answers `/` and Symfony shows its
-   welcome-404. That is a correct installation looking like a broken one, and
-   the first thing a new operator sees.
+   A fresh installation is the seam and the shell and nothing else: no modules
+   and no pages of its own. Without this screen `/` answers with Symfony's
+   welcome-404 — a correct installation looking like a broken one, and the first
+   thing a new operator sees.
 
-   The shell cannot fix it with a route — it owns no URLs, and the boundary test
-   fails the build the day it does. It can ship the PAGE. The application points
-   a URL at it in its own config/routes/shell.yaml, using Symfony's
-   TemplateController, and owns both the URL and the decision to replace this
-   with a real home screen later.
+   The shell ships the page, the controller behind it and the route that
+   addresses it, and loads none of them. The application imports the shell's
+   route resource in its own config/routes/shell.yaml; that import is what makes
+   this reachable, and editing or removing it is how the application replaces
+   the homepage.
+
+   ITS DATA ARRIVES AS VARIABLES, from Uhifadhi\Shell\Controller\WelcomeController.
+   The list below is `packages`, not a global function call: one page's data
+   belongs to that page.
 
    ONE LIST, ONE SOURCE OF TRUTH. What is installed is read from composer at
    render time, never written here: this page's whole job is to report on an
@@ -42,7 +46,7 @@
         <h2 class="zone">What is installed</h2>
 
         <div class="wpkgs">
-            {%- for package in shell_packages() -%}
+            {%- for package in packages -%}
                 <div class="wpkg-row">
                     <span class="mono wpkg">{{ package.name }}</span>
                     <span class="chip {{ package.note is null ? 'idle' : 'acc' }}">{{ package.version }}</span>
@@ -79,12 +83,20 @@
 
         <h2 class="zone">About this page</h2>
 
-        <p>It is not part of the shell's furniture and it is not a route the
-           shell owns — the shell ships no routes at all. This page is at
-           <code class="mono">/</code> because your application's
-           <code class="mono">config/routes/shell.yaml</code> points that URL at
-           the template, and it is meant to be replaced: the day this
-           installation grows a real home screen, change that file to name it
-           and this page stops being reachable.</p>
+        <p>The route is the shell's: it ships one, named
+           <code class="mono">welcome</code>, at <code class="mono">/</code>.
+           The shell does not load it. This page is reachable because your
+           application <em>imports</em> it, in one line in a file that belongs to
+           your application:</p>
+
+        <pre class="wpre mono"># config/routes/shell.yaml
+shell:
+    resource: '@UhifadhiShellBundle/config/routes/welcome.php'</pre>
+
+        <p>That line is the whole of the shell's claim on a URL, and it is yours
+           to withdraw. Point <code class="mono">/</code> at your own home screen
+           by editing that file, or delete the import and the address is your
+           application's again — nothing in the shell depends on this page being
+           reachable, or on the route name.</p>
     </div>
 {% endblock %}

@@ -16,10 +16,8 @@ namespace Uhifadhi\Shell\Twig;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 use Uhifadhi\Shell\Model\AreaTab;
-use Uhifadhi\Shell\Model\InstalledPackage;
 use Uhifadhi\Shell\Model\NavSection;
 use Uhifadhi\Shell\Service\AreaShell;
-use Uhifadhi\Shell\Service\Installation;
 use Uhifadhi\Shell\Service\Navigation;
 use Uhifadhi\Shell\Service\Theme;
 
@@ -36,7 +34,6 @@ final class ShellRuntime implements RuntimeExtensionInterface
         private readonly Navigation $navigation,
         private readonly AreaShell $areaShell,
         private readonly Theme $theme,
-        private readonly Installation $installation,
         private readonly RouterInterface $router,
         private readonly string $brandName,
         private readonly string $homeRoute,
@@ -57,18 +54,6 @@ final class ShellRuntime implements RuntimeExtensionInterface
     public function tabs(): array
     {
         return $this->areaShell->tabs();
-    }
-
-    /**
-     * What this installation is made of: every uhifadhi package on disk, with
-     * its version, base pair first. A reading, like everything else here — the
-     * shell prints the names and recognises none of them.
-     *
-     * @return list<InstalledPackage>
-     */
-    public function packages(): array
-    {
-        return $this->installation->packages();
     }
 
     /**

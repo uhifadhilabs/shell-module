@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Uhifadhi\Shell\Tests\Integration;
 
+use Psr\Log\NullLogger;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\TwigBundle\TwigBundle;
@@ -77,6 +78,11 @@ class TestKernel extends Kernel
                 'paths' => [$this->getProjectDir().'/assets' => ''],
             ],
         ]);
+
+        // A SILENT LOGGER. This suite now handles real requests, and Symfony's
+        // default debug logger writes every kernel event to stderr — pages of
+        // it per test, drowning the one line that matters when something fails.
+        $container->services()->set('logger', NullLogger::class);
 
         // strict_variables ON, in the bundle's own test host, because the shell
         // is a set of templates other people fill: a page that hands the frame
