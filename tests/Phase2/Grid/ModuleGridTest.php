@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Phase2\Grid;
+namespace Uhifadhi\Shell\Tests\Phase2\Grid;
 
-use Uhifadhi\Canopy\Contract\LayoutContract;
-use Uhifadhi\Canopy\Model\ModuleCard;
-use Uhifadhi\Canopy\Model\ModuleGroup;
-use Uhifadhi\Canopy\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Shell\Contract\LayoutContract;
+use Uhifadhi\Shell\Model\ModuleCard;
+use Uhifadhi\Shell\Model\ModuleGroup;
+use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
 
 /**
  * SPEC 5 — THE MODULE GRID.
  *
  * THE OWNERSHIP RULING. The trunk explicitly declined the grid and named the
- * canopy as its claimant, so this bundle had to answer rather than inherit. The
+ * shell as its claimant, so this bundle had to answer rather than inherit. The
  * answer is a split, and the independent-life test is what splits it:
  *
  *   THE PICTURE IS THE CROWN'S. Cards in category groups, a status chip, a lens
@@ -75,7 +75,7 @@ final class ModuleGridTest extends Phase2TestCase
                 new ModuleCard(slug: 'ferries', title: 'Ferries', status: 'template', source: 'manifest', url: '/areas/x/modules/ferries'),
             ]),
             new ModuleGroup(label: 'Ecology', cards: [
-                new ModuleCard(slug: 'canopy-cover', title: 'Canopy cover', status: 'planned', source: 'satellite'),
+                new ModuleCard(slug: 'shell-cover', title: 'Shell cover', status: 'planned', source: 'satellite'),
             ]),
         ];
     }
@@ -89,7 +89,7 @@ final class ModuleGridTest extends Phase2TestCase
             $crawler->filter('h2.zone')->each(static fn ($n): string => trim(explode('led by', $n->text())[0])),
         );
         self::assertSame(
-            ['Sightings', 'Ferries', 'Canopy cover'],
+            ['Sightings', 'Ferries', 'Shell cover'],
             $crawler->filter('.mtile .mtile-title')->each(static fn ($n): string => trim($n->text())),
         );
     }
@@ -121,7 +121,7 @@ final class ModuleGridTest extends Phase2TestCase
 
         self::assertCount(2, $crawler->filter('a.mtile'));
         self::assertCount(1, $crawler->filter('div.mtile.mtile-inert'));
-        self::assertSame('Canopy cover', trim($crawler->filter('div.mtile-inert .mtile-title')->text()));
+        self::assertSame('Shell cover', trim($crawler->filter('div.mtile-inert .mtile-title')->text()));
     }
 
     /**
@@ -161,7 +161,7 @@ final class ModuleGridTest extends Phase2TestCase
      */
     public function testTheGridIsAddressableByConstantAndIsAPartialNotAPage(): void
     {
-        self::assertSame('@UhifadhiCanopy/_module_grid.html.twig', LayoutContract::MODULE_GRID);
+        self::assertSame('@UhifadhiShell/_module_grid.html.twig', LayoutContract::MODULE_GRID);
         self::assertContains(LayoutContract::MODULE_GRID, LayoutContract::PARTIALS);
 
         // A partial: it extends nothing and declares no socket. A grid that was

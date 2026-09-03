@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Phase2\Fixtures;
+namespace Uhifadhi\Shell\Tests\Phase2\Fixtures;
 
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Uhifadhi\Canopy\Model\AreaTab;
-use Uhifadhi\Canopy\Model\NavSection;
-use Uhifadhi\Canopy\Tests\Integration\TestKernel;
-use Uhifadhi\Canopy\UhifadhiCanopyBundle;
+use Uhifadhi\Shell\Model\AreaTab;
+use Uhifadhi\Shell\Model\NavSection;
+use Uhifadhi\Shell\Tests\Integration\TestKernel;
+use Uhifadhi\Shell\UhifadhiShellBundle;
 
 /**
  * A STAND-IN HOST — and the specification's main claim, not a testing
@@ -27,7 +27,7 @@ use Uhifadhi\Canopy\UhifadhiCanopyBundle;
  * nothing else at all: no areas, no modules, no trunk, no database, no user. If
  * the crown can be driven to a complete page by THIS, then the seams are real
  * seams rather than a polite name for reaching into the application, and the
- * "standalone" in the canopy's charter is a fact about the code.
+ * "standalone" in the shell's charter is a fact about the code.
  *
  * Everything a test wants to vary is a static, set in the test body and reset
  * between tests. The fixture services read them at render time, which is also
@@ -77,7 +77,7 @@ final class HostKernel extends TestKernel
         // not autoconfigured. If this fixture needed autowiring to work, the
         // seam would not work for the bundles it exists for.
         $services->set(FixtureNavigationSource::class)
-            ->tag(UhifadhiCanopyBundle::NAV_TAG)
+            ->tag(UhifadhiShellBundle::NAV_TAG)
             ->public();
 
         $services->set(FixtureAreaShellSource::class)
@@ -88,11 +88,11 @@ final class HostKernel extends TestKernel
         // collection and not a config key: two things claiming to know an
         // area's tabs is the disagreement this bundle exists to prevent, and a
         // config key would put a class name in YAML where nothing checks it.
-        $services->alias('canopy.area_shell_source', FixtureAreaShellSource::class);
+        $services->alias('shell.area_shell_source', FixtureAreaShellSource::class);
 
-        $services->alias('test.canopy.navigation', 'canopy.navigation')->public();
-        $services->alias('test.canopy.area_shell', 'canopy.area_shell')->public();
-        $services->alias('test.canopy.contract', 'canopy.contract')->public();
-        $services->alias('test.canopy.theme', 'canopy.theme')->public();
+        $services->alias('test.shell.navigation', 'shell.navigation')->public();
+        $services->alias('test.shell.area_shell', 'shell.area_shell')->public();
+        $services->alias('test.shell.contract', 'shell.contract')->public();
+        $services->alias('test.shell.theme', 'shell.theme')->public();
     }
 }

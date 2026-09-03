@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Phase2\Theme;
+namespace Uhifadhi\Shell\Tests\Phase2\Theme;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use Uhifadhi\Canopy\Contract\LayoutContract;
-use Uhifadhi\Canopy\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Shell\Contract\LayoutContract;
+use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
 
 /**
  * SPEC 4 — THE THEME CONTRACT.
@@ -212,8 +212,8 @@ final class ThemeContractTest extends Phase2TestCase
     {
         $html = $this->render('@fixtures/bare_document_page.html.twig');
 
-        $script = strpos($html, 'canopy-theme');
-        $sheet = strpos($html, 'canopy.css');
+        $script = strpos($html, 'shell-theme');
+        $sheet = strpos($html, 'shell.css');
 
         self::assertIsInt($script, 'The document must resolve the theme inline, in <head>.');
         self::assertIsInt($sheet);

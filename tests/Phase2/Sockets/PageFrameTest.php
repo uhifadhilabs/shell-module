@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Phase2\Sockets;
+namespace Uhifadhi\Shell\Tests\Phase2\Sockets;
 
-use Uhifadhi\Canopy\Contract\LayoutContract;
-use Uhifadhi\Canopy\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Shell\Contract\LayoutContract;
+use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
 
 /**
  * SPEC 1b — WHAT THE FRAME DOES WITH WHAT IT IS GIVEN.
@@ -34,7 +34,7 @@ final class PageFrameTest extends Phase2TestCase
     private const string PAGE = '@fixtures/module_page.html.twig';
 
     /**
-     * THE ONE MANDATORY SOCKET. A page that fills nothing but `canopy_page`
+     * THE ONE MANDATORY SOCKET. A page that fills nothing but `shell_page`
      * must still be a well-formed platform page: shell around it, `.page`
      * wrapper under it, footer below it. This is the sentence the whole bundle
      * is a mechanism for — "a module writes its body and gets the platform".
@@ -60,7 +60,7 @@ final class PageFrameTest extends Phase2TestCase
         self::assertSame(['crumb', 'pghead', 'atabs', 'flashes', 'pgbody'], $order, <<<'WHY'
             The page frame's vertical order is part of the contract: trail,
             page head, tabs, flashes, body. It is not a stylesheet's opinion —
-            a module filling canopy_page_actions has to know its buttons land
+            a module filling shell_page_actions has to know its buttons land
             beside the title and above the tabs, or it will place them itself.
             WHY);
     }
@@ -106,7 +106,7 @@ final class PageFrameTest extends Phase2TestCase
         $flashes = $crawler->filter('div.flashes > div.c');
         self::assertCount(1, $flashes);
         self::assertStringContainsString('Saved.', $flashes->text());
-        self::assertSame('success', $flashes->attr('data-canopy-flash'));
+        self::assertSame('success', $flashes->attr('data-shell-flash'));
     }
 
     /**
@@ -121,7 +121,7 @@ final class PageFrameTest extends Phase2TestCase
     {
         $html = $this->render(self::PAGE);
 
-        $crown = strpos($html, 'uhifadhicanopy/canopy.css');
+        $crown = strpos($html, 'uhifadhishell/shell.css');
         $module = strpos($html, 'fixture-module.css');
 
         self::assertIsInt($crown);
@@ -168,13 +168,13 @@ final class PageFrameTest extends Phase2TestCase
 
         self::assertCount(0, $crawler->filter('aside.side'));
         self::assertCount(1, $crawler->filter('html'));
-        self::assertStringContainsString('canopy.css', $this->render('@fixtures/bare_document_page.html.twig'));
+        self::assertStringContainsString('shell.css', $this->render('@fixtures/bare_document_page.html.twig'));
     }
 
     public function testTheFrameIsTheOneAddressAModuleNeedsToKnow(): void
     {
         // A module bundle's base extends exactly this string, and nothing else
         // about the crown's internals is public.
-        self::assertSame('@UhifadhiCanopy/page.html.twig', LayoutContract::PAGE);
+        self::assertSame('@UhifadhiShell/page.html.twig', LayoutContract::PAGE);
     }
 }

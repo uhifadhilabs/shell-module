@@ -1,6 +1,6 @@
 {
-    "name": "uhifadhi/canopy-module",
-    "description": "The canopy: the visible crown of an uhifadhi installation — the shell, the page frame, the navigation seams and the theme every module's pages mount into.",
+    "name": "uhifadhi/shell-module",
+    "description": "The shell: the visible crown of an uhifadhi installation — the shell, the page frame, the navigation seams and the theme every module's pages mount into.",
     "type": "symfony-bundle",
     "keywords": [
         "layout",
@@ -32,12 +32,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Uhifadhi\\Canopy\\": "src/"
+            "Uhifadhi\\Shell\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Uhifadhi\\Canopy\\Tests\\": "tests/"
+            "Uhifadhi\\Shell\\Tests\\": "tests/"
         }
     },
     "require-dev": {

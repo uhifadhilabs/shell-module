@@ -8,7 +8,7 @@
 
    Here there is no furniture at all — only sockets. That is the entire thesis of
    this bundle, and this file is the proof obligation. #}
-{% extends '@UhifadhiCanopy/page.html.twig' %}
+{% extends '@UhifadhiShell/page.html.twig' %}
 
 {% block title %}a fixture page{% endblock %}
 
@@ -18,15 +18,15 @@
     <link rel="stylesheet" href="/fixture-module.css">
 {% endblock %}
 
-{% block canopy_breadcrumbs %}<a href="/">uhifadhi</a> / fixtures{% endblock %}
+{% block shell_breadcrumbs %}<a href="/">uhifadhi</a> / fixtures{% endblock %}
 
-{% block canopy_page_title %}a fixture page{% endblock %}
-{% block canopy_page_subtitle %}what it is for{% endblock %}
+{% block shell_page_title %}a fixture page{% endblock %}
+{% block shell_page_subtitle %}what it is for{% endblock %}
 
-{% block canopy_page_actions %}
+{% block shell_page_actions %}
     <a class="cta" href="/do">Do the thing</a>
 {% endblock %}
 
-{% block canopy_page %}
+{% block shell_page %}
     <p>the body</p>
 {% endblock %}

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Phase2\Sockets;
+namespace Uhifadhi\Shell\Tests\Phase2\Sockets;
 
-use Uhifadhi\Canopy\Contract\LayoutContract;
-use Uhifadhi\Canopy\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Shell\Contract\LayoutContract;
+use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
 
 /**
  * SPEC 1 — THE NAMED SOCKETS.
@@ -60,10 +60,10 @@ final class BlockContractTest extends Phase2TestCase
     {
         return [
             /*
-             * THE DOCUMENT — @UhifadhiCanopy/document.html.twig
+             * THE DOCUMENT — @UhifadhiShell/document.html.twig
              * The four names Symfony's own skeleton uses, unchanged. A module
              * that already knows Twig knows these, and renaming them to
-             * canopy_* would have bought consistency with confusion.
+             * shell_* would have bought consistency with confusion.
              */
             'title',        // filled by: every page. "<page> — <area> — <brand>".
             'stylesheets',  // filled by: module bases, calling parent() first.
@@ -75,43 +75,43 @@ final class BlockContractTest extends Phase2TestCase
             //                 fills this has left the crown.
 
             /*
-             * THE SHELL — @UhifadhiCanopy/shell.html.twig
+             * THE SHELL — @UhifadhiShell/shell.html.twig
              * The furniture around a page. A MODULE FILLS NONE OF THESE. They
              * are sockets for the HOST — the thing that knows who is signed in,
              * what an area is, and whether this response is an impersonation.
              */
-            'canopy_banner',          // host: impersonation, maintenance, outage.
-            'canopy_sidebar',         // host: replace the entire aside. Rarely.
-            'canopy_sidebar_brand',   // host: the mark and the wordmark.
-            'canopy_sidebar_nav',     // host: overridable, but see spec 2 — the
+            'shell_banner',         // host: impersonation, maintenance, outage.
+            'shell_sidebar',        // host: replace the entire aside. Rarely.
+            'shell_sidebar_brand',  // host: the mark and the wordmark.
+            'shell_sidebar_nav',    // host: overridable, but see spec 2 — the
             //                           default renders the nav SEAM, and a host
             //                           that overrides this has opted out of it.
-            'canopy_sidebar_footer',  // host: settings, version, support.
-            'canopy_topbar',          // host: replace the whole top bar.
-            'canopy_topbar_actions',  // host: alerts, theme toggle, the user pill.
-            'canopy_main',            // host: replace everything right of the nav.
-            'content',                // THE COMPATIBILITY SOCKET. See below.
-            'canopy_footer',          // host: the one line under every page.
+            'shell_sidebar_footer', // host: settings, version, support.
+            'shell_topbar',         // host: replace the whole top bar.
+            'shell_topbar_actions', // host: alerts, theme toggle, the user pill.
+            'shell_main',           // host: replace everything right of the nav.
+            'content',              // THE COMPATIBILITY SOCKET. See below.
+            'shell_footer',         // host: the one line under every page.
 
             /*
-             * THE PAGE FRAME — @UhifadhiCanopy/page.html.twig
+             * THE PAGE FRAME — @UhifadhiShell/page.html.twig
              * These are the module author's sockets, and the reason the bundle
              * exists. Filling them produces the platform's page shape — crumb,
              * page head, actions, tabs, flashes, body — without a module ever
              * typing `<div class="page">`, which is what every module bundle
              * does today by copy.
              */
-            'canopy_breadcrumbs',    // module: the trail. Text; the frame styles it.
-            'canopy_page_head',      // module: replace title+subtitle+actions wholesale.
-            'canopy_page_title',     // module: the h1.
-            'canopy_page_subtitle',  // module: the sentence under it. Optional and
+            'shell_breadcrumbs',   // module: the trail. Text; the frame styles it.
+            'shell_page_head',     // module: replace title+subtitle+actions wholesale.
+            'shell_page_title',    // module: the h1.
+            'shell_page_subtitle', // module: the sentence under it. Optional and
             //                          genuinely optional — an empty block renders
             //                          no element, not an empty one.
-            'canopy_page_actions',   // module: the buttons at the top right.
-            'canopy_page_tabs',      // module/host: the tab strip. See spec 3.
-            'canopy_flashes',        // module: overridable, but the default is right
+            'shell_page_actions',  // module: the buttons at the top right.
+            'shell_page_tabs',     // module/host: the tab strip. See spec 3.
+            'shell_flashes',       // module: overridable, but the default is right
             //                          and a module overriding it is a bug report.
-            'canopy_page',           // module: THE BODY. The one block a simple
+            'shell_page',          // module: THE BODY. The one block a simple
             //                          module page fills and the only one it must.
         ];
     }
@@ -136,7 +136,7 @@ final class BlockContractTest extends Phase2TestCase
     public function testTheContractIsVersionedSoAHostCanCheckWhatItIsMounting(): void
     {
         // A module bundle can require a crown that has the sockets it fills.
-        // Without a number, "the canopy supports canopy_page_tabs" is a fact
+        // Without a number, "the shell supports shell_page_tabs" is a fact
         // nobody can assert except by rendering.
         self::assertSame(1, LayoutContract::VERSION);
     }
@@ -178,9 +178,9 @@ final class BlockContractTest extends Phase2TestCase
      */
     public function testTheFramesAreAddressableByConstant(): void
     {
-        self::assertSame('@UhifadhiCanopy/document.html.twig', LayoutContract::DOCUMENT);
-        self::assertSame('@UhifadhiCanopy/shell.html.twig', LayoutContract::SHELL);
-        self::assertSame('@UhifadhiCanopy/page.html.twig', LayoutContract::PAGE);
+        self::assertSame('@UhifadhiShell/document.html.twig', LayoutContract::DOCUMENT);
+        self::assertSame('@UhifadhiShell/shell.html.twig', LayoutContract::SHELL);
+        self::assertSame('@UhifadhiShell/page.html.twig', LayoutContract::PAGE);
 
         foreach ([LayoutContract::DOCUMENT, LayoutContract::SHELL, LayoutContract::PAGE] as $frame) {
             self::assertTrue($this->twig()->getLoader()->exists($frame));

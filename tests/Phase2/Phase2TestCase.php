@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Phase2;
+namespace Uhifadhi\Shell\Tests\Phase2;
 
 use Symfony\Component\DomCrawler\Crawler;
-use Uhifadhi\Canopy\Tests\Integration\CanopyKernelTestCase;
-use Uhifadhi\Canopy\Tests\Phase2\Fixtures\HostKernel;
+use Uhifadhi\Shell\Tests\Integration\ShellKernelTestCase;
+use Uhifadhi\Shell\Tests\Phase2\Fixtures\HostKernel;
 
 /**
  * Shared plumbing for the contract specification.
@@ -25,13 +25,13 @@ use Uhifadhi\Canopy\Tests\Phase2\Fixtures\HostKernel;
  * bundle's tests should have and the shape they only keep if the bundle never
  * acquires a domain.
  *
- * The host kernel this boots is a STAND-IN HOST: it implements the canopy's
+ * The host kernel this boots is a STAND-IN HOST: it implements the shell's
  * seams with fixtures. That is not a shortcut — it is the specification's main
  * claim. If the crown can be driven to a full page by a host that has no areas,
  * no modules and no database, then the seams are real seams and not a polite
  * name for reaching into the application.
  */
-abstract class Phase2TestCase extends CanopyKernelTestCase
+abstract class Phase2TestCase extends ShellKernelTestCase
 {
     protected static function getKernelClass(): string
     {
@@ -89,8 +89,8 @@ abstract class Phase2TestCase extends CanopyKernelTestCase
      */
     protected function stylesheet(): string
     {
-        $css = file_get_contents(__DIR__.'/../../public/canopy.css');
-        self::assertIsString($css, 'The canopy ships one stylesheet, and the theme contract lives in it.');
+        $css = file_get_contents(__DIR__.'/../../public/shell.css');
+        self::assertIsString($css, 'The shell ships one stylesheet, and the theme contract lives in it.');
 
         return $css;
     }

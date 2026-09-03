@@ -21,7 +21,7 @@ jobs:
         php: ['8.4', '8.5']
 
     # NO DATABASE SERVICE, deliberately — the difference from every sibling
-    # workflow in the tree. The canopy draws; it does not remember. If a future
+    # workflow in the tree. The shell draws; it does not remember. If a future
     # change to this file adds a postgres service, the boundary it exists to
     # protect has already been crossed somewhere in src/.
 

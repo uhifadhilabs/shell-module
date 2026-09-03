@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Unit;
+namespace Uhifadhi\Shell\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -28,16 +28,16 @@ use PHPUnit\Framework\TestCase;
  *
  * Five rules:
  *
- *  1. THE CANOPY NAMES NO MODULE. Not a slug, not a namespace, not in a
+ *  1. THE SHELL NAMES NO MODULE. Not a slug, not a namespace, not in a
  *     template. A row in the sidebar and a card in the grid arrive as data.
- *  2. THE CANOPY NAMES NO HOST. It is installed BY an application; it does not
+ *  2. THE SHELL NAMES NO HOST. It is installed BY an application; it does not
  *     reach back into one.
- *  3. THE CANOPY REMEMBERS NOTHING. No entities, no repositories, no doctrine,
+ *  3. THE SHELL REMEMBERS NOTHING. No entities, no repositories, no doctrine,
  *     no database. A crown with entities has failed its boundary, and the
  *     absence of a postgres service in CI is the same statement in another file.
- *  4. THE CANOPY ROUTES NOWHERE. It draws pages; it does not own URLs. The area
+ *  4. THE SHELL ROUTES NOWHERE. It draws pages; it does not own URLs. The area
  *     URL space, its permission gates and its entity resolution are the host's.
- *  5. THE CANOPY REQUIRES NO OTHER RING. Least obvious and most load-bearing:
+ *  5. THE SHELL REQUIRES NO OTHER RING. Least obvious and most load-bearing:
  *     see the README's boundary ruling on why the crown does not depend on the
  *     trunk even though it draws the trunk's answers.
  */
@@ -61,7 +61,7 @@ final class BoundaryTest extends TestCase
      * @param non-empty-string $name
      */
     #[DataProvider('moduleNames')]
-    public function testTheCanopyKnowsNoModuleByName(string $name): void
+    public function testTheShellKnowsNoModuleByName(string $name): void
     {
         $offenders = [];
         foreach (self::shippedSources() as $path => $code) {
@@ -71,13 +71,13 @@ final class BoundaryTest extends TestCase
         }
 
         self::assertSame([], $offenders, \sprintf(
-            'The canopy must not name the "%s" module — not in src/, and above all not in a template. '
+            'The shell must not name the "%s" module — not in src/, and above all not in a template. '
             .'A nav row and a module card are data handed to the crown, never a slug it recognises.',
             $name,
         ));
     }
 
-    public function testTheCanopyReachesIntoNoHostApplication(): void
+    public function testTheShellReachesIntoNoHostApplication(): void
     {
         $offenders = [];
         foreach (self::shippedSources() as $path => $code) {
@@ -89,17 +89,17 @@ final class BoundaryTest extends TestCase
             }
         }
 
-        self::assertSame([], $offenders, 'The canopy must not depend on a host application namespace.');
+        self::assertSame([], $offenders, 'The shell must not depend on a host application namespace.');
     }
 
     /**
-     * THE CANOPY REMEMBERS NOTHING. This is the rule that makes the crown
+     * THE SHELL REMEMBERS NOTHING. This is the rule that makes the crown
      * cheap: it can be booted, rendered and tested without a database, which is
      * why this repository's CI has no postgres service while every sibling's
      * does. The day an entity appears here, that stops being true and the whole
      * shape of the bundle changes with it.
      */
-    public function testTheCanopyOwnsNoData(): void
+    public function testTheShellOwnsNoData(): void
     {
         self::assertDirectoryDoesNotExist(self::ROOT.'/src/Entity', 'Entities belong to the trunk and the branches.');
         self::assertDirectoryDoesNotExist(self::ROOT.'/src/Repository', 'A crown reads what it is handed.');
@@ -115,19 +115,19 @@ final class BoundaryTest extends TestCase
             }
         }
 
-        self::assertSame([], $offenders, 'The canopy draws; it does not remember.');
+        self::assertSame([], $offenders, 'The shell draws; it does not remember.');
         self::assertArrayNotHasKey('doctrine/orm', self::composerRequire());
         self::assertArrayNotHasKey('doctrine/doctrine-bundle', self::composerRequire());
     }
 
     /**
-     * THE CANOPY ROUTES NOWHERE. The grid's UI is the crown's (see the README);
+     * THE SHELL ROUTES NOWHERE. The grid's UI is the crown's (see the README);
      * the grid's URL is not. `/areas/{uuid}/modules` is the host's URL space,
      * gated by the host's permissions and resolving the host's area entity — a
      * controller here would drag all three across the boundary to save one
      * template include.
      */
-    public function testTheCanopyOwnsNoUrls(): void
+    public function testTheShellOwnsNoUrls(): void
     {
         self::assertDirectoryDoesNotExist(self::ROOT.'/src/Controller', 'The crown draws pages; the host owns their URLs.');
         self::assertFileDoesNotExist(self::ROOT.'/config/routes.php');
@@ -141,11 +141,11 @@ final class BoundaryTest extends TestCase
             }
         }
 
-        self::assertSame([], $offenders, 'The canopy exposes blocks and seams; it registers no route.');
+        self::assertSame([], $offenders, 'The shell exposes blocks and seams; it registers no route.');
     }
 
     /**
-     * THE CANOPY REQUIRES NO OTHER RING, and this is the ruling worth arguing —
+     * THE SHELL REQUIRES NO OTHER RING, and this is the ruling worth arguing —
      * the README argues it at length. The short form: the crown draws the
      * trunk's answers but does not read them. They arrive already composed,
      * because composing them needs an area, a viewer and a department lens,
@@ -154,14 +154,14 @@ final class BoundaryTest extends TestCase
      * entities inside templates, which is exactly where a `module.getSlug()`
      * comparison gets typed.
      */
-    public function testTheCanopyRequiresNoOtherRingOfTheTree(): void
+    public function testTheShellRequiresNoOtherRingOfTheTree(): void
     {
         $uhifadhiRequires = array_filter(
             array_keys(self::composerRequire()),
             static fn (string $package): bool => str_starts_with($package, 'uhifadhi/'),
         );
 
-        self::assertSame([], array_values($uhifadhiRequires), 'The canopy is standalone: data reaches it through its seams.');
+        self::assertSame([], array_values($uhifadhiRequires), 'The shell is standalone: data reaches it through its seams.');
     }
 
     /**
@@ -172,7 +172,7 @@ final class BoundaryTest extends TestCase
      */
     public function testItKeepsTheFlatFolderConvention(): void
     {
-        self::assertDirectoryExists(self::ROOT.'/templates', 'templates/ is the canopy\'s heart, not an afterthought.');
+        self::assertDirectoryExists(self::ROOT.'/templates', 'templates/ is the shell\'s heart, not an afterthought.');
 
         foreach (['Domain', 'Application', 'Infrastructure', 'UI', 'Presentation'] as $banned) {
             self::assertDirectoryDoesNotExist(self::ROOT.'/src/'.$banned, \sprintf('src/%s is banned: folders are named by technical kind.', $banned));

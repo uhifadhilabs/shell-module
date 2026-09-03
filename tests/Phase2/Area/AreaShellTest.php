@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Phase2\Area;
+namespace Uhifadhi\Shell\Tests\Phase2\Area;
 
-use Uhifadhi\Canopy\Contract\AreaShellSourceInterface;
-use Uhifadhi\Canopy\Model\AreaTab;
-use Uhifadhi\Canopy\Tests\Phase2\Fixtures\HostKernel;
-use Uhifadhi\Canopy\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Shell\Contract\AreaShellSourceInterface;
+use Uhifadhi\Shell\Model\AreaTab;
+use Uhifadhi\Shell\Tests\Phase2\Fixtures\HostKernel;
+use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
 
 /**
  * SPEC 3 — THE AREA SHELL.
@@ -167,7 +167,7 @@ final class AreaShellTest extends Phase2TestCase
      * host's own templates: today an area's tabs vanish the moment you open one
      * of its modules, because a module page extends the layout directly and the
      * strip lives in a partial the host includes by hand. Under the frame the
-     * strip is the default content of canopy_page_tabs, so a module page that
+     * strip is the default content of shell_page_tabs, so a module page that
      * fills only its body still shows you where you are.
      */
     public function testAModulePageInsideAnAreaStillShowsTheAreasTabs(): void

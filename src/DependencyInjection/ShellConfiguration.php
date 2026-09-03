@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\DependencyInjection;
+namespace Uhifadhi\Shell\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 /**
  * The bundle's semantic configuration — how a host configures the crown in
- * config/packages/canopy.yaml:
+ * config/packages/shell.yaml:
  *
- *   canopy:
+ *   shell:
  *     brand_name: Uhifadhi           # the wordmark beside the brand tile
  *     home_route: dashboard_index    # where the tile links
  *     default_theme: light           # light | dark | system
  *     dev_tools: false               # the socket gallery (when@dev / when@test)
  *
  * DELIBERATELY TINY, and it must stay that way — a layout bundle is where
- * configuration goes to breed. Every knob here is something the canopy CANNOT
+ * configuration goes to breed. Every knob here is something the shell CANNOT
  * know: the deployment's name, the host's route names, and a first-visit
  * preference. Anything a designer would decide belongs in the stylesheet, and
  * anything a page would decide belongs in a block.
@@ -41,7 +41,7 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
  * Static so the tree is testable with a plain Processor and shared verbatim by
  * the bundle's configure().
  */
-final class CanopyConfiguration
+final class ShellConfiguration
 {
     /** The themes the crown ships. Both first-class; neither is a variant of the other. */
     public const array THEMES = ['light', 'dark', 'system'];
@@ -49,7 +49,7 @@ final class CanopyConfiguration
     public static function define(NodeDefinition|ArrayNodeDefinition $root): void
     {
         if (!$root instanceof ArrayNodeDefinition) {
-            throw new \LogicException('The canopy root node must be an array node.');
+            throw new \LogicException('The shell root node must be an array node.');
         }
 
         $root
@@ -59,7 +59,7 @@ final class CanopyConfiguration
                     ->defaultValue('Uhifadhi')->cannotBeEmpty()
                 ->end()
                 ->scalarNode('home_route')
-                    ->info('Route the brand tile links to. The canopy is installed by an application and cannot know its route names.')
+                    ->info('Route the brand tile links to. The shell is installed by an application and cannot know its route names.')
                     ->defaultValue('dashboard_index')->cannotBeEmpty()
                 ->end()
                 ->enumNode('default_theme')

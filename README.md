@@ -1,6 +1,6 @@
-# uhifadhi/canopy-module
+# uhifadhi/shell-module
 
-The **canopy**: the visible crown of an uhifadhi installation — the shell, the
+The **shell**: the visible crown of an uhifadhi installation — the document, the
 page frame, the navigation seams and the theme every module's pages mount into.
 A [uhifadhi](https://github.com/uhifadhilabs) platform bundle.
 
@@ -22,8 +22,8 @@ A [uhifadhi](https://github.com/uhifadhilabs) platform bundle.
   - [4. The theme contract](#4-the-theme-contract)
   - [5. The module grid](#5-the-module-grid)
 - [Changing the contract](#changing-the-contract)
-- [Boundaries: what the canopy is not](#boundaries-what-the-canopy-is-not)
-- [Why the canopy does not require the trunk](#why-the-canopy-does-not-require-the-trunk)
+- [Boundaries: what the shell is not](#boundaries-what-the-shell-is-not)
+- [Why the shell does not require the seam](#why-the-shell-does-not-require-the-seam)
 - [What is here](#what-is-here)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -34,16 +34,29 @@ A [uhifadhi](https://github.com/uhifadhilabs) platform bundle.
 
 Uhifadhi is structured like the thing it protects:
 
-> **`uhifadhi/seed`** (planted once) → **`trunk-module`** (the seam runtime every
-> module registers with) → **branches** (the modules) → **`canopy-module`** (this
-> repository: the visible crown).
+> **the seed — [`uhifadhi/uhifadhi`](https://github.com/uhifadhilabs/uhifadhi)**
+> (planted once) → **the seam —
+> [`uhifadhi/seam-module`](https://github.com/uhifadhilabs/seam-module)** (where
+> every module registers) → **branches** (the modules) → **the shell —
+> [`uhifadhi/shell-module`](https://github.com/uhifadhilabs/shell-module)** (this
+> repository: what you see).
 
 The seed is copied once and is then yours forever. Everything above it is a
-bundle, updated through composer. This ring is the one you can see.
+bundle, updated through composer. This is the package you can see.
+
+**The tree is a picture, not a naming scheme.** It is kept here because it is
+the fastest way to explain the shape to somebody new, and it is kept *only*
+here — in prose. The packages themselves are named for what they do: a newcomer
+reading `Uhifadhi\Canopy\` cannot tell whether it draws pages or stores
+foliage surveys, and on a conservation platform that is a real question. This
+one was called `canopy-module` until that rule was written down, and the
+sentence the renames bought is the whole architecture in eight words:
+
+> **A module registers with the seam and renders in the shell.**
 
 ## Charter
 
-**The canopy shows; it does not carry.** It owns four things and no more:
+**The shell shows; it does not carry.** It owns four things and no more:
 
 - **The frames** — the document, the shell (sidebar + top bar) and the page
   frame (breadcrumbs, page head, actions, tabs, flashes, body). Three rungs of
@@ -66,7 +79,7 @@ database. This is why this repository's CI is the only one in the tree with no
 postgres service: a crown with entities has failed its boundary. It is also why
 the whole test suite is "render this and look at it".
 
-**It knows no module by name.** The trunk's rule, inherited, and enforced by the
+**It knows no module by name.** The seam's rule, inherited, and enforced by the
 same kind of sweep — extended to `templates/`, because a template is the easiest
 place in a codebase to type a module's name and the hardest place to notice it
 later. A row in the sidebar and a card in the grid arrive as data.
@@ -111,7 +124,7 @@ checked against `LayoutContract::BLOCKS`, so a rename fails the build from both
 ends: the manifest disagrees with the frozen list, or the templates disagree
 with the manifest. There is no way to move a socket without editing that test.
 
-**The document** — `@UhifadhiCanopy/document.html.twig`. Symfony's own four
+**The document** — `@UhifadhiShell/document.html.twig`. Symfony's own four
 names, unchanged; a module that knows Twig already knows them.
 
 | Socket | Filled by |
@@ -122,36 +135,36 @@ names, unchanged; a module that knows Twig already knows them.
 | `importmap` | nobody, normally — here so a host can |
 | `body` | nobody: the shell owns it |
 
-**The shell** — `@UhifadhiCanopy/shell.html.twig`. Furniture. A module fills
+**The shell** — `@UhifadhiShell/shell.html.twig`. Furniture. A module fills
 none of these; they are the host's, because they need the viewer, the areas and
 whether this response is an impersonation.
 
 | Socket | Filled by |
 |---|---|
-| `canopy_banner` | host — impersonation, maintenance, outage |
-| `canopy_sidebar` | host — replace the whole aside (rare) |
-| `canopy_sidebar_brand` | host — the mark and the wordmark |
-| `canopy_sidebar_nav` | host — overriding this opts out of the nav seam |
-| `canopy_sidebar_footer` | host — settings, version, support |
-| `canopy_topbar` | host — replace the whole top bar |
-| `canopy_topbar_actions` | host — alerts, theme toggle, the user pill |
-| `canopy_main` | host — everything right of the nav |
+| `shell_banner` | host — impersonation, maintenance, outage |
+| `shell_sidebar` | host — replace the whole aside (rare) |
+| `shell_sidebar_brand` | host — the mark and the wordmark |
+| `shell_sidebar_nav` | host — overriding this opts out of the nav seam |
+| `shell_sidebar_footer` | host — settings, version, support |
+| `shell_topbar` | host — replace the whole top bar |
+| `shell_topbar_actions` | host — alerts, theme toggle, the user pill |
+| `shell_main` | host — everything right of the nav |
 | `content` | **the compatibility socket** — see below |
-| `canopy_footer` | host — the one line under every page |
+| `shell_footer` | host — the one line under every page |
 
-**The page frame** — `@UhifadhiCanopy/page.html.twig`. The module author's
+**The page frame** — `@UhifadhiShell/page.html.twig`. The module author's
 sockets, and the reason the bundle exists.
 
 | Socket | Filled by |
 |---|---|
-| `canopy_breadcrumbs` | module — the trail, as text; the frame styles it |
-| `canopy_page_head` | module — replace title + subtitle + actions wholesale |
-| `canopy_page_title` | module — the `h1` |
-| `canopy_page_subtitle` | module — optional, and *genuinely* optional: empty renders no element |
-| `canopy_page_actions` | module — the buttons at the top right |
-| `canopy_page_tabs` | module/host — defaults to the area shell (§3) |
-| `canopy_flashes` | module — overridable, but the default is right and an override is a bug report |
-| `canopy_page` | module — **the body**, the one socket a page must fill |
+| `shell_breadcrumbs` | module — the trail, as text; the frame styles it |
+| `shell_page_head` | module — replace title + subtitle + actions wholesale |
+| `shell_page_title` | module — the `h1` |
+| `shell_page_subtitle` | module — optional, and *genuinely* optional: empty renders no element |
+| `shell_page_actions` | module — the buttons at the top right |
+| `shell_page_tabs` | module/host — defaults to the area shell (§3) |
+| `shell_flashes` | module — overridable, but the default is right and an override is a bug report |
+| `shell_page` | module — **the body**, the one socket a page must fill |
 
 `content` is in the contract on purpose and is the one socket named for
 compatibility rather than clarity: every host page and every module bundle fills
@@ -170,10 +183,10 @@ always lands before a module's.
 
 The crown owns the nav's **shape** — sections, rows, the location tree, carets,
 the current-row treatment, the collapsed rail. It owns none of its **content**.
-Content arrives through `NavigationSourceInterface`, tagged `canopy.nav_section`:
+Content arrives through `NavigationSourceInterface`, tagged `shell.nav_section`:
 
-- the **host** implements one, and that is where trunk data enters the crown. It
-  has the areas, the viewer, the permission voters and the trunk's per-area
+- the **host** implements one, and that is where seam data enters the crown. It
+  has the areas, the viewer, the permission voters and the seam's per-area
   ledger; folding those four into "these rows, in this order" is a reading for a
   person on a page.
 - a **module bundle** may implement one too, for the rare platform-wide row that
@@ -201,7 +214,7 @@ The honest split, decided rather than fudged:
 | that one tab is no strip at all | |
 
 Tabs arrive through `AreaShellSourceInterface`, which the host aliases to
-`canopy.area_shell_source`. Today the list is hardcoded **twice** in the host —
+`shell.area_shell_source`. Today the list is hardcoded **twice** in the host —
 `dashboard/_area_tabs.html.twig` and `SidebarRuntime::tabs()` — and the two have
 to be edited together, which is the tell. One source, two renderings, and a test
 that they cannot disagree.
@@ -209,7 +222,7 @@ that they cannot disagree.
 Two things this fixes rather than ports: a module page inside an area currently
 loses the area's tabs entirely, because the strip lives in a partial the host
 includes by hand; under the frame the strip is the *default* content of
-`canopy_page_tabs`, so a module page that fills only its body still shows you
+`shell_page_tabs`, so a module page that fills only its body still shows you
 where you are. And "absent, not disabled" is now a rule the value object
 enforces — `AreaTab` has no url-less form, so there is nothing to grey out.
 
@@ -259,7 +272,7 @@ without a crown release.
 ### 5. The module grid
 
 **The ruling: the crown claims the picture, not the grouping, not the URL, and
-not the customize screen.** The trunk declined the grid and named the canopy as
+not the customize screen.** The seam declined the grid and named the shell as
 its claimant, so this had to be answered rather than inherited. The independent-life
 test splits it:
 
@@ -267,7 +280,7 @@ test splits it:
   marker on the group a department leads, an empty state — a layout, complete
   given a list of groups, and the same layout wherever it appears (the area's
   Modules tab, a department page, a future search result). One implementation, at
-  `@UhifadhiCanopy/_module_grid.html.twig`.
+  `@UhifadhiShell/_module_grid.html.twig`.
 - **the grouping does not.** Which cards, in which groups, in which order, and
   which department leads one is a reading of the catalogue for a particular
   viewer on a particular area — it needs the area, the viewer and the department
@@ -298,7 +311,7 @@ enforced by the frozen lists refusing to agree with anything else:
 Editing a frozen list to make a build pass is the failure mode the lists exist to
 catch.
 
-## Boundaries: what the canopy is not
+## Boundaries: what the shell is not
 
 Concretely, this bundle ships **no entities, no repositories, no doctrine
 dependency, no migrations, no controllers and no routes**, and
@@ -307,32 +320,32 @@ dependency, no migrations, no controllers and no routes**, and
 named by technical kind. `templates/` is not an exception to that rule: it is not
 a domain folder, it is this bundle's entire subject.
 
-## Why the canopy does not require the trunk
+## Why the shell does not require the seam
 
 This is the ruling worth arguing, because the obvious defence runs the other way.
 
-The Symfony analogy offered for a canopy → trunk require is `twig-bundle`
+The Symfony analogy offered for a shell → seam require is `twig-bundle`
 depending on `framework-bundle`: a higher ring may depend on a lower one, and
 nothing about the tree forbids it. That analogy is real but it does not reach.
 `twig-bundle` depends on `framework-bundle` for **machinery** — the kernel, the
-config pass, the container conventions. The crown would be requiring the trunk to
+config pass, the container conventions. The crown would be requiring the seam to
 read **domain data**.
 
 Three consequences decide it:
 
 1. **The data is not usable raw anyway.** A nav row needs the area, the viewer
-   and the permission decision; a grid card needs the department lens. The trunk
+   and the permission decision; a grid card needs the department lens. The seam
    has none of those, so *something* has to compose the answer before the crown
    can draw it — and whatever composes it can hand over a value object as easily
    as the crown could fetch a row. The require buys nothing.
-2. **Entities in templates are interrogated.** The moment a trunk entity is in
+2. **Entities in templates are interrogated.** The moment a seam entity is in
    scope inside a Twig file, somebody writes `{% if module.slug == 'overview' %}`,
    and the module-blindness both rings promise is gone. A `ModuleCard` value
    object cannot be interrogated that way — there is nothing on it to branch on
    that is not also a thing every card has.
 3. **A crown that requires a seam runtime cannot crown an installation that has
    no modules.** `tests/Integration/TestKernel` is the proof: framework + twig +
-   this bundle, booting and rendering, with no trunk under it at all.
+   this bundle, booting and rendering, with no seam under it at all.
 
 So: **`composer.json` requires no `uhifadhi/*` package**, and a test asserts it,
 because this is precisely the kind of ruling that gets quietly reversed by one
@@ -342,46 +355,46 @@ because this is precisely the kind of ruling that gets quietly reversed by one
 
 | Piece | File |
 |---|---|
-| The Symfony plug, the stylesheet path, the nav tag | `src/UhifadhiCanopyBundle.php` |
-| Config tree (`canopy:`) | `src/DependencyInjection/CanopyConfiguration.php` |
+| The Symfony plug, the stylesheet path, the nav tag | `src/UhifadhiShellBundle.php` |
+| Config tree (`shell:`) | `src/DependencyInjection/ShellConfiguration.php` |
 | Static service wiring, and the published ids | `config/services.php` |
 | The frozen manifest (phase 2) | `src/Contract/LayoutContract.php` |
 | The seams (phase 2) | `src/Contract/` |
 | The shapes that cross them (phase 2) | `src/Model/` |
 | The frames and partials (phase 2) | `templates/` |
-| The token set (phase 2) | `public/canopy.css` |
+| The token set (phase 2) | `public/shell.css` |
 | Test host app | `tests/Integration/TestKernel.php` |
 | A host, minimally: two seam implementations and nothing else | `tests/Phase2/Fixtures/HostKernel.php` |
 
 ## Installation
 
 ```bash
-composer require uhifadhi/canopy-module
+composer require uhifadhi/shell-module
 ```
 
 The bundle registers via Flex (`"type": "symfony-bundle"`), which adds
-`Uhifadhi\Canopy\UhifadhiCanopyBundle` to `config/bundles.php`. A host
+`Uhifadhi\Shell\UhifadhiShellBundle` to `config/bundles.php`. A host
 then implements the two seams and points the crown at them:
 
 ```php
 // config/services.php
-$services->set(App\Canopy\HostNavigation::class)->tag('canopy.nav_section');
-$services->alias('canopy.area_shell_source', App\Canopy\AreaShell::class);
+$services->set(App\Shell\HostNavigation::class)->tag('shell.nav_section');
+$services->alias('shell.area_shell_source', App\Shell\AreaShell::class);
 ```
 
 …and its pages extend the frame:
 
 ```twig
-{% extends '@UhifadhiCanopy/page.html.twig' %}
-{% block canopy_page_title %}Zones{% endblock %}
-{% block canopy_page %}…{% endblock %}
+{% extends '@UhifadhiShell/page.html.twig' %}
+{% block shell_page_title %}Zones{% endblock %}
+{% block shell_page %}…{% endblock %}
 ```
 
 ## Configuration
 
 ```yaml
-# config/packages/canopy.yaml
-canopy:
+# config/packages/shell.yaml
+shell:
     brand_name: Uhifadhi           # the wordmark beside the brand tile
     home_route: dashboard_index    # where the tile links
     default_theme: light           # light | dark | system

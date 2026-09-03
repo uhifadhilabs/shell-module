@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Integration;
+namespace Uhifadhi\Shell\Tests\Integration;
 
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -19,16 +19,16 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\UX\Icons\UXIconsBundle;
-use Uhifadhi\Canopy\UhifadhiCanopyBundle;
+use Uhifadhi\Shell\UhifadhiShellBundle;
 
 /**
- * THE SEED, PLUS THE CANOPY, AND NOTHING ELSE: framework + twig + ux-icons +
+ * THE SEED, PLUS THE SHELL, AND NOTHING ELSE: framework + twig + ux-icons +
  * this bundle. Note what is missing and stays missing — doctrine. The crown is
  * the one ring in the tree that can be booted without a database, and that is
  * not a testing convenience: it is the boundary. A layout that cannot render
  * without a connection has stopped being a layout.
  *
- * Note also what is missing and is NOT the boundary: a trunk. The canopy does
+ * Note also what is missing and is NOT the boundary: a trunk. The shell does
  * not require one (see the README's boundary ruling) — module rows and module
  * cards reach it as data, through the seams, from whoever composed them. This
  * kernel proves it by booting a crown with no seam runtime under it at all.
@@ -42,7 +42,7 @@ class TestKernel extends Kernel
         yield new FrameworkBundle();
         yield new TwigBundle();
         yield new UXIconsBundle();
-        yield new UhifadhiCanopyBundle();
+        yield new UhifadhiShellBundle();
     }
 
     protected function configureContainer(ContainerConfigurator $container): void
@@ -66,11 +66,11 @@ class TestKernel extends Kernel
 
     public function getCacheDir(): string
     {
-        return sys_get_temp_dir().'/canopy-module-tests/cache/'.$this->getEnvironment().'/'.static::class;
+        return sys_get_temp_dir().'/shell-module-tests/cache/'.$this->getEnvironment().'/'.static::class;
     }
 
     public function getLogDir(): string
     {
-        return sys_get_temp_dir().'/canopy-module-tests/log';
+        return sys_get_temp_dir().'/shell-module-tests/log';
     }
 }

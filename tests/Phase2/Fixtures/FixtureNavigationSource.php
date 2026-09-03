@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Phase2\Fixtures;
+namespace Uhifadhi\Shell\Tests\Phase2\Fixtures;
 
-use Uhifadhi\Canopy\Contract\NavigationSourceInterface;
-use Uhifadhi\Canopy\Model\AreaTab;
-use Uhifadhi\Canopy\Model\NavItem;
-use Uhifadhi\Canopy\Model\NavSection;
+use Uhifadhi\Shell\Contract\NavigationSourceInterface;
+use Uhifadhi\Shell\Model\AreaTab;
+use Uhifadhi\Shell\Model\NavItem;
+use Uhifadhi\Shell\Model\NavSection;
 
 /**
  * A host's nav, in the smallest honest form: something that answers "what goes

@@ -8,10 +8,10 @@
          failOnNotice="true"
          failOnWarning="true">
     <php>
-        <env name="KERNEL_CLASS" value="Uhifadhi\Canopy\Tests\Integration\TestKernel"/>
+        <env name="KERNEL_CLASS" value="Uhifadhi\Shell\Tests\Integration\TestKernel"/>
         <!--
-            THERE IS NO DATABASE ENV HERE, AND THERE WILL NOT BE ONE. The canopy
-            draws; it does not remember. A canopy that needed a connection to
+            THERE IS NO DATABASE ENV HERE, AND THERE WILL NOT BE ONE. The shell
+            draws; it does not remember. A shell that needed a connection to
             render a page would have acquired a domain, and Unit/BoundaryTest
             fails the build the moment doctrine appears in its requirements.
         -->

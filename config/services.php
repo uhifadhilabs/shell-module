@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -18,7 +18,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *
  * PHP (not YAML) on purpose: a reusable bundle must not force symfony/yaml onto
  * hosts, and FQCN references stay refactor-safe and phpstan-checked. Imported by
- * UhifadhiCanopyBundle::loadExtension(), which keeps only the config-DRIVEN
+ * UhifadhiShellBundle::loadExtension(), which keeps only the config-DRIVEN
  * definitions.
  *
  * Everything defined here is defined EXPLICITLY — no autowire(), no autoconfigure(),
@@ -35,7 +35,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  * built, and the image build does exactly that (asset-map:compile fires the
  * asset-compile event and UX Icons warms its cache off it). An extension
  * holding anything that reads a request or a repository therefore breaks the
- * BUILD, not a page. So the canopy ships a thin extension that declares
+ * BUILD, not a page. So the shell ships a thin extension that declares
  * functions and a RUNTIME that is constructed lazily, on the first call — i.e.
  * only when a template is actually rendered. The host learned this the hard
  * way with its sidebar; the crown inherits the lesson, not the bug.
@@ -45,14 +45,14 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  * specification names the service ids it will land under, which is the whole
  * contract this file has to satisfy:
  *
- *   canopy.contract          the frozen socket manifest: blocks, tokens, seams
- *   canopy.navigation        the nav tree the shell renders, from tagged sources
- *   canopy.area_shell        the area tab strip's model, from its source
- *   canopy.theme             which theme this response opens in
- *   canopy.module_grid       the catalogue picture: groups, cards, pills
- *   canopy.twig.extension    declares canopy_* functions and nothing else
- *   canopy.twig.runtime      builds them, lazily, on first render
- *   canopy.gallery           the dev-only socket gallery (canopy.dev_tools)
+ *   shell.contract          the frozen socket manifest: blocks, tokens, seams
+ *   shell.navigation        the nav tree the shell renders, from tagged sources
+ *   shell.area_shell        the area tab strip's model, from its source
+ *   shell.theme             which theme this response opens in
+ *   shell.module_grid       the catalogue picture: groups, cards, pills
+ *   shell.twig.extension    declares shell_* functions and nothing else
+ *   shell.twig.runtime      builds them, lazily, on first render
+ *   shell.gallery           the dev-only socket gallery (shell.dev_tools)
  *
  * The file exists so the first of them lands in the right place, in the right
  * style, rather than being autowired into the host's habits.

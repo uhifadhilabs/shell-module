@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy;
+namespace Uhifadhi\Shell;
 
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Uhifadhi\Canopy\DependencyInjection\CanopyConfiguration;
+use Uhifadhi\Shell\DependencyInjection\ShellConfiguration;
 
 /**
- * The CANOPY — the visible crown every uhifadhi page grows into.
+ * The SHELL — the visible crown every uhifadhi page grows into.
  *
  * The seed is planted, the trunk carries, the branches are the modules and this
  * is what you see: the document, the shell (sidebar + top bar), the page frame
@@ -37,24 +37,24 @@ use Uhifadhi\Canopy\DependencyInjection\CanopyConfiguration;
  * frame reached the modules that happened to be remembered.
  *
  * IT REMEMBERS NOTHING. No entities, no repositories, no doctrine, no database.
- * A canopy that needed a connection to draw a page would have acquired a
+ * A shell that needed a connection to draw a page would have acquired a
  * domain; Unit/BoundaryTest fails the build if one appears.
  *
  * IT KNOWS NO MODULE BY NAME — the same rule the trunk holds, for the same
  * reason and enforced by the same kind of sweep. A module's row in the sidebar
  * and its card in the grid arrive as DATA, through the seams in src/Contract;
- * the canopy renders whatever it is handed and recognises no slug.
+ * the shell renders whatever it is handed and recognises no slug.
  *
  * PHASE 1 — this repository is the scaffold and the RED contract. The shell,
  * the frame, the seams and the tokens arrive in phase 2 by EXTRACTION from the
  * host application, against the failing suite in tests/Phase2. What is here
- * today is the plug: the bundle registers, its config is keyed under "canopy:",
+ * today is the plug: the bundle registers, its config is keyed under "shell:",
  * and its template namespace resolves.
  */
-final class UhifadhiCanopyBundle extends AbstractBundle
+final class UhifadhiShellBundle extends AbstractBundle
 {
     /**
-     * The canopy's stylesheet, as a host and every module bundle must link it.
+     * The shell's stylesheet, as a host and every module bundle must link it.
      *
      * Published as a constant for the reason every module bundle's own is: the
      * path is written in more than one place (the shell links it; a module base
@@ -67,25 +67,25 @@ final class UhifadhiCanopyBundle extends AbstractBundle
      *
      * @see https://symfony.com/doc/current/frontend/asset_mapper.html
      */
-    public const string STYLESHEET = 'bundles/uhifadhicanopy/canopy.css';
+    public const string STYLESHEET = 'bundles/uhifadhishell/shell.css';
 
     /**
      * The tag a bundle carries to contribute a NAV SECTION to the shell.
      *
-     * Published as a constant because the canopy is the end that COLLECTS it: a
+     * Published as a constant because the shell is the end that COLLECTS it: a
      * contributor writes the string by hand in its own extension (a reusable
      * bundle's services are not autoconfigured), and a host or a test standing
-     * in for the collector should not retype it. The canopy renders whatever
+     * in for the collector should not retype it. The shell renders whatever
      * arrives and reads no slug off it — see src/Contract.
      */
-    public const string NAV_TAG = 'canopy.nav_section';
+    public const string NAV_TAG = 'shell.nav_section';
 
-    /** Config lives under "canopy:", not the class-derived "uhifadhi_labs_canopy:". */
-    protected string $extensionAlias = 'canopy';
+    /** Config lives under "shell:", not the class-derived "uhifadhi_shell:". */
+    protected string $extensionAlias = 'shell';
 
     public function configure(DefinitionConfigurator $definition): void
     {
-        CanopyConfiguration::define($definition->rootNode());
+        ShellConfiguration::define($definition->rootNode());
     }
 
     /**
@@ -98,15 +98,15 @@ final class UhifadhiCanopyBundle extends AbstractBundle
         $container->import('../config/services.php');
 
         // The wordmark beside the brand tile, and where the tile links. Neither
-        // can be hardcoded: the canopy is installed BY an application and does
+        // can be hardcoded: the shell is installed BY an application and does
         // not know its route names, and a deployment is entitled to its own
         // name over the crown of its own installation.
         $builder->setParameter(
-            'canopy.brand_name',
+            'shell.brand_name',
             \is_string($config['brand_name'] ?? null) ? $config['brand_name'] : 'Uhifadhi',
         );
         $builder->setParameter(
-            'canopy.home_route',
+            'shell.home_route',
             \is_string($config['home_route'] ?? null) ? $config['home_route'] : 'dashboard_index',
         );
 
@@ -115,13 +115,13 @@ final class UhifadhiCanopyBundle extends AbstractBundle
         // dark on a ranger's midday screen would be a worse first frame than a
         // wrong preference.
         $builder->setParameter(
-            'canopy.default_theme',
+            'shell.default_theme',
             \is_string($config['default_theme'] ?? null) ? $config['default_theme'] : 'light',
         );
 
         // Dev-only tooling — the socket gallery, which renders every block and
         // every token on one page so a change to the contract is visible before
         // it is shipped. Off in production: it is documentation that executes.
-        $builder->setParameter('canopy.dev_tools', true === ($config['dev_tools'] ?? false));
+        $builder->setParameter('shell.dev_tools', true === ($config['dev_tools'] ?? false));
     }
 }

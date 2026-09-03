@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Unit\DependencyInjection;
+namespace Uhifadhi\Shell\Tests\Unit\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
-use Uhifadhi\Canopy\DependencyInjection\CanopyConfiguration;
+use Uhifadhi\Shell\DependencyInjection\ShellConfiguration;
 
 /**
  * The config tree, checked the way a host meets it: through a Processor, with
@@ -27,7 +27,7 @@ use Uhifadhi\Canopy\DependencyInjection\CanopyConfiguration;
  * where configuration goes to breed, and an unknown key that is silently
  * ignored is how a deployment ends up believing it configured something.
  */
-final class CanopyConfigurationTest extends TestCase
+final class ShellConfigurationTest extends TestCase
 {
     public function testItDefaultsToTheLightCrownOfAnUhifadhiInstallation(): void
     {
@@ -54,7 +54,7 @@ final class CanopyConfigurationTest extends TestCase
      */
     public function testBothThemesAndTheSystemPreferenceAreAcceptedAndNothingElseIs(): void
     {
-        foreach (CanopyConfiguration::THEMES as $theme) {
+        foreach (ShellConfiguration::THEMES as $theme) {
             self::assertSame($theme, $this->process([['default_theme' => $theme]])['default_theme']);
         }
 
@@ -87,8 +87,8 @@ final class CanopyConfigurationTest extends TestCase
      */
     private function process(array $configs): array
     {
-        $tree = new TreeBuilder('canopy');
-        CanopyConfiguration::define($tree->getRootNode());
+        $tree = new TreeBuilder('shell');
+        ShellConfiguration::define($tree->getRootNode());
 
         /** @var array<string, mixed> $processed */
         $processed = new Processor()->process($tree->buildTree(), $configs);

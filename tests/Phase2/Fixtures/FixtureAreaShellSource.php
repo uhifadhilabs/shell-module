@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Phase2\Fixtures;
+namespace Uhifadhi\Shell\Tests\Phase2\Fixtures;
 
-use Uhifadhi\Canopy\Contract\AreaShellSourceInterface;
+use Uhifadhi\Shell\Contract\AreaShellSourceInterface;
 
 /**
  * A host's answer to "which sibling screens does the thing I am currently

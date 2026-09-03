@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Phase2\Nav;
+namespace Uhifadhi\Shell\Tests\Phase2\Nav;
 
-use Uhifadhi\Canopy\Contract\NavigationSourceInterface;
-use Uhifadhi\Canopy\Model\NavItem;
-use Uhifadhi\Canopy\Model\NavSection;
-use Uhifadhi\Canopy\Service\Navigation;
-use Uhifadhi\Canopy\Tests\Phase2\Fixtures\HostKernel;
-use Uhifadhi\Canopy\Tests\Phase2\Phase2TestCase;
-use Uhifadhi\Canopy\UhifadhiCanopyBundle;
+use Uhifadhi\Shell\Contract\NavigationSourceInterface;
+use Uhifadhi\Shell\Model\NavItem;
+use Uhifadhi\Shell\Model\NavSection;
+use Uhifadhi\Shell\Service\Navigation;
+use Uhifadhi\Shell\Tests\Phase2\Fixtures\HostKernel;
+use Uhifadhi\Shell\Tests\Phase2\Phase2TestCase;
+use Uhifadhi\Shell\UhifadhiShellBundle;
 
 /**
  * SPEC 2 — THE NAV SEAM.
@@ -37,7 +37,7 @@ use Uhifadhi\Canopy\UhifadhiCanopyBundle;
  *     per-area ledger; folding those four into "these rows, in this order" is a
  *     reading for a person on a page, which is the host's job by the same
  *     argument the trunk used to hand the module grid away.
- *   - a MODULE BUNDLE may implement one too, tagged canopy.nav_section, for the
+ *   - a MODULE BUNDLE may implement one too, tagged shell.nav_section, for the
  *     rare platform-wide row that belongs to nobody's area.
  *
  * The crown never asks "which modules are installed", because it has no way to
@@ -53,7 +53,7 @@ final class NavigationSeamTest extends Phase2TestCase
 {
     private function navigation(): Navigation
     {
-        $navigation = $this->service('canopy.navigation');
+        $navigation = $this->service('shell.navigation');
         \assert($navigation instanceof Navigation);
 
         return $navigation;
@@ -258,7 +258,7 @@ final class NavigationSeamTest extends Phase2TestCase
      */
     public function testTheSeamsTagIsPublished(): void
     {
-        self::assertSame('canopy.nav_section', UhifadhiCanopyBundle::NAV_TAG);
+        self::assertSame('shell.nav_section', UhifadhiShellBundle::NAV_TAG);
         self::assertTrue(interface_exists(NavigationSourceInterface::class));
     }
 

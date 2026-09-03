@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the UhifadhiLabs Canopy Module.
+ * This file is part of the UhifadhiLabs Shell Module.
  *
  * (c) Ezekiel Mjema <https://github.com/eemjema>
  *
@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Uhifadhi\Canopy\Tests\Integration;
+namespace Uhifadhi\Shell\Tests\Integration;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Environment;
@@ -21,7 +21,7 @@ use Twig\Environment;
  * repository starts here; there is no database fixture layer below it, and the
  * absence is the point.
  */
-abstract class CanopyKernelTestCase extends KernelTestCase
+abstract class ShellKernelTestCase extends KernelTestCase
 {
     protected static function getKernelClass(): string
     {
