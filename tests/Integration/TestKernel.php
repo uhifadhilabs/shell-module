@@ -1,0 +1,76 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the UhifadhiLabs Canopy Module.
+ *
+ * (c) Ezekiel Mjema <https://github.com/eemjema>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace UhifadhiLabs\Canopy\Tests\Integration;
+
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Bundle\TwigBundle\TwigBundle;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\UX\Icons\UXIconsBundle;
+use UhifadhiLabs\Canopy\UhifadhiLabsCanopyBundle;
+
+/**
+ * THE SEED, PLUS THE CANOPY, AND NOTHING ELSE: framework + twig + ux-icons +
+ * this bundle. Note what is missing and stays missing — doctrine. The crown is
+ * the one ring in the tree that can be booted without a database, and that is
+ * not a testing convenience: it is the boundary. A layout that cannot render
+ * without a connection has stopped being a layout.
+ *
+ * Note also what is missing and is NOT the boundary: a trunk. The canopy does
+ * not require one (see the README's boundary ruling) — module rows and module
+ * cards reach it as data, through the seams, from whoever composed them. This
+ * kernel proves it by booting a crown with no seam runtime under it at all.
+ */
+class TestKernel extends Kernel
+{
+    use MicroKernelTrait;
+
+    public function registerBundles(): iterable
+    {
+        yield new FrameworkBundle();
+        yield new TwigBundle();
+        yield new UXIconsBundle();
+        yield new UhifadhiLabsCanopyBundle();
+    }
+
+    protected function configureContainer(ContainerConfigurator $container): void
+    {
+        $container->extension('framework', [
+            'secret' => 'test',
+            'test' => true,
+            'router' => ['utf8' => true],
+            'http_method_override' => false,
+            'handle_all_throwables' => true,
+            'php_errors' => ['log' => true],
+        ]);
+
+        // strict_variables ON, in the bundle's own test host, because the crown
+        // is a set of templates other people fill: a page that hands the frame
+        // an undefined variable must fail here rather than render a hole.
+        $container->extension('twig', [
+            'strict_variables' => true,
+        ]);
+    }
+
+    public function getCacheDir(): string
+    {
+        return sys_get_temp_dir().'/canopy-module-tests/cache/'.$this->getEnvironment().'/'.static::class;
+    }
+
+    public function getLogDir(): string
+    {
+        return sys_get_temp_dir().'/canopy-module-tests/log';
+    }
+}

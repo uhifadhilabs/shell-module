@@ -1,0 +1,77 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the UhifadhiLabs Canopy Module.
+ *
+ * (c) Ezekiel Mjema <https://github.com/eemjema>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace UhifadhiLabs\Canopy\DependencyInjection;
+
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+
+/**
+ * The bundle's semantic configuration — how a host configures the crown in
+ * config/packages/canopy.yaml:
+ *
+ *   canopy:
+ *     brand_name: Uhifadhi           # the wordmark beside the brand tile
+ *     home_route: dashboard_index    # where the tile links
+ *     default_theme: light           # light | dark | system
+ *     dev_tools: false               # the socket gallery (when@dev / when@test)
+ *
+ * DELIBERATELY TINY, and it must stay that way — a layout bundle is where
+ * configuration goes to breed. Every knob here is something the canopy CANNOT
+ * know: the deployment's name, the host's route names, and a first-visit
+ * preference. Anything a designer would decide belongs in the stylesheet, and
+ * anything a page would decide belongs in a block.
+ *
+ * There is deliberately no key listing nav entries, no key listing area tabs
+ * and no key listing modules. Those arrive as data through the seams in
+ * src/Contract, because a second place to declare a nav entry is a second place
+ * for the two to disagree — and a YAML nav is a nav no permission check ever
+ * reaches.
+ *
+ * Static so the tree is testable with a plain Processor and shared verbatim by
+ * the bundle's configure().
+ */
+final class CanopyConfiguration
+{
+    /** The themes the crown ships. Both first-class; neither is a variant of the other. */
+    public const array THEMES = ['light', 'dark', 'system'];
+
+    public static function define(NodeDefinition|ArrayNodeDefinition $root): void
+    {
+        if (!$root instanceof ArrayNodeDefinition) {
+            throw new \LogicException('The canopy root node must be an array node.');
+        }
+
+        $root
+            ->children()
+                ->scalarNode('brand_name')
+                    ->info('The wordmark rendered beside the brand tile in the sidebar.')
+                    ->defaultValue('Uhifadhi')->cannotBeEmpty()
+                ->end()
+                ->scalarNode('home_route')
+                    ->info('Route the brand tile links to. The canopy is installed by an application and cannot know its route names.')
+                    ->defaultValue('dashboard_index')->cannotBeEmpty()
+                ->end()
+                ->enumNode('default_theme')
+                    ->info('Theme a visitor who has never chosen one gets: light, dark, or the operating system\'s preference.')
+                    ->values(self::THEMES)
+                    ->defaultValue('light')
+                ->end()
+                ->booleanNode('dev_tools')
+                    ->info('Register the socket gallery — every block and every token on one page. The recipe enables this via when@dev/when@test.')
+                    ->defaultFalse()
+                ->end()
+            ->end()
+        ;
+    }
+}

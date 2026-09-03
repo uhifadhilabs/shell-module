@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         cacheDirectory=".phpunit.cache"
+         colors="true"
+         failOnDeprecation="true"
+         failOnNotice="true"
+         failOnWarning="true">
+    <php>
+        <env name="KERNEL_CLASS" value="UhifadhiLabs\Canopy\Tests\Integration\TestKernel"/>
+        <!--
+            THERE IS NO DATABASE ENV HERE, AND THERE WILL NOT BE ONE. The canopy
+            draws; it does not remember. A canopy that needed a connection to
+            render a page would have acquired a domain, and Unit/BoundaryTest
+            fails the build the moment doctrine appears in its requirements.
+        -->
+    </php>
+    <testsuites>
+        <!--
+            GREEN, AND IT STAYS GREEN. The scaffold: the bundle boots, its
+            container compiles, its config tree holds, its Twig namespace
+            resolves, and the boundaries hold. This is what `composer test` and
+            CI run.
+        -->
+        <testsuite name="scaffold">
+            <directory>tests/Unit</directory>
+            <directory>tests/Integration</directory>
+        </testsuite>
+        <!--
+            RED BY DESIGN. The socket contract, written before the sockets
+            exist: phase 2 satisfies it by EXTRACTING the shell, the page frame,
+            the nav seams and the theme out of the host. Run it with
+            `composer test:phase2` and expect errors — a test here that passes
+            today would mean it asserts nothing.
+
+            It is a separate suite, not a skipped one, so "red by design" and
+            "broken" can never be confused: CI runs `scaffold` and must be
+            green; `phase2` is the todo list, and the extraction is done when
+            this suite is green and these files have moved into the two
+            directories above.
+        -->
+        <testsuite name="phase2">
+            <directory>tests/Phase2</directory>
+        </testsuite>
+    </testsuites>
+    <source restrictNotices="true" restrictWarnings="true">
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+</phpunit>
