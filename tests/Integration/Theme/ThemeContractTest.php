@@ -214,7 +214,7 @@ final class ThemeContractTest extends ContractTestCase
         $html = $this->render('@fixtures/bare_document_page.html.twig');
 
         $script = strpos($html, 'shell-theme');
-        $sheet = strpos($html, 'shell.css');
+        $sheet = strpos($html, 'uhifadhishell/shell');
 
         self::assertIsInt($script, 'The document must resolve the theme inline, in <head>.');
         self::assertIsInt($sheet);
@@ -254,10 +254,11 @@ final class ThemeContractTest extends ContractTestCase
     }
 
     /**
-     * THE KEY IS PUBLISHED. The toggle that writes the choice lives in the
-     * application (a bundle cannot contribute an importmap entry), so the name
-     * of the key the shell READS has to be a constant the application can name
-     * rather than a string in a template that the two copy separately.
+     * THE KEY IS PUBLISHED. The head READS the choice and the shell's own theme
+     * controller WRITES it, and the two are in different languages in different
+     * directories — so the name is a constant rather than a string each side
+     * types for itself. It was published when the toggle lived in the host; it
+     * stays published now that the toggle ships here, for the same reason.
      */
     public function testTheKeyTheChoiceIsRememberedUnderIsPublished(): void
     {

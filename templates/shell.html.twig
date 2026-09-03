@@ -14,17 +14,21 @@
    with no user, no routes and no nav sources still gets a branded, navigable
    shell, and the ring gate is the test of it.
 
-   ON THE data-controller ATTRIBUTES: the shell ships the markup and the host
-   ships the behaviour, because a bundle cannot contribute importmap entries.
-   The names are the ones the host already uses, so its existing controllers
-   keep working unchanged; an installation with no such controllers gets inert
-   attributes and a shell that still renders. #}
+   ON THE data-controller ATTRIBUTES: the shell ships the markup AND the
+   behaviour. It used to ship only the markup, naming controllers the host was
+   expected to write — so on a fresh plant the theme toggle toggled nothing and
+   the collapse button collapsed nothing, which is furniture that looks operable
+   and is not. The controllers now live in this bundle's own assets/, are
+   enabled in the host's assets/controllers.json by Flex on install, and are
+   addressed by StimulusBundle's namespaced identifier for a UX package —
+   `uhifadhi--shell-module--<controller>`. Nothing is built and nothing is
+   copied into an application. #}
 {% extends '@UhifadhiShell/document.html.twig' %}
 
 {% block body %}
     <div class="shell">
         {% block shell_sidebar %}
-            <aside class="side" id="side" data-controller="sidebar">
+            <aside class="side" id="side" data-controller="uhifadhi--shell-module--sidebar">
                 <div class="side-top">
                     {% block shell_sidebar_brand %}
                         {%- set _brand = shell_brand() -%}
@@ -33,7 +37,7 @@
                             <b>{{ _brand.name|upper }}</b>
                         </a>
                     {% endblock %}
-                    <button class="collapse-btn" type="button" data-action="sidebar#toggle"
+                    <button class="collapse-btn" type="button" data-action="uhifadhi--shell-module--sidebar#toggle"
                             title="Collapse sidebar" aria-label="Collapse sidebar">{{ ux_icon('shell:chevrons-left') }}</button>
                 </div>
 
@@ -71,7 +75,8 @@
                                needs a viewer, and the shell must render on an
                                installation that has not grown a team yet. #}
                             {% block shell_topbar_actions %}
-                                <button class="tb-icon" type="button" data-controller="theme" data-action="theme#toggle"
+                                <button class="tb-icon" type="button" data-controller="uhifadhi--shell-module--theme"
+                                        data-action="uhifadhi--shell-module--theme#toggle"
                                         title="Toggle theme" aria-label="Toggle theme">{{ ux_icon('shell:sun') }}</button>
                             {% endblock %}
                         </span>

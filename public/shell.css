@@ -134,7 +134,15 @@ body::before {
     z-index: 30;
     box-sizing: border-box;
 }
-.side.rail { width: 66px; }
+/* THE COLLAPSED RAIL is drawn from either of two classes, and the second one is
+   the interesting one. `.side.rail` is the sidebar's own state, set by its
+   controller on click. `html.shell-rail` is the same fact on the one element
+   that exists BEFORE the sidebar is parsed, set by the document's inline
+   pre-paint script — without it a remembered rail is applied when the
+   controller connects, and a 236px sidebar visibly jumps to 66px on every load.
+   Every rule below therefore reads from both, and the controller keeps them in
+   step. */
+.side.rail, html.shell-rail .side { width: 66px; }
 .side-top { display: flex; align-items: center; gap: 8px; padding: 2px 2px 16px; }
 .side .brand { display: flex; align-items: center; gap: 10px; flex: 1; padding: 4px; text-decoration: none; color: rgb(var(--c-tx)); overflow: hidden; }
 .side .brand .brandmark { width: 32px; height: 32px; flex-shrink: 0; display: block; }
@@ -176,14 +184,14 @@ body::before {
 .side .row svg { width: 17px; height: 17px; flex-shrink: 0; }
 
 /* The collapsed rail: labels have nowhere to go, so they go. */
-.side.rail .brand b,
-.side.rail .nav-item span,
-.side.rail .row span { display: none; }
-.side.rail .side-top { flex-direction: column; gap: 10px; }
-.side.rail .collapse-btn svg { transform: rotate(180deg); }
-.side.rail .nav-item,
-.side.rail .row { justify-content: center; padding-left: 0; padding-right: 0; gap: 0; }
-.side.rail .brand { justify-content: center; padding-left: 0; padding-right: 0; }
+:is(.side.rail, html.shell-rail .side) .brand b,
+:is(.side.rail, html.shell-rail .side) .nav-item span,
+:is(.side.rail, html.shell-rail .side) .row span { display: none; }
+:is(.side.rail, html.shell-rail .side) .side-top { flex-direction: column; gap: 10px; }
+:is(.side.rail, html.shell-rail .side) .collapse-btn svg { transform: rotate(180deg); }
+:is(.side.rail, html.shell-rail .side) .nav-item,
+:is(.side.rail, html.shell-rail .side) .row { justify-content: center; padding-left: 0; padding-right: 0; gap: 0; }
+:is(.side.rail, html.shell-rail .side) .brand { justify-content: center; padding-left: 0; padding-right: 0; }
 
 .main { flex: 1; min-width: 0; position: relative; display: flex; flex-direction: column; }
 .main > .page { width: 100%; }
@@ -223,8 +231,8 @@ body::before {
     padding: 10px 12px 3px; white-space: nowrap; overflow: hidden;
 }
 .nav .nav-hd:first-child { padding-top: 2px; }
-.side.rail .nav-hd,
-.side.rail .ntree { display: none; }
+:is(.side.rail, html.shell-rail .side) .nav-hd,
+:is(.side.rail, html.shell-rail .side) .ntree { display: none; }
 
 .ntree { position: relative; margin: 1px 0 4px; }
 .ntree a, .ntree span.nta, .ntree span.ntt {
@@ -274,7 +282,7 @@ body::before {
 .nav .nav-item.closed > .chev,
 .nav .nta.closed > .chev,
 .nav .ntt.closed > .chev { transform: rotate(-90deg); }
-.side.rail .nav .chev { display: none; }
+:is(.side.rail, html.shell-rail .side) .nav .chev { display: none; }
 
 /* ==================== THE PAGE FRAME ==================== */
 .page { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 26px 22px 90px; width: 100%; box-sizing: border-box; }

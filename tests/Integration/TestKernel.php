@@ -19,6 +19,7 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\UX\Icons\UXIconsBundle;
+use Symfony\UX\StimulusBundle\StimulusBundle;
 use Uhifadhi\Shell\UhifadhiShellBundle;
 
 /**
@@ -42,7 +43,21 @@ class TestKernel extends Kernel
         yield new FrameworkBundle();
         yield new TwigBundle();
         yield new UXIconsBundle();
+        yield new StimulusBundle();
         yield new UhifadhiShellBundle();
+    }
+
+    /**
+     * THE STAND-IN HOST'S PROJECT DIRECTORY — a Flex-installed application's
+     * asset side and nothing else: an importmap with the `app` entrypoint and
+     * the file it points at. The shell's document renders that importmap, so
+     * the suite needs an application that has one; pointing the kernel at a
+     * fixture directory is how it gets one without this repository growing an
+     * importmap of its own, which a shipped bundle has no business carrying.
+     */
+    public function getProjectDir(): string
+    {
+        return __DIR__.'/Fixtures/app';
     }
 
     protected function configureContainer(ContainerConfigurator $container): void
@@ -54,6 +69,13 @@ class TestKernel extends Kernel
             'http_method_override' => false,
             'handle_all_throwables' => true,
             'php_errors' => ['log' => true],
+            // The asset side of a Flex-installed application: the stand-in
+            // host's own assets/, plus — prepended by the bundle itself, not
+            // named here — the shell's controllers under
+            // @uhifadhi/shell-module. That prepend is the thing under test.
+            'asset_mapper' => [
+                'paths' => [$this->getProjectDir().'/assets' => ''],
+            ],
         ]);
 
         // strict_variables ON, in the bundle's own test host, because the shell

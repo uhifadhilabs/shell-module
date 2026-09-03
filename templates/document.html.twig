@@ -18,6 +18,14 @@
     {%- set _page %}{% block title %}{% endblock %}{% endset -%}
     <title>{{ shell_title(_page) }}</title>
 
+    {# THE TAB ICON. Declared here rather than left to the host, because a
+       document that declares none is a document every browser asks
+       `/favicon.ico` for — and a fresh plant answered that with a 404 on its
+       first minute. It is the full masterbrand mark as a single SVG: one file
+       at every size, both palettes inside it. A deployment with a brand of its
+       own overrides `stylesheets` and links its own after this one. #}
+    <link rel="icon" type="image/svg+xml" href="{{ asset('bundles/uhifadhishell/favicon.svg') }}">
+
     {# THE THEME, BEFORE THE FIRST PAINT — not by a controller that connects
        after the first frame. A visitor who chose dark must never be shown a
        white page first, and "system" is a real third answer rather than a
@@ -42,6 +50,15 @@
                 var dark = choice === 'dark' || (choice === 'system'
                     && window.matchMedia('(prefers-color-scheme: dark)').matches);
                 document.documentElement.classList.toggle('dark', dark);
+
+                // THE SIDEBAR'S WIDTH IS THE SAME KIND OF FACT, and it is
+                // resolved here for the same reason: a remembered rail applied
+                // when the sidebar's controller connects is a 236px sidebar
+                // that jumps to 66px after the first frame, on every load.
+                // <html> is the only element that exists this early, so the
+                // stylesheet draws the rail from a class on it as well.
+                document.documentElement.classList.toggle('shell-rail',
+                    localStorage.getItem('shell-sidebar') === 'rail');
             } catch (e) { /* a browser that refuses to remember still gets a themed page */ }
         })();
     </script>
@@ -53,9 +70,18 @@
     {% endblock %}
 
     {% block javascripts %}
-        {# Bundles cannot contribute importmap entries, so the shell declares the
-           socket and the host fills it with its own importmap line. #}
-        {% block importmap %}{% endblock %}
+        {# THE IMPORTMAP, RENDERED BY DEFAULT — and this is a change of mind the
+           bug report earned. The socket was declared empty on the reasoning
+           that a bundle cannot contribute an importmap entry. True, and beside
+           the point: a shell whose own controls need Stimulus and whose own
+           document never emits the importmap ships furniture that cannot work,
+           which is precisely what a fresh plant had. The shell requires
+           symfony/asset-mapper and symfony/stimulus-bundle, so `app` is the
+           entrypoint every installation of it has.
+
+           A host with a different entrypoint fills this socket with its own
+           line; the socket is unchanged and so is its name. #}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
     {% endblock %}
 </head>
 {# `shell_body_attributes` — the one variable, rather than block, in the whole

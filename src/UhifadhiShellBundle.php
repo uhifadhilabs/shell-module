@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Uhifadhi\Shell;
 
+use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -70,6 +71,34 @@ final class UhifadhiShellBundle extends AbstractBundle
     public const string STYLESHEET = 'bundles/uhifadhishell/shell.css';
 
     /**
+     * The tab icon: the full masterbrand mark, as one SVG at every size.
+     *
+     * Shipped rather than left to the host because a document that declares no
+     * icon is a document every browser asks `/favicon.ico` for, and a fresh
+     * plant answered that with a 404 in its first minute. A deployment with a
+     * brand of its own replaces the link through the head's sockets.
+     */
+    public const string FAVICON = 'bundles/uhifadhishell/favicon.svg';
+
+    /**
+     * The AssetMapper namespace this bundle's assets/ directory is mapped to.
+     *
+     * It is the npm-style form of the composer package name, and it has to be:
+     * Flex keys assets/controllers.json by '@'.<composer package name>, and
+     * StimulusBundle resolves that key back to this directory. A different name
+     * here is a controller the host cannot find.
+     */
+    public const string ASSET_NAMESPACE = '@uhifadhi/shell-module';
+
+    /**
+     * The prefix every one of this bundle's Stimulus controllers is addressed
+     * by in a template — StimulusBundle's own normalisation of the namespace
+     * above ('@' dropped, '/' and '_' to '-'), so `theme` is reached as
+     * `uhifadhi--shell-module--theme`.
+     */
+    public const string CONTROLLER_PREFIX = 'uhifadhi--shell-module--';
+
+    /**
      * The tag a bundle carries to contribute a NAV SECTION to the shell.
      *
      * Published as a constant because the shell is the end that COLLECTS it: a
@@ -104,15 +133,36 @@ final class UhifadhiShellBundle extends AbstractBundle
      */
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        if (!$builder->hasExtension('ux_icons')) {
-            return;
+        if ($builder->hasExtension('ux_icons')) {
+            $container->extension('ux_icons', [
+                'icon_sets' => [
+                    'shell' => ['path' => \dirname(__DIR__).'/assets/icons/shell'],
+                ],
+            ]);
         }
 
-        $container->extension('ux_icons', [
-            'icon_sets' => [
-                'shell' => ['path' => \dirname(__DIR__).'/assets/icons/shell'],
-            ],
-        ]);
+        // THE FURNITURE'S BEHAVIOUR, shipped with the furniture.
+        //
+        // The shell's own controls — the theme toggle, the sidebar's collapse,
+        // the tree's carets — were markup here and behaviour in the host the
+        // shell was extracted from, so on a fresh plant every one of them was
+        // dead. A bundle contributes no importmap entry, but it does contribute
+        // an AssetMapper path and a `symfony.controllers` block in
+        // assets/package.json, which is how every symfony/ux package ships a
+        // Stimulus controller (see TurboExtension::prepend). Flex writes the
+        // host's assets/controllers.json on install; nothing is built.
+        //
+        // The bundle's public/ dir needs none of this: AssetMapper exposes it
+        // as `bundles/uhifadhishell/` on its own.
+        if ($builder->hasExtension('framework') && interface_exists(AssetMapperInterface::class)) {
+            $container->extension('framework', [
+                'asset_mapper' => [
+                    'paths' => [
+                        \dirname(__DIR__).'/assets' => self::ASSET_NAMESPACE,
+                    ],
+                ],
+            ]);
+        }
     }
 
     /**

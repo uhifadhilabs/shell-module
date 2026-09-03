@@ -138,7 +138,7 @@ final class PageFrameTest extends ContractTestCase
     {
         $html = $this->render(self::PAGE);
 
-        $shell = strpos($html, 'uhifadhishell/shell.css');
+        $shell = strpos($html, 'uhifadhishell/shell');
         $module = strpos($html, 'fixture-module.css');
 
         self::assertIsInt($shell);
@@ -185,7 +185,7 @@ final class PageFrameTest extends ContractTestCase
 
         self::assertCount(0, $crawler->filter('aside.side'));
         self::assertCount(1, $crawler->filter('html'));
-        self::assertStringContainsString('shell.css', $this->render('@fixtures/bare_document_page.html.twig'));
+        self::assertStringContainsString('uhifadhishell/shell', $this->render('@fixtures/bare_document_page.html.twig'));
     }
 
     /**
