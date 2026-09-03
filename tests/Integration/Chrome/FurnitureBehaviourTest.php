@@ -123,6 +123,25 @@ final class FurnitureBehaviourTest extends ContractTestCase
     }
 
     /**
+     * THE ONE KEYWORD THAT IS NOT DECORATION. Flex reads a package's
+     * assets/package.json only if the composer package declares the keyword
+     * `symfony-ux` (PackageJsonSynchronizer::resolvePackageJson), so without it
+     * the controllers below are shipped, mapped, named in the templates — and
+     * never written into the host's assets/controllers.json, which means never
+     * loaded. Everything installs; nothing binds. This was found by planting the
+     * package, not by reading it.
+     */
+    public function testThePackageIsMarkedAsAUxPackageOrFlexWillNotLookInside(): void
+    {
+        $composer = json_decode((string) file_get_contents(\dirname(__DIR__, 3).'/composer.json'), true, 512, \JSON_THROW_ON_ERROR);
+        self::assertIsArray($composer);
+        $keywords = $composer['keywords'] ?? null;
+        self::assertIsArray($keywords);
+
+        self::assertContains('symfony-ux', $keywords);
+    }
+
+    /**
      * THE PACKAGE DECLARES WHAT THE MARKUP CALLS. `assets/package.json` is the
      * UX contract: Flex reads it on install and writes each controller into the
      * host's assets/controllers.json, and StimulusBundle reads it back to find

@@ -3,6 +3,7 @@
     "description": "The shell: what an uhifadhi installation looks like — the document, the page frame, the navigation seams and the theme every module's pages mount into.",
     "type": "symfony-bundle",
     "keywords": [
+        "symfony-ux",
         "layout",
         "shell",
         "navigation",
