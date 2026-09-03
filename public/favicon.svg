@@ -7,9 +7,9 @@
          THE PAINT IS WRITTEN IN, and this is the one place in the platform where
          the brand colours are restated. A favicon is fetched on its own — no
          shell.css, no `html.dark`, no tokens reach it — so the two palettes are
-         here as literals, and they are the literals --c-acc and --c-cv resolve
-         to: deep jade on bone paper, mint on the night canvas. Anything else
-         would be a second brand after dark. -->
+         here as literals, and they are the literals the c-acc and c-cv tokens
+         resolve to: deep jade on bone paper, mint on the night canvas.
+         Anything else would be a second brand after dark. -->
     <style>
         .bm-tile { fill: #0f8a68; }
         .bm-child { fill: #f3f2eb; }

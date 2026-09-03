@@ -108,6 +108,36 @@ final class FaviconTest extends ContractTestCase
         self::assertStringNotContainsString('var(--', $favicon, 'Custom properties do not reach a document the shell does not own.');
     }
 
+    /**
+     * IT MUST PARSE. An SVG is served as XML and read by an XML parser, which
+     * is unforgiving in ways HTML never is — a `--` inside a comment is enough
+     * to make a browser throw the whole document away and render no icon at
+     * all. Nothing about the file looks wrong when that happens; the tab is
+     * just empty. So the shipped asset is put through a parser here.
+     */
+    public function testTheShippedAssetIsWellFormedXml(): void
+    {
+        $previous = libxml_use_internal_errors(true);
+        libxml_clear_errors();
+
+        try {
+            $document = new \DOMDocument();
+            $loaded = $document->load(self::faviconPath());
+            $errors = array_map(
+                static fn (\LibXMLError $error): string => \sprintf('line %d: %s', $error->line, trim($error->message)),
+                libxml_get_errors(),
+            );
+        } finally {
+            libxml_clear_errors();
+            libxml_use_internal_errors($previous);
+        }
+
+        self::assertSame([], $errors, 'The favicon must parse as XML; a browser that cannot parse it renders nothing.');
+        self::assertTrue($loaded);
+        self::assertNotNull($document->documentElement);
+        self::assertSame('svg', $document->documentElement->nodeName);
+    }
+
     private static function favicon(): string
     {
         $svg = file_get_contents(self::faviconPath());
