@@ -409,6 +409,32 @@ h2.zone::after { content: ""; flex: 1; height: 1px; background: var(--c-ln2); }
 .shell-empty { padding: 44px 32px; text-align: center; }
 .shell-empty p { font-size: 13px; margin: 0; }
 
+/* ==================== THE WELCOME PAGE ====================
+   The one screen a fresh installation has before it has anything else. It is
+   prose, so it needs a measure and a reading size, and neither belongs to the
+   page frame: a frame that set a line length would set it for every module
+   page, including the ones that are tables and maps. These rules are scoped to
+   this page's own wrapper and are the only place in this sheet that styles a
+   paragraph of text. */
+.welcome p { font-size: 14.5px; line-height: 1.7; color: rgb(var(--c-fog)); max-width: 78ch; margin: 0 0 14px; }
+.welcome p b { color: rgb(var(--c-tx)); font-weight: 700; }
+.welcome .wlead { margin-top: 22px; }
+.welcome .wcard { padding: 18px 18px 16px; }
+.welcome .wcard p { margin: 0; max-width: none; font-size: 13.5px; }
+.welcome .wcard-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.welcome .wpkg { font-size: 13px; font-weight: 700; color: rgb(var(--c-tx)); }
+.welcome code { font-size: 12.5px; color: rgb(var(--c-tx)); background: rgb(var(--c-raised)); border-radius: 5px; padding: 2px 6px; }
+.welcome .wpre {
+    font-size: 13px;
+    color: rgb(var(--c-tx));
+    background: rgb(var(--c-raised));
+    border: 1px solid var(--c-ln);
+    border-radius: 10px;
+    padding: 13px 16px;
+    margin: 0 0 16px;
+    overflow-x: auto;
+}
+
 @media (max-width: 640px) {
     .side { position: fixed; transform: translateX(-100%); }
     .page { padding-left: 16px; padding-right: 16px; }

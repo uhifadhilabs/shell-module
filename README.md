@@ -434,6 +434,7 @@ because this is precisely the kind of ruling that gets quietly reversed by one
 | The seams | `src/Contract/` |
 | The shapes that cross them | `src/Model/` |
 | The frames and partials | `templates/` |
+| The welcome page a fresh plant serves at `/` | `templates/welcome.html.twig` |
 | The token set and the shell's own CSS | `public/shell.css` |
 | The four glyphs its chrome draws with | `assets/icons/shell/` |
 | Test host app | `tests/Integration/TestKernel.php` |
@@ -476,7 +477,32 @@ wordmark, an empty sidebar, the top bar with its theme toggle, the page frame,
 and whatever the page put in `shell_page`. Nothing is a placeholder and nothing
 is a stub.
 
-This is a boundary, not a courtesy. The shell's own furniture asks for no viewer:
+**And it has one page of its own**, `@UhifadhiShell/welcome.html.twig` — the
+screen a plant serves at `/` before it has grown a home screen. Until it
+existed, an installation of the seam and the shell answered `/` with Symfony's
+welcome-404: a correct installation looking like a broken one, on its first
+minute. The page says what the two installed packages are, why the sidebar
+beside it is empty, and that `composer require uhifadhi/<name>-module` is what
+fills it.
+
+This is a template, not a route — the shell still owns no URLs, and
+`tests/Unit/BoundaryTest` still fails the build if it acquires one. The
+application points a URL at it, which the project skeleton does in its own
+`config/routes/shell.yaml`:
+
+```yaml
+# config/routes/shell.yaml (your application)
+welcome:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        template: '@UhifadhiShell/welcome.html.twig'
+```
+
+Delete that file, or point it at your own template, the day the installation has
+a real home screen. Nothing in the shell depends on it.
+
+The rest is a boundary, not a courtesy. The shell's own furniture asks for no viewer:
 it never touches `app.user`, never calls `is_granted`, and generates the brand's
 home link only if the configured route actually exists, falling back to `/`. The
 account chrome — the user pill, sign-out, an impersonation banner — is the host's,

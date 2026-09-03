@@ -1,0 +1,96 @@
+{# THE PAGE A FRESH INSTALLATION HAS BEFORE IT HAS ANYTHING ELSE.
+
+   A plant is the seam and the shell and nothing else: no modules, no routes, no
+   controllers, so nothing answers `/` and Symfony shows its welcome-404. That
+   is a correct installation looking like a broken one, and the first thing a
+   new operator sees.
+
+   The shell cannot fix it with a route — it owns no URLs, and the boundary test
+   fails the build the day it does. It can ship the PAGE. The application points
+   a URL at it in its own config/routes/shell.yaml, using Symfony's
+   TemplateController, and owns both the URL and the decision to replace this
+   with a real home screen later.
+
+   THIS TEMPLATE NAMES NO MODULE, and the boundary sweep reads it like every
+   other file here. It names two PACKAGES — the seam and the shell — because
+   those are the two that are actually installed, and "the seam" is a word that
+   means nothing to somebody on their first day.
+
+   It types no furniture: it fills sockets, like any module page should. #}
+{% extends '@UhifadhiShell/page.html.twig' %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block shell_page_title %}A fresh uhifadhi installation{% endblock %}
+{% block shell_page_subtitle %}
+    Two packages are installed and nothing else. This page says what they are,
+    why the sidebar beside it is empty, and what to do next.
+{% endblock %}
+
+{% block shell_page %}
+    <div class="welcome">
+        <h2 class="zone">What is installed</h2>
+
+        <div class="grid g2">
+            <div class="c wcard">
+                <div class="wcard-head">
+                    <span class="mono wpkg">uhifadhi/seam-module</span>
+                    <span class="chip acc">the seam</span>
+                </div>
+                <p>Where every module registers. It keeps the catalogue of what
+                   this installation can do, the areas that work is organised
+                   by, and the permissions that decide who sees which of it.
+                   Nothing draws anything here — it is the ledger the rest of
+                   the platform reads.</p>
+            </div>
+
+            <div class="c wcard">
+                <div class="wcard-head">
+                    <span class="mono wpkg">uhifadhi/shell-module</span>
+                    <span class="chip acc">the shell</span>
+                </div>
+                <p>The frame around this very page: the sidebar on the left, the
+                   bar across the top, the page furniture holding this text, and
+                   the theme all three are drawn in. It remembers nothing and
+                   knows no module by name; it draws what it is handed.</p>
+            </div>
+        </div>
+
+        <p class="wlead">Between them they are the whole sentence the platform
+           is built on: <b>a module registers with the seam and renders in the
+           shell.</b> Everything a deployment can actually do arrives as a
+           module on top of these two.</p>
+
+        <h2 class="zone">Why the sidebar is empty</h2>
+
+        <p>Because no modules are installed yet. The sidebar has no rows and the
+           module grid has no cards for the same reason, and neither is a
+           placeholder waiting to be filled in by hand: both are drawn live from
+           what is installed, so an installation with nothing in it honestly
+           shows nothing. Zero of everything is a working installation, not a
+           half-finished one.</p>
+
+        <h2 class="zone">What to do next</h2>
+
+        <p>Install a module. Each one is an ordinary Composer package named
+           <code class="mono">uhifadhi/&lt;name&gt;-module</code>:</p>
+
+        <pre class="wpre mono">composer require uhifadhi/&lt;name&gt;-module</pre>
+
+        <p>Symfony Flex registers the bundle and writes its configuration, the
+           module registers itself with the seam, and its rows appear in the
+           sidebar the next time you load a page. There is no list to edit and
+           no menu to wire up. Removing the package takes its rows away again
+           the same day.</p>
+
+        <h2 class="zone">About this page</h2>
+
+        <p>It is not part of the shell's furniture and it is not a route the
+           shell owns — the shell ships no routes at all. This page is at
+           <code class="mono">/</code> because your application's
+           <code class="mono">config/routes/shell.yaml</code> points that URL at
+           the template, and it is meant to be replaced: the day this
+           installation grows a real home screen, change that file to name it
+           and this page stops being reachable.</p>
+    </div>
+{% endblock %}
