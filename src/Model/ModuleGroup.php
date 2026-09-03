@@ -28,7 +28,7 @@ namespace Uhifadhi\Shell\Model;
 final class ModuleGroup
 {
     /**
-     * @param non-empty-string $label      the category heading
+     * @param string           $label      the category heading
      * @param list<ModuleCard> $cards      its tiles, in the order they should render
      * @param string|null      $department the leading department's name, if one leads
      */

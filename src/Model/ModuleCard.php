@@ -30,11 +30,11 @@ namespace Uhifadhi\Shell\Model;
 final class ModuleCard
 {
     /**
-     * @param non-empty-string $slug   the catalogue identity, for the host's use
-     * @param non-empty-string $title  the tile's name
-     * @param string           $status the seam's word: "live", "template", anything else
-     * @param string           $source where its data comes from, as a stamp
-     * @param string|null      $url    the module's entry page, or null if it has none yet
+     * @param string      $slug   the catalogue identity, for the host's use
+     * @param string      $title  the tile's name
+     * @param string      $status the seam's word: "live", "template", anything else
+     * @param string      $source where its data comes from, as a stamp
+     * @param string|null $url    the module's entry page, or null if it has none yet
      */
     public function __construct(
         public string $slug,

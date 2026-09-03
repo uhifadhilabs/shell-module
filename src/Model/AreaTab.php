@@ -27,9 +27,9 @@ namespace Uhifadhi\Shell\Model;
 final class AreaTab
 {
     /**
-     * @param non-empty-string $label   what the tab says
-     * @param non-empty-string $url     where it goes; withhold the tab instead of nulling this
-     * @param bool             $current whether this is the screen the viewer is on
+     * @param string $label   what the tab says
+     * @param string $url     where it goes; withhold the tab instead of nulling this
+     * @param bool   $current whether this is the screen the viewer is on
      */
     public function __construct(
         public string $label,

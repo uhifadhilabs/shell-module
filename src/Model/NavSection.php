@@ -24,9 +24,9 @@ namespace Uhifadhi\Shell\Model;
 final class NavSection
 {
     /**
-     * @param non-empty-string $label    the section heading
-     * @param list<NavItem>    $items    its rows, in the order they should render
-     * @param int              $position lower sorts first; ties keep registration order
+     * @param string        $label    the section heading
+     * @param list<NavItem> $items    its rows, in the order they should render
+     * @param int           $position lower sorts first; ties keep registration order
      */
     public function __construct(
         public string $label,
