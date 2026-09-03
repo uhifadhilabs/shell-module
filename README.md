@@ -4,34 +4,33 @@ The **shell**: the visible crown of an uhifadhi installation — the document, t
 page frame, the navigation seams and the theme every module's pages mount into.
 A [uhifadhi](https://github.com/uhifadhilabs) platform bundle.
 
-> **Status: the shell is here and it renders.** The frames, the seams, the theme
-> and the catalogue picture were extracted out of the
-> [uhifadhi](https://github.com/uhifadhilabs/uhifadhi) host against a contract
-> written before the move — 89 tests that named templates, blocks, tokens,
-> interfaces and service ids that did not exist yet. See [How this was
-> built](#how-this-was-built).
+> Installs with `composer require uhifadhi/shell-module`, registers via Flex,
+> and provides three page frames with twenty-three named blocks, two navigation
+> seams, a twenty-three token theme in light and dark, and the module grid.
+> Needs no database and no other uhifadhi package.
 
 ## Contents
 
-- [The shape](#the-shape)
-- [Charter](#charter)
-- [How this was built](#how-this-was-built)
-- [The socket contract](#the-socket-contract)
-  - [1. The named sockets](#1-the-named-sockets)
-  - [2. The nav seam](#2-the-nav-seam)
-  - [3. The area shell](#3-the-area-shell)
-  - [4. The theme contract](#4-the-theme-contract)
-  - [5. The module grid](#5-the-module-grid)
-- [Changing the contract](#changing-the-contract)
+- [The architecture](#the-architecture)
+- [What it owns](#what-it-owns)
+- [What it guarantees](#what-it-guarantees)
+  - [The named sockets](#the-named-sockets)
+  - [How a module fills them](#how-a-module-fills-them)
+  - [The nav seam](#the-nav-seam)
+  - [The area shell](#the-area-shell)
+  - [The theme](#the-theme)
+  - [The module grid](#the-module-grid)
+  - [Changing any of it](#changing-any-of-it)
 - [Boundaries: what the shell is not](#boundaries-what-the-shell-is-not)
-- [Why the shell does not require the seam](#why-the-shell-does-not-require-the-seam)
+  - [Why the shell does not require the seam](#why-the-shell-does-not-require-the-seam)
 - [What is here](#what-is-here)
 - [Installation](#installation)
+  - [What a fresh installation shows](#what-a-fresh-installation-shows)
 - [Configuration](#configuration)
 - [Development](#development)
 - [License](#license)
 
-## The shape
+## The architecture
 
 **Uhifadhi is one skeleton and a set of bundles.**
 [`uhifadhi/uhifadhi`](https://github.com/uhifadhilabs/uhifadhi) is the project
@@ -44,7 +43,7 @@ rosters — is a module.
 
 This is the package you can see.
 
-## Charter
+## What it owns
 
 **The shell shows; it does not carry.** It owns four things and no more:
 
@@ -57,6 +56,8 @@ This is the package you can see.
 - **The shared pictures** — the module grid and the cards it is made of: the
   drawings of answers composed elsewhere, which would otherwise be redrawn once
   per page that needs them.
+
+## What it guarantees
 
 **It is a contract, not a convention.** Block names, seam interfaces and theme
 tokens are a versioned, test-enforced API — Symfony-extension-point grade. This
@@ -79,29 +80,9 @@ later. A row in the sidebar and a card in the grid arrive as data.
 modules: the crown renders a sidebar with a brand and no rows, and a page. A
 layout that only works once the application is finished is not a layout.
 
-## How this was built
-
-The shell already existed, working, inside the host application:
-`templates/layout.html.twig`, the sidebar, the theme in `assets/styles/app.css`,
-the area tab strip, the module grid. This repository extracted it — and because
-this project is test-first, the specification was written *before* the move
-rather than after it: a suite naming templates, blocks, tokens, interfaces and
-service ids that did not exist yet, red by design, kept in a suite of its own so
-that "red by design" and "broken" could never be confused.
-
-The extraction landed, the suite went green, and the separation was deleted in
-the same commit — the contract now lives in `tests/Integration` beside
-everything else, because there is nothing left to keep apart.
-
-```bash
-composer check   # cs -> phpstan max -> the whole suite. CI gates on this.
-```
-
-## The socket contract
-
 Every row below is a test.
 
-### 1. The named sockets
+### The named sockets
 
 Twenty-three blocks, in three frames that inherit from one another. The list is
 typed out literally in `Integration/Sockets/BlockContractTest::contractV1()` and
@@ -147,7 +128,7 @@ sockets, and the reason the bundle exists.
 | `shell_page_title` | module — the `h1` |
 | `shell_page_subtitle` | module — optional, and *genuinely* optional: empty renders no element |
 | `shell_page_actions` | module — the buttons at the top right |
-| `shell_page_tabs` | module/host — defaults to the area shell (§3) |
+| `shell_page_tabs` | module/host — defaults to the area shell |
 | `shell_flashes` | module — overridable, but the default is right and an override is a bug report |
 | `shell_page` | module — **the body**, the one socket a page must fill |
 
@@ -164,7 +145,93 @@ socket leaves no empty element behind, that flashes are rendered once by the
 frame so every module says "saved" the same way, and that the crown's stylesheet
 always lands before a module's.
 
-### 2. The nav seam
+### How a module fills them
+
+The whole point, in the shortest page that works. A module bundle's page extends
+the frame, fills sockets, and types no furniture:
+
+```twig
+{% extends '@UhifadhiShell/page.html.twig' %}
+
+{% block shell_page %}
+    <p>Everything else — the sidebar, the top bar, the brand, the tab strip of
+       whatever place this page is inside, the flashes, the footer — is already
+       around this paragraph.</p>
+{% endblock %}
+```
+
+That is a complete, correct platform page. `shell_page` is the only socket a
+page **must** fill. A fuller one adds the parts it has and leaves out the parts
+it does not — an empty block renders no element, so there is nothing to pay for
+a subtitle you never wrote:
+
+```twig
+{% extends '@UhifadhiShell/page.html.twig' %}
+
+{% block title %}Sightings{% endblock %}
+
+{% block shell_breadcrumbs %}
+    <a href="{{ path('dashboard_index') }}">uhifadhi</a> /
+    <a href="{{ area_url }}">{{ area.name|lower }}</a> / sightings
+{% endblock %}
+
+{% block shell_page_title %}Sightings{% endblock %}
+{% block shell_page_subtitle %}Every record this month, by observer.{% endblock %}
+
+{% block shell_page_actions %}
+    <a class="cta" href="{{ path('sighting_new') }}">{{ ux_icon('lucide:plus') }}New</a>
+{% endblock %}
+
+{% block shell_page %}
+    {{ include('@Sightings/_table.html.twig') }}
+{% endblock %}
+```
+
+Four rules a module author needs and nothing else:
+
+**Do not write `<div class="page">`, a `.crumb`, a `.pghead` or a flash loop.**
+The frame owns all four. Every one of them was, at some point, copied into a
+module bundle from whichever host template was open at the time — which is the
+reason this package exists.
+
+**Your stylesheet goes after the shell's, and `parent()` is what puts it there.**
+
+```twig
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/sightings/sightings.css') }}">
+{% endblock %}
+```
+
+Call `parent()` **first**: your rules are written to override the shell's
+tokens and furniture, and a base that forgets it ships a page with no theme at
+all. Write your colours as `rgb(var(--c-acc))` and your dark rules as
+`html.dark .your-card { … }` — both are contract, and the theme test is what
+keeps them true. In `javascripts`, `parent()` goes **last** when a classic
+script must run before the deferred importmap.
+
+**You do not render the tab strip, and you do not have to.** If the page sits
+inside a place the host knows about, `shell_page_tabs` already shows that place's
+sibling screens, with the right one lit. A page outside any place says so by
+saying nothing:
+
+```twig
+{% block shell_page_tabs %}{% endblock %}
+```
+
+**Pick your rung.** A full-bleed screen — a map that reaches the edges, a split
+view — extends `@UhifadhiShell/shell.html.twig` and fills `content` directly:
+furniture, no `.page` wrapper, nothing to fight with negative margins. A print
+view or an export extends `@UhifadhiShell/document.html.twig` and fills `body`:
+no furniture at all, but still the theme, because a printed page with no tokens
+is black Times New Roman on white.
+
+To contribute a row to the sidebar, implement `NavigationSourceInterface` and
+tag it `shell.nav_section` — by hand, in your bundle's own extension, since a
+reusable bundle's services are not autoconfigured. Gating is yours: a row the
+viewer may not have is one you do not return.
+
+### The nav seam
 
 The crown owns the nav's **shape** — sections, rows, the location tree, carets,
 the current-row treatment, the collapsed rail. It owns none of its **content**.
@@ -178,7 +245,7 @@ Content arrives through `NavigationSourceInterface`, tagged `shell.nav_section`:
   belongs to nobody's area.
 
 Pinned by test: sections come out in declared-position order with registration as
-the tie-break; **gating is the source's job** (the crown holds no
+the tie-break; **gating is the source's job** (the shell holds no
 `AuthorizationChecker` and calls `is_granted` on nothing — a withheld row is
 absent, never hidden); a row with no destination renders inert rather than
 disappearing; folding is a class, never an omission (a caret that folds by not
@@ -186,7 +253,7 @@ rendering has nothing to reopen); **exactly one row is current** or the crown
 refuses; and the nav is read live per render, so switching a module off takes its
 row with it the same day.
 
-### 3. The area shell
+### The area shell
 
 The honest split, decided rather than fudged:
 
@@ -216,7 +283,7 @@ rule about lighting, and a bundle whose entire content is one Twig partial is a
 dependency, not a module. If an area module is ever created, it implements this
 source; it does not take the strip.
 
-### 4. The theme contract
+### The theme
 
 Twenty-three tokens, frozen the same way the blocks are, because a module's
 stylesheet is written against these names: `rgb(var(--c-p1))` in a patrol card is
@@ -254,7 +321,17 @@ Deliberately **not** here: the map chrome tokens (`--z-ink`, `--z-paper`,
 owns how a layer draws; a legend palette in the crown could not be changed
 without a crown release.
 
-### 5. The module grid
+**What ships here and what does not.** Tokens are values — custom properties the
+browser resolves — so the bundle ships them, in `public/shell.css`, along with
+plain CSS for the classes its own templates emit. It ships no utility classes:
+an application's Tailwind build maps these tokens into utilities (`bg-canvas`,
+`text-fog`, `border-line`) in its own `app.css`, which is where a build-time
+concern belongs. That file reads `rgb(var(--c-cv))` at runtime, so it keeps
+working as long as this sheet lands first — which the frame guarantees and a
+test enforces. A bundle that shipped its theme any other way would only theme
+hosts that had the right build.
+
+### The module grid
 
 **The ruling: the crown claims the picture, not the grouping, not the URL, and
 not the customize screen.** The seam declined the grid and named the shell as
@@ -280,7 +357,7 @@ test splits it:
   the first one would end "the layout renders from a fixture with no database".
   A test greps the templates for `method="post"` and `csrf_token`.
 
-## Changing the contract
+### Changing any of it
 
 The sockets and the tokens are a public API. The policy is short, and it is
 enforced by the frozen lists refusing to agree with anything else:
@@ -305,7 +382,7 @@ dependency, no migrations, no controllers and no routes**, and
 named by technical kind. `templates/` is not an exception to that rule: it is not
 a domain folder, it is this bundle's entire subject.
 
-## Why the shell does not require the seam
+### Why the shell does not require the seam
 
 This is the ruling worth arguing, because the obvious defence runs the other way.
 
@@ -375,6 +452,23 @@ $services->alias('shell.area_shell_source', App\Shell\AreaShell::class);
 {% block shell_page_title %}Zones{% endblock %}
 {% block shell_page %}…{% endblock %}
 ```
+
+### What a fresh installation shows
+
+Before a host has implemented either seam — and before it has a user, a
+security bundle or a single route — the shell still renders: the brand tile and
+wordmark, an empty sidebar, the top bar with its theme toggle, the page frame,
+and whatever the page put in `shell_page`. Nothing is a placeholder and nothing
+is a stub.
+
+This is a boundary, not a courtesy. The shell's own furniture asks for no viewer:
+it never touches `app.user`, never calls `is_granted`, and generates the brand's
+home link only if the configured route actually exists, falling back to `/`. The
+account chrome — the user pill, sign-out, an impersonation banner — is the host's,
+through `shell_topbar_actions` and `shell_banner`, because those are the sockets
+whose content needs to know who is signed in. A shell that reached for a viewer
+would fail on every installation that has not grown a team yet, which is every
+installation on its first day.
 
 ## Configuration
 
