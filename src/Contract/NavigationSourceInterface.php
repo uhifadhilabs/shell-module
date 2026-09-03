@@ -19,18 +19,18 @@ use Uhifadhi\Shell\UhifadhiShellBundle;
 /**
  * WHERE THE SIDEBAR'S CONTENT COMES FROM.
  *
- * The crown owns the nav's SHAPE — sections, rows, the location tree, carets,
+ * The shell owns the nav's SHAPE — sections, rows, the location tree, carets,
  * the current-row treatment, the collapsed rail — and none of its CONTENT.
  * Content arrives here, from whoever knows something worth putting there:
  *
- *   - the HOST implements one, and that is where domain data enters the crown.
+ *   - the HOST implements one, and that is where domain data enters the shell.
  *     It has the areas, the viewer, the permission voters and the module seam's
  *     per-area ledger; folding those four into "these rows, in this order" is a
  *     reading for a person on a page, and it is the host's job.
  *   - a MODULE BUNDLE may implement one too, for the rare platform-wide row
  *     that belongs to nobody's area.
  *
- * GATING IS YOURS, NOT THE CROWN'S. The shell holds no authorization service
+ * GATING IS YOURS, NOT THE SHELL'S. The shell holds no authorization service
  * and asks nothing about the viewer. A row the viewer may not have is simply
  * not in what you return — there is no "hidden" flag, because a hidden row is a
  * row that leaks its existence to whoever reads the HTML.

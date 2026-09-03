@@ -19,10 +19,10 @@ use Uhifadhi\Shell\Contract\AreaShellSourceInterface;
  * A host's answer to "which sibling screens does the thing I am currently
  * looking at have, and which one am I on".
  *
- * Note the shape of the question: the crown does not pass an area, because it
+ * Note the shape of the question: the shell does not pass an area, because it
  * does not know what an area is and has no entity to pass. The source resolves
  * the current request itself — which the host is already doing in
- * SidebarRuntime, and which keeps the area's type out of the crown entirely.
+ * SidebarRuntime, and which keeps the area's type out of the shell entirely.
  */
 final class FixtureAreaShellSource implements AreaShellSourceInterface
 {

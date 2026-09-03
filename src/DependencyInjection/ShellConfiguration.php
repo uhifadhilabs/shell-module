@@ -17,7 +17,7 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 /**
- * The bundle's semantic configuration — how a host configures the crown in
+ * The bundle's semantic configuration — how a host configures the shell in
  * config/packages/shell.yaml:
  *
  *   shell:
@@ -43,7 +43,7 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
  */
 final class ShellConfiguration
 {
-    /** The themes the crown ships. Both first-class; neither is a variant of the other. */
+    /** The themes the shell ships. Both first-class; neither is a variant of the other. */
     public const array THEMES = ['light', 'dark', 'system'];
 
     public static function define(NodeDefinition|ArrayNodeDefinition $root): void

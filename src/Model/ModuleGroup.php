@@ -18,8 +18,8 @@ namespace Uhifadhi\Shell\Model;
  *
  * WHICH cards land in which group, in which order, and which department is
  * said to lead one, is a reading of the catalogue for a particular viewer on a
- * particular area — three things the crown does not have and must not acquire.
- * Whoever has them composes this; the crown draws it.
+ * particular area — three things the shell does not have and must not acquire.
+ * Whoever has them composes this; the shell draws it.
  *
  * `department` is a LENS, never a gate: it says who leads a body of work, and
  * the marker renders only when somebody actually does. A marker on every group

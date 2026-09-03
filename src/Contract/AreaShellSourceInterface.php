@@ -18,26 +18,26 @@ use Uhifadhi\Shell\Model\AreaTab;
 /**
  * WHERE THE VIEWER IS, AND WHICH SIBLING SCREENS IT HAS.
  *
- * Note the shape of the question: the crown passes nothing. It does not know
+ * Note the shape of the question: the shell passes nothing. It does not know
  * what an area is and has no entity to hand over, so the source resolves the
  * current request itself — which the host is already doing anyway, and which
- * keeps the area's type out of the crown entirely.
+ * keeps the area's type out of the shell entirely.
  *
- * The crown owns that sibling screens are an underlined strip, that the strip
+ * The shell owns that sibling screens are an underlined strip, that the strip
  * sits between the page head and the body, that exactly one tab is lit, that a
  * tab the viewer may not have is ABSENT rather than disabled, and that one tab
  * is no strip at all. It owns not one tab's name: which screens a place has is
- * the host's model, and a crown carrying that list would need a release every
+ * the host's model, and a shell carrying that list would need a release every
  * time the host grew a screen.
  *
- * A host points the crown at its implementation by aliasing the id the crown
+ * A host points the shell at its implementation by aliasing the id the shell
  * looks for — an ALIAS, not a tagged collection, because two things claiming to
  * know where you are is exactly the disagreement this bundle exists to prevent:
  *
  *     $services->alias('shell.area_shell_source', App\Shell\AreaShell::class);
  *
  * The alias is OPTIONAL. An installation that has no such places at all — a
- * freshly planted seed — simply does not declare it, and the crown renders
+ * fresh installation — simply does not declare it, and the shell renders
  * pages with no strip rather than refusing to boot.
  */
 interface AreaShellSourceInterface
@@ -62,7 +62,7 @@ interface AreaShellSourceInterface
      * one question would keep them in step by hand.
      *
      * Null when the viewer is not inside anything — a settings screen, a sign-in
-     * page, an installation with no places yet. The crown then composes the
+     * page, an installation with no places yet. The shell then composes the
      * title out of what it does have.
      */
     public function place(): ?string;

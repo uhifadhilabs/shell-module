@@ -16,11 +16,11 @@ namespace Uhifadhi\Shell\Model;
 /**
  * A ROW IN THE SIDEBAR, and possibly a branch of it.
  *
- * A value object on purpose, and the reason the crown can draw the seam's
+ * A value object on purpose, and the reason the shell can draw the seam's
  * answers without depending on the seam: there is nothing on this class to
  * branch on that is not also on every other row. The moment a domain entity is
  * in scope inside a Twig file, somebody writes `{% if row.entity.slug == … %}`
- * and the module-blindness the tree promises is gone.
+ * and the module-blindness the platform promises is gone.
  *
  * `url` is nullable and that is a product decision, not laziness: a surface
  * whose route has not merged yet renders visible, dimmed and inert, so the

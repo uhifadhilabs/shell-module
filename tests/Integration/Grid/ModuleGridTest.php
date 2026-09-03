@@ -25,7 +25,7 @@ use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
  * shell as its claimant, so this bundle had to answer rather than inherit. The
  * answer is a split, and the independent-life test is what splits it:
  *
- *   THE PICTURE IS THE CROWN'S. Cards in category groups, a status chip, a lens
+ *   THE PICTURE IS THE SHELL'S. Cards in category groups, a status chip, a lens
  *   marker on the group a department leads, an empty state — that is a layout,
  *   it lives alone perfectly well given a list of groups, and it is the same
  *   layout wherever it appears (the area's Modules tab, a department's page, a
@@ -34,7 +34,7 @@ use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
  *   THE GROUPING IS NOT. Which cards, in which groups, in which order, and
  *   which department is said to lead one — that is a reading of the catalogue
  *   for a particular viewer on a particular area, and it needs three things the
- *   crown does not have and must not acquire: the area, the viewer's identity,
+ *   shell does not have and must not acquire: the area, the viewer's identity,
  *   and the department lens. The host's ModuleGridService already does exactly
  *   this and stays where it is; the seam's README argued the same boundary
  *   from the other side.
@@ -44,20 +44,20 @@ use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
  *   controller here would drag all three across the boundary to save an
  *   include. Unit/BoundaryTest fails the build if one appears.
  *
- *   AND THE CUSTOMIZE SCREEN IS NOT THE CROWN'S AT ALL. It looked like a
+ *   AND THE CUSTOMIZE SCREEN IS NOT THE SHELL'S AT ALL. It looked like a
  *   neighbour of the grid and it is not: it is a form that WRITES per-area
  *   install state — a POST, a CSRF token, an authorization decision and a
- *   flush. The crown has no writes anywhere in it, and the first one would be
+ *   flush. The shell has no writes anywhere in it, and the first one would be
  *   the end of "the layout can be rendered from a fixture with no database".
- *   The host keeps the customize screen; the crown will draw its cards for it.
+ *   The host keeps the customize screen; the shell will draw its cards for it.
  *
- * SO THE CROWN DEPENDS ON NO SEAM. It draws the seam's answers and never
+ * SO THE SHELL DEPENDS ON NO SEAM. It draws the seam's answers and never
  * reads them: they arrive as ModuleGroup/ModuleCard, composed by whoever had
  * the area and the viewer. This is where the twig-bundle → framework-bundle
  * analogy breaks down and is worth saying why, since it is the obvious defence
  * of the opposite ruling: twig-bundle depends on framework-bundle for
  * MACHINERY — the kernel, the config pass — not to read its domain data. The
- * crown would be requiring the seam to read data, and the moment a seam
+ * shell would be requiring the seam to read data, and the moment a seam
  * entity is in scope inside a template, somebody writes
  * `{% if module.slug == 'overview' %}` and the module-blindness both rings
  * promise is gone. A value object cannot be interrogated that way.
@@ -125,10 +125,10 @@ final class ModuleGridTest extends ContractTestCase
     }
 
     /**
-     * The status chip's vocabulary is the crown's, because it is a visual
+     * The status chip's vocabulary is the shell's, because it is a visual
      * vocabulary shared with every chip on every other page — live/ok,
      * template/warn, anything else/idle. What a module's status IS remains the
-     * seam's; how "live" looks is the crown's.
+     * seam's; how "live" looks is the shell's.
      */
     public function testTheStatusChipSpeaksThePlatformsOneChipVocabulary(): void
     {
@@ -170,10 +170,10 @@ final class ModuleGridTest extends ContractTestCase
     }
 
     /**
-     * THE CROWN WRITES NOTHING. The customize screen is the temptation this
+     * THE SHELL WRITES NOTHING. The customize screen is the temptation this
      * guards — it is the grid's neighbour in the UI and its opposite in kind.
      */
-    public function testTheCrownContainsNoFormThatWrites(): void
+    public function testTheShellContainsNoFormThatWrites(): void
     {
         $templates = [];
         $iterator = new \RecursiveIteratorIterator(
@@ -192,8 +192,8 @@ final class ModuleGridTest extends ContractTestCase
 
         foreach ($templates as $template) {
             $code = (string) file_get_contents($template);
-            self::assertStringNotContainsString('method="post"', strtolower($code), basename($template).' writes. The crown draws.');
-            self::assertStringNotContainsString('csrf_token', $code, basename($template).' writes. The crown draws.');
+            self::assertStringNotContainsString('method="post"', strtolower($code), basename($template).' writes. The shell draws.');
+            self::assertStringNotContainsString('csrf_token', $code, basename($template).' writes. The shell draws.');
         }
     }
 }

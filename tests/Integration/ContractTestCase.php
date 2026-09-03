@@ -31,7 +31,7 @@ use Uhifadhi\Shell\Tests\Integration\Fixtures\HostKernel;
  *
  * The host kernel this boots is a STAND-IN HOST: it implements the shell's
  * seams with fixtures. That is not a shortcut — it is the specification's main
- * claim. If the crown can be driven to a full page by a host that has no areas,
+ * claim. If the shell can be driven to a full page by a host that has no areas,
  * no modules and no database, then the seams are real seams and not a polite
  * name for reaching into the application.
  */
@@ -83,11 +83,11 @@ abstract class ContractTestCase extends ShellKernelTestCase
         } catch (RuntimeError $wrapper) {
             // TWIG WRAPS EVERYTHING. Any throwable raised while a block is
             // rendering comes back as a RuntimeError carrying the real one as
-            // its cause (Twig\Template::yield). The crown's refusals — two lit
+            // its cause (Twig\Template::yield). The shell's refusals — two lit
             // tabs, two lit sibling rows — are raised during a render, so
             // without this a test could only assert on Twig's wrapper and the
             // contract would be pinned to the engine's error class instead of
-            // to the crown's own. Re-raise the cause; leave Twig's own errors
+            // to the shell's own. Re-raise the cause; leave Twig's own errors
             // (a missing template, a bad syntax) exactly as they are.
             $cause = $wrapper->getPrevious();
 
@@ -98,7 +98,7 @@ abstract class ContractTestCase extends ShellKernelTestCase
     /**
      * A REQUEST, WITH A SESSION, CARRYING WHATEVER THE HOST HAS PENDING.
      *
-     * The crown reads flashes the way every Symfony application writes them —
+     * The shell reads flashes the way every Symfony application writes them —
      * off the session, through `app.flashes` — rather than through a seam of
      * its own, because a bundle that invented a second flash mechanism would be
      * a bundle every host had to feed twice. So the stand-in host is given a
@@ -107,8 +107,8 @@ abstract class ContractTestCase extends ShellKernelTestCase
      *
      * Note what this does NOT do: it never invents a user. There is no security
      * bundle under this kernel and no token storage in it, so `app.user` would
-     * throw if the crown touched it — which is exactly the guarantee the ring
-     * gate needs and the reason the crown's own furniture asks for no viewer.
+     * throw if the shell touched it — which is exactly the guarantee the ring
+     * gate needs and the reason the shell's own furniture asks for no viewer.
      */
     private function seedTheHostsRequest(): void
     {

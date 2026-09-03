@@ -22,10 +22,10 @@ use Uhifadhi\Shell\Service\Navigation;
 use Uhifadhi\Shell\Service\Theme;
 
 /**
- * What the crown's templates actually call. Built lazily, on the first render —
+ * What the shell's templates actually call. Built lazily, on the first render —
  * see {@see ShellExtension} for why that matters at image-build time.
  *
- * Everything here is a READ. The crown draws; it does not remember, it does not
+ * Everything here is a READ. The shell draws; it does not remember, it does not
  * write, and it decides nothing about who may see what.
  */
 final class ShellRuntime implements RuntimeExtensionInterface
@@ -61,7 +61,7 @@ final class ShellRuntime implements RuntimeExtensionInterface
      *
      * Every page in the platform used to type this join itself, which is why
      * some of them used a hyphen, some an em dash, and some forgot the brand.
-     * A page now says only what it is; the crown says where it is and whose it
+     * A page now says only what it is; the shell says where it is and whose it
      * is, because those are the two parts a page cannot know reliably.
      */
     public function title(string $page = ''): string
@@ -83,7 +83,7 @@ final class ShellRuntime implements RuntimeExtensionInterface
      * The wordmark and where the tile links.
      *
      * ROUTE-TOLERANT, and this is the ring gate's lesson written into the
-     * crown: a freshly planted installation has no home route yet, and a crown
+     * shell: a freshly planted installation has no home route yet, and a shell
      * that generated one unconditionally would 500 the very first page of every
      * new install. Home is then the site root, which is true and reachable.
      *

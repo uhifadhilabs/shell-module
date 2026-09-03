@@ -24,7 +24,7 @@ use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
  * The tokens are a socket list exactly like the blocks, and they are frozen the
  * same way and for the same reason. A module's stylesheet is written against
  * these names: `background: rgb(var(--c-p1))` in a patrol card is a promise the
- * crown made, and the day the crown renames --c-p1 that card renders
+ * shell made, and the day the shell renames --c-p1 that card renders
  * transparent on a page nobody was looking at.
  *
  * LIGHT AND DARK ARE BOTH FIRST-CLASS. Not "dark mode" as an overlay on a light
@@ -36,8 +36,8 @@ use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
  *
  * WHAT IS DELIBERATELY NOT HERE: the map chrome tokens (--z-ink, --z-paper,
  * --z-imagery, --z-aoi). They belong to uhifadhi/map-module, which is the ring
- * that owns how a layer draws, and a legend palette that lived in the crown
- * would be a palette the map bundle could not change without a crown release.
+ * that owns how a layer draws, and a legend palette that lived in the shell
+ * would be a palette the map bundle could not change without a shell release.
  * See the map legend contract.
  */
 final class ThemeContractTest extends ContractTestCase
@@ -112,7 +112,7 @@ final class ThemeContractTest extends ContractTestCase
     {
         self::assertSame(self::contractV1(), LayoutContract::TOKENS, <<<'WHY'
             A theme token was added, removed or renamed. Module stylesheets
-            across the tree are written against these names — the same change
+            across the platform are written against these names — the same change
             policy applies as to the blocks (see the README, "Changing the
             contract").
             WHY);
@@ -193,8 +193,8 @@ final class ThemeContractTest extends ContractTestCase
     /**
      * DARK IS A CLASS ON <html>, and it is applied before first paint. The
      * selector is part of the contract because a module's own stylesheet writes
-     * it too — `html.dark .patrol-card { … }` — and if the crown ever moved to
-     * a data attribute every module sheet in the tree would silently stop
+     * it too — `html.dark .patrol-card { … }` — and if the shell ever moved to
+     * a data attribute every module sheet would silently stop
      * theming.
      */
     public function testTheDarkSelectorIsPartOfTheContract(): void
@@ -224,7 +224,7 @@ final class ThemeContractTest extends ContractTestCase
     /**
      * THE THIRD ANSWER IS REAL. "system" is not a synonym for light — a visitor
      * who has told their operating system which they want has already answered,
-     * and the crown honours it rather than overriding it with a default.
+     * and the shell honours it rather than overriding it with a default.
      */
     public function testTheSystemPreferenceIsHonouredRatherThanFlattenedToTheDefault(): void
     {
@@ -267,9 +267,9 @@ final class ThemeContractTest extends ContractTestCase
 
     /**
      * A MODULE MAY RELY ON THESE AND ON NOTHING ELSE. The stylesheet certainly
-     * contains other custom properties — internal ones, for the crown's own
+     * contains other custom properties — internal ones, for the shell's own
      * furniture. The contract is that a module uses the listed names; the
-     * counter-promise is that the crown marks its private ones so nobody
+     * counter-promise is that the shell marks its private ones so nobody
      * mistakes one for public. Prefix, not honour system.
      */
     public function testThePrivateTokensAreMarkedAsPrivate(): void

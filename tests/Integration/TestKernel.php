@@ -22,16 +22,16 @@ use Symfony\UX\Icons\UXIconsBundle;
 use Uhifadhi\Shell\UhifadhiShellBundle;
 
 /**
- * THE SEED, PLUS THE SHELL, AND NOTHING ELSE: framework + twig + ux-icons +
- * this bundle. Note what is missing and stays missing — doctrine. The crown is
- * the one ring in the tree that can be booted without a database, and that is
+ * THE SKELETON, PLUS THE SHELL, AND NOTHING ELSE: framework + twig + ux-icons +
+ * this bundle. Note what is missing and stays missing — doctrine. The shell is
+ * the one bundle in the platform that can be booted without a database, and that is
  * not a testing convenience: it is the boundary. A layout that cannot render
  * without a connection has stopped being a layout.
  *
  * Note also what is missing and is NOT the boundary: a seam. The shell does
  * not require one (see the README's boundary ruling) — module rows and module
  * cards reach it as data, through the seams, from whoever composed them. This
- * kernel proves it by booting a crown with no seam runtime under it at all.
+ * kernel proves it by booting a shell with no seam runtime under it at all.
  */
 class TestKernel extends Kernel
 {
@@ -56,7 +56,7 @@ class TestKernel extends Kernel
             'php_errors' => ['log' => true],
         ]);
 
-        // strict_variables ON, in the bundle's own test host, because the crown
+        // strict_variables ON, in the bundle's own test host, because the shell
         // is a set of templates other people fill: a page that hands the frame
         // an undefined variable must fail here rather than render a hole.
         $container->extension('twig', [
@@ -65,7 +65,7 @@ class TestKernel extends Kernel
 
         // NO NETWORK, for the reason there is no database: this suite renders,
         // and a render that reaches the internet is a render that fails in a
-        // tunnel. Icons the crown ships resolve from its own `shell:` set; an
+        // tunnel. Icons the shell ships resolve from its own `shell:` set; an
         // icon a FIXTURE names (a host's own set, which this kernel does not
         // have) resolves to nothing rather than to an HTTP request, because
         // whether a host's icons are installed is not this bundle's contract.

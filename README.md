@@ -1,7 +1,7 @@
 # uhifadhi/shell-module
 
-The **shell**: the visible crown of an uhifadhi installation — the document, the
-page frame, the navigation seams and the theme every module's pages mount into.
+The **shell**: what an uhifadhi installation looks like — the document, the page
+frame, the navigation seams and the theme every module's pages mount into.
 A [uhifadhi](https://github.com/uhifadhilabs) platform bundle.
 
 > Installs with `composer require uhifadhi/shell-module`, registers via Flex,
@@ -51,7 +51,7 @@ This is the package you can see.
   frame (breadcrumbs, page head, actions, tabs, flashes, body). Three rungs of
   one ladder; a page steps onto whichever it needs.
 - **The seams** — how a nav row and an area's tab strip get their content from
-  outside, without the crown knowing what an area or a module is.
+  outside, without the shell knowing what an area or a module is.
 - **The theme** — one token set, two complete palettes, both first-class.
 - **The shared pictures** — the module grid and the cards it is made of: the
   drawings of answers composed elsewhere, which would otherwise be redrawn once
@@ -77,7 +77,7 @@ place in a codebase to type a module's name and the hardest place to notice it
 later. A row in the sidebar and a card in the grid arrive as data.
 
 **Zero of everything is a working installation.** No nav sources, no tabs, no
-modules: the crown renders a sidebar with a brand and no rows, and a page. A
+modules: the shell renders a sidebar with a brand and no rows, and a page. A
 layout that only works once the application is finished is not a layout.
 
 Every row below is a test.
@@ -95,7 +95,7 @@ names, unchanged; a module that knows Twig already knows them.
 
 | Socket | Filled by |
 |---|---|
-| `title` | every page — the crown composes `<page> — <area> — <brand>` |
+| `title` | every page — the shell composes `<page> — <area> — <brand>` |
 | `stylesheets` | module bases, calling `parent()` **first** |
 | `javascripts` | module bases, calling `parent()` **last** when a classic script must beat the deferred importmap (the Leaflet rule) |
 | `importmap` | nobody, normally — here so a host can |
@@ -142,7 +142,7 @@ full-bleed screen fills it directly.
 Beyond the frames, the contract also pins **behaviour**: the vertical order
 inside `.page` (crumb → page head → tabs → flashes → body), that an unfilled
 socket leaves no empty element behind, that flashes are rendered once by the
-frame so every module says "saved" the same way, and that the crown's stylesheet
+frame so every module says "saved" the same way, and that the shell's stylesheet
 always lands before a module's.
 
 ### How a module fills them
@@ -239,11 +239,11 @@ viewer may not have is one you do not return.
 
 ### The nav seam
 
-The crown owns the nav's **shape** — sections, rows, the location tree, carets,
+The shell owns the nav's **shape** — sections, rows, the location tree, carets,
 the current-row treatment, the collapsed rail. It owns none of its **content**.
 Content arrives through `NavigationSourceInterface`, tagged `shell.nav_section`:
 
-- the **host** implements one, and that is where seam data enters the crown. It
+- the **host** implements one, and that is where seam data enters the shell. It
   has the areas, the viewer, the permission voters and the seam's per-area
   ledger; folding those four into "these rows, in this order" is a reading for a
   person on a page.
@@ -255,7 +255,7 @@ the tie-break; **gating is the source's job** (the shell holds no
 `AuthorizationChecker` and calls `is_granted` on nothing — a withheld row is
 absent, never hidden); a row with no destination renders inert rather than
 disappearing; folding is a class, never an omission (a caret that folds by not
-rendering has nothing to reopen); **exactly one row is current** or the crown
+rendering has nothing to reopen); **exactly one row is current** or the shell
 refuses; and the nav is read live per render, so switching a module off takes its
 row with it the same day.
 
@@ -263,7 +263,7 @@ row with it the same day.
 
 The honest split, decided rather than fudged:
 
-| The crown owns | The crown owns *not* |
+| The shell owns | The shell owns *not* |
 |---|---|
 | that sibling screens are an underlined tab strip | Overview, Modules, Zones, Settings |
 | that it sits between the page head and the body | which of them this viewer has |
@@ -293,7 +293,7 @@ source; it does not take the strip.
 
 Twenty-three tokens, frozen the same way the blocks are, because a module's
 stylesheet is written against these names: `rgb(var(--c-p1))` in a patrol card is
-a promise the crown made.
+a promise the shell made.
 
 | Group | Tokens |
 |---|---|
@@ -318,14 +318,14 @@ move to a data attribute would silently unstyle every module sheet); the theme i
 by an inline script in `<head>` **before first paint**, not by a controller that
 connects after the first frame — a visitor who chose dark must not be shown a
 white page first, and today they are; `system` is a real third answer, not a
-synonym for light; and any custom property the crown declares that is not on the
+synonym for light; and any custom property the shell declares that is not on the
 list must be prefixed `--_` as private, because a token a module can read is a
 token a module will read.
 
 Deliberately **not** here: the map chrome tokens (`--z-ink`, `--z-paper`,
 `--z-imagery`, `--z-aoi`). They belong to `uhifadhi/map-module`, the module that
-owns how a layer draws; a legend palette in the crown could not be changed
-without a crown release.
+owns how a layer draws; a legend palette in the shell could not be changed
+without a shell release.
 
 **What ships here and what does not.** Tokens are values — custom properties the
 browser resolves — so the bundle ships them, in `public/shell.css`, along with
@@ -339,7 +339,7 @@ hosts that had the right build.
 
 ### The module grid
 
-**The ruling: the crown claims the picture, not the grouping, not the URL, and
+**The ruling: the shell claims the picture, not the grouping, not the URL, and
 not the customize screen.** The seam declined the grid and named the shell as
 its claimant, so this had to be answered rather than inherited. The independent-life
 test splits it:
@@ -352,14 +352,14 @@ test splits it:
 - **the grouping does not.** Which cards, in which groups, in which order, and
   which department leads one is a reading of the catalogue for a particular
   viewer on a particular area — it needs the area, the viewer and the department
-  lens, none of which the crown has or should acquire. The host's
+  lens, none of which the shell has or should acquire. The host's
   `ModuleGridService` stays where it is.
 - **the URL does not.** `/areas/{uuid}/modules` is the host's URL space, gated by
   the host's `module.view`, resolving the host's area entity. A controller here
   would drag all three across the boundary to save an include.
 - **the customize screen is not the grid's neighbour but its opposite.** It is a
   form that *writes* per-area install state: a POST, a CSRF token, an
-  authorization decision, a flush. The crown has no writes anywhere in it, and
+  authorization decision, a flush. The shell has no writes anywhere in it, and
   the first one would end "the layout renders from a fixture with no database".
   A test greps the templates for `method="post"` and `csrf_token`.
 
@@ -371,7 +371,7 @@ enforced by the frozen lists refusing to agree with anything else:
 - **Adding** a socket or a token: append it to the frozen list in the test, in
   the group it belongs to, with the comment saying who fills it; bump the minor
   version. `LayoutContract::VERSION` exists so a module bundle can require a
-  crown that has the sockets it fills.
+  shell that has the sockets it fills.
 - **Renaming**: major version, a deprecation cycle, and the old name kept as an
   alias block for one release. `content` is the worked example.
 - **Removing**: as renaming, plus a note in this section.
@@ -396,22 +396,22 @@ The Symfony analogy offered for a shell → seam require is `twig-bundle`
 depending on `framework-bundle`: one bundle may depend on another, and nothing
 about the platform's shape forbids it. That analogy is real but it does not reach.
 `twig-bundle` depends on `framework-bundle` for **machinery** — the kernel, the
-config pass, the container conventions. The crown would be requiring the seam to
+config pass, the container conventions. The shell would be requiring the seam to
 read **domain data**.
 
 Three consequences decide it:
 
 1. **The data is not usable raw anyway.** A nav row needs the area, the viewer
    and the permission decision; a grid card needs the department lens. The seam
-   has none of those, so *something* has to compose the answer before the crown
+   has none of those, so *something* has to compose the answer before the shell
    can draw it — and whatever composes it can hand over a value object as easily
-   as the crown could fetch a row. The require buys nothing.
+   as the shell could fetch a row. The require buys nothing.
 2. **Entities in templates are interrogated.** The moment a seam entity is in
    scope inside a Twig file, somebody writes `{% if module.slug == 'overview' %}`,
    and the module-blindness the seam and the shell both promise is gone. A `ModuleCard` value
    object cannot be interrogated that way — there is nothing on it to switch on
    that is not also a thing every card has.
-3. **A crown that requires a seam runtime cannot crown an installation that has
+3. **A shell that requires a seam runtime cannot shell an installation that has
    no modules.** `tests/Integration/TestKernel` is the proof: framework + twig +
    this bundle, booting and rendering, with no seam under it at all.
 
@@ -443,7 +443,7 @@ composer require uhifadhi/shell-module
 
 The bundle registers via Flex (`"type": "symfony-bundle"`), which adds
 `Uhifadhi\Shell\UhifadhiShellBundle` to `config/bundles.php`. A host
-then implements the two seams and points the crown at them:
+then implements the two seams and points the shell at them:
 
 ```php
 // config/services.php
@@ -488,7 +488,7 @@ shell:
 ```
 
 Every key has a default and the tree is closed, so an unknown key fails loudly
-rather than being ignored. Each one is something the crown genuinely **cannot**
+rather than being ignored. Each one is something the shell genuinely **cannot**
 know: the deployment's name, the host's route names, a first-visit preference.
 There is deliberately **no key listing nav entries, area tabs or modules** —
 those arrive as data through the seams, because a YAML nav is a nav no permission
@@ -511,6 +511,6 @@ composer check   # cs:check -> phpstan (max) -> the whole suite
 ## License
 
 **AGPL-3.0-or-later** — see [LICENSE](LICENSE): the same license as the uhifadhi
-host this bundle crowns. Use, modify and self-host freely; if you offer a
+host this bundle shells. Use, modify and self-host freely; if you offer a
 modified version to users over a network, they are entitled to the source of
 what they're running.

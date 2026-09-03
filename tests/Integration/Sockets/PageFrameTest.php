@@ -128,30 +128,30 @@ final class PageFrameTest extends ContractTestCase
 
     /**
      * THE STYLESHEET SOCKET COMPOSES. A module base adds its own sheet and must
-     * get the crown's first — its rules are written to override the crown's,
+     * get the shell's first — its rules are written to override the shell's,
      * and a base that forgets parent() ships a page with no theme at all. The
      * frame therefore links its own sheet in `stylesheets`, so `parent()` is
      * the thing that carries it and forgetting it fails visibly rather than
      * subtly.
      */
-    public function testAModuleStylesheetLandsAfterTheCrownsOwn(): void
+    public function testAModuleStylesheetLandsAfterTheShellsOwn(): void
     {
         $html = $this->render(self::PAGE);
 
-        $crown = strpos($html, 'uhifadhishell/shell.css');
+        $shell = strpos($html, 'uhifadhishell/shell.css');
         $module = strpos($html, 'fixture-module.css');
 
-        self::assertIsInt($crown);
+        self::assertIsInt($shell);
         self::assertIsInt($module);
-        self::assertLessThan($module, $crown, 'The crown\'s stylesheet must come first; a module overrides it, never the reverse.');
+        self::assertLessThan($module, $shell, 'The shell\'s stylesheet must come first; a module overrides it, never the reverse.');
     }
 
     /**
      * The title socket is a plain Twig block, but what a page SHOULD put in it
-     * is a platform decision, so the crown ships the joiner and every page uses
+     * is a platform decision, so the shell ships the joiner and every page uses
      * it: "<page> — <area> — <brand>", brand from config, em dashes, once.
      */
-    public function testThePageTitleIsComposedByTheCrownRatherThanByEveryPage(): void
+    public function testThePageTitleIsComposedByTheShellRatherThanByEveryPage(): void
     {
         self::assertSame(
             'a fixture page — Test Area — Uhifadhi',
@@ -212,7 +212,7 @@ final class PageFrameTest extends ContractTestCase
     public function testTheFrameIsTheOneAddressAModuleNeedsToKnow(): void
     {
         // A module bundle's base extends exactly this string, and nothing else
-        // about the crown's internals is public.
+        // about the shell's internals is public.
         self::assertSame('@UhifadhiShell/page.html.twig', LayoutContract::PAGE);
     }
 }

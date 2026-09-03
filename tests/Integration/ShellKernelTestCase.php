@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Environment;
 
 /**
- * A booted crown, and a Twig to render it with. Every integration test in this
+ * A booted shell, and a Twig to render it with. Every integration test in this
  * repository starts here; there is no database fixture layer below it, and the
  * absence is the point.
  */

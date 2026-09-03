@@ -90,7 +90,7 @@ final class AreaShell
         }
 
         if (1 !== \count($lit)) {
-            throw new \LogicException(\sprintf('A tab strip lights exactly one tab, and this one lights %d of %d. The source decides which; the crown will not guess.', \count($lit), \count($tabs)));
+            throw new \LogicException(\sprintf('A tab strip lights exactly one tab, and this one lights %d of %d. The source decides which; the shell will not guess.', \count($lit), \count($tabs)));
         }
     }
 }

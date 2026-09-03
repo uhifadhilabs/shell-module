@@ -46,7 +46,7 @@ use Uhifadhi\Shell\UhifadhiShellBundle;
  * BUILD, not a page. So the shell ships a thin extension that declares
  * functions and a RUNTIME that is constructed lazily, on the first call — i.e.
  * only when a template is actually rendered. The host learned this the hard
- * way with its sidebar; the crown inherits the lesson, not the bug.
+ * way with its sidebar; the shell inherits the lesson, not the bug.
  */
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();

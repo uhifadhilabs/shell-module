@@ -27,12 +27,12 @@ use Uhifadhi\Shell\UhifadhiShellBundle;
  * How a module's entry gets into the sidebar without the sidebar knowing that
  * modules exist.
  *
- * THE RULING. The crown owns the nav's SHAPE — sections, rows, a location tree,
+ * THE RULING. The shell owns the nav's SHAPE — sections, rows, a location tree,
  * carets, the current-row treatment, the collapsed rail. It owns none of the
  * nav's CONTENT. Content arrives through {@see NavigationSourceInterface},
  * implemented by whoever knows something worth putting there:
  *
- *   - the HOST implements one, and that is where seam data enters the crown.
+ *   - the HOST implements one, and that is where seam data enters the shell.
  *     The host has the areas, the viewer, the permission voters and the seam's
  *     per-area ledger; folding those four into "these rows, in this order" is a
  *     reading for a person on a page, which is the host's job by the same
@@ -40,14 +40,14 @@ use Uhifadhi\Shell\UhifadhiShellBundle;
  *   - a MODULE BUNDLE may implement one too, tagged shell.nav_section, for the
  *     rare platform-wide row that belongs to nobody's area.
  *
- * The crown never asks "which modules are installed", because it has no way to
+ * The shell never asks "which modules are installed", because it has no way to
  * ask that question that does not end in requiring the seam. It asks "what
  * goes in the nav", and whatever answers, answers.
  *
  * THE ENFORCEMENT is negative and it is in Unit/BoundaryTest: no module slug
  * appears in src/ or templates/, ever, in any of the twelve real module names
- * the tree has. This file is the positive half — that a nav can be fully built
- * out of names the crown has never heard of.
+ * the platform has. This file is the positive half — that a nav can be fully built
+ * out of names the shell has never heard of.
  */
 final class NavigationSeamTest extends ContractTestCase
 {
@@ -61,11 +61,11 @@ final class NavigationSeamTest extends ContractTestCase
 
     /**
      * THE WHOLE SEAM IN ONE TEST. Two sources, neither of them known to the
-     * crown, both rendered — and the slugs are invented on purpose, because a
+     * shell, both rendered — and the slugs are invented on purpose, because a
      * seam that only works for the modules that exist today is a hardcoded list
      * with extra steps.
      */
-    public function testASourceContributesASectionAndTheCrownRendersIt(): void
+    public function testASourceContributesASectionAndTheShellRendersIt(): void
     {
         HostKernel::$navSources = [
             'observatory' => new NavSection('Observatory', [
@@ -109,7 +109,7 @@ final class NavigationSeamTest extends ContractTestCase
     }
 
     /**
-     * GATING IS THE SOURCE'S JOB, NOT THE CROWN'S. The crown holds no
+     * GATING IS THE SOURCE'S JOB, NOT THE SHELL'S. The shell holds no
      * AuthorizationChecker and calls is_granted on nothing — a renderer that
      * decides who may see a row is a renderer that has opinions about the team
      * model, and it would be the second place in the platform where a
@@ -119,7 +119,7 @@ final class NavigationSeamTest extends ContractTestCase
      * There is no "hidden" flag, because a hidden row is a row that leaks its
      * existence to whoever reads the HTML.
      */
-    public function testTheCrownDecidesNothingAboutWhoMaySeeARow(): void
+    public function testTheShellDecidesNothingAboutWhoMaySeeARow(): void
     {
         HostKernel::$navSources = [
             'org' => new NavSection('Organization', [
@@ -132,7 +132,7 @@ final class NavigationSeamTest extends ContractTestCase
         self::assertStringContainsString('Departments', $html);
         self::assertStringNotContainsString('Team', $html, 'A row the source withheld must be absent, not hidden.');
 
-        // And the crown must not have the means to ask.
+        // And the shell must not have the means to ask.
         $source = file_get_contents(__DIR__.'/../../../src/Service/Navigation.php');
         self::assertIsString($source);
         self::assertStringNotContainsString('AuthorizationChecker', $source);
@@ -165,11 +165,11 @@ final class NavigationSeamTest extends ContractTestCase
     /**
      * THE LOCATION TREE. A row may carry children, and a child may carry
      * children — which is what the settled sidebar does with areas: area → its
-     * tabs → the modules under Modules. The crown renders the nesting; the
+     * tabs → the modules under Modules. The shell renders the nesting; the
      * source decides the nesting, because "which tabs does an area have" is not
      * something a layout can know (spec 3).
      */
-    public function testARowMayCarryATreeAndTheCrownRendersTheNestingItIsGiven(): void
+    public function testARowMayCarryATreeAndTheShellRendersTheNestingItIsGiven(): void
     {
         HostKernel::$navSources = [
             'obs' => new NavSection('Observatory', [
@@ -233,7 +233,7 @@ final class NavigationSeamTest extends ContractTestCase
 
     /**
      * UNINSTALLING TAKES THE ROW WITH IT, THIS REQUEST. The seam's
-     * attention-list promise, at the crown's end: sources are read live, per
+     * attention-list promise, at the shell's end: sources are read live, per
      * render, from the container's tagged iterator — nothing between the source
      * and the sidebar is allowed to cache, or "switch the module off" becomes
      * "switch it off after a deploy".
@@ -264,10 +264,10 @@ final class NavigationSeamTest extends ContractTestCase
 
     /**
      * ZERO SOURCES IS A WORKING INSTALLATION — the seam's rule, inherited. A
-     * crown with nothing to navigate renders a sidebar with a brand and no
+     * shell with nothing to navigate renders a sidebar with a brand and no
      * rows, not an error and not a hole where the aside should be.
      */
-    public function testACrownWithNothingToNavigateStillRenders(): void
+    public function testAShellWithNothingToNavigateStillRenders(): void
     {
         HostKernel::$navSources = [];
 

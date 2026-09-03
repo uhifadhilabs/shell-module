@@ -22,7 +22,7 @@ namespace Uhifadhi\Shell\Model;
  * statement about the viewer: "a screen exists here and you are not trusted
  * with it", which is a worse product than not mentioning it at all. So a tab
  * the viewer may not have is withheld by the source and never reaches the
- * crown, and the value object has no url-less form for a template to grey out.
+ * shell, and the value object has no url-less form for a template to grey out.
  */
 final class AreaTab
 {

@@ -1,6 +1,6 @@
 {
     "name": "uhifadhi/shell-module",
-    "description": "The shell: the visible crown of an uhifadhi installation — the shell, the page frame, the navigation seams and the theme every module's pages mount into.",
+    "description": "The shell: what an uhifadhi installation looks like — the document, the page frame, the navigation seams and the theme every module's pages mount into.",
     "type": "symfony-bundle",
     "keywords": [
         "layout",

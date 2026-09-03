@@ -17,7 +17,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
- * Declares the crown's Twig functions. Nothing more — every one of them is
+ * Declares the shell's Twig functions. Nothing more — every one of them is
  * built by {@see ShellRuntime}.
  *
  * THE SPLIT IS NOT DECORATION, and the host learned it the hard way. Twig
@@ -37,7 +37,7 @@ final class ShellExtension extends AbstractExtension
             new TwigFunction('shell_nav', [ShellRuntime::class, 'nav']),
             // The tab strip: the sibling screens of wherever the viewer is.
             new TwigFunction('shell_tabs', [ShellRuntime::class, 'tabs']),
-            // "<page> — <place> — <brand>", composed once, by the crown.
+            // "<page> — <place> — <brand>", composed once, by the shell.
             new TwigFunction('shell_title', [ShellRuntime::class, 'title']),
             // What a visitor who has never chosen a theme gets.
             new TwigFunction('shell_default_theme', [ShellRuntime::class, 'defaultTheme']),

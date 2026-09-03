@@ -23,9 +23,9 @@ use Uhifadhi\Shell\UhifadhiShellBundle;
  * A STAND-IN HOST — and the specification's main claim, not a testing
  * convenience.
  *
- * This kernel is an application that implements the crown's seams and has
+ * This kernel is an application that implements the shell's seams and has
  * nothing else at all: no areas, no modules, no seam, no database, no user. If
- * the crown can be driven to a complete page by THIS, then the seams are real
+ * the shell can be driven to a complete page by THIS, then the seams are real
  * seams rather than a polite name for reaching into the application, and the
  * "standalone" in the shell's charter is a fact about the code.
  *
@@ -83,7 +83,7 @@ final class HostKernel extends TestKernel
         parent::configureContainer($container);
 
         // The fixture pages live under their own namespace so that no test can
-        // accidentally assert against a template the crown ships.
+        // accidentally assert against a template the shell ships.
         $container->extension('twig', [
             'paths' => [__DIR__.'/templates' => 'fixtures'],
         ]);
@@ -101,8 +101,8 @@ final class HostKernel extends TestKernel
         $services->set(FixtureAreaShellSource::class)
             ->public();
 
-        // The host tells the crown which implementation answers the area seam,
-        // by aliasing the id the crown looks for. An ALIAS, not a tagged
+        // The host tells the shell which implementation answers the area seam,
+        // by aliasing the id the shell looks for. An ALIAS, not a tagged
         // collection and not a config key: two things claiming to know an
         // area's tabs is the disagreement this bundle exists to prevent, and a
         // config key would put a class name in YAML where nothing checks it.

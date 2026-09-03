@@ -22,7 +22,7 @@ use Uhifadhi\Shell\Model\NavSection;
  *
  * This class asks every registered source what goes in the nav, orders the
  * answers, checks the one invariant a nav has, and hands the result to a
- * template. It decides nothing about who may see a row: the crown holds no
+ * template. It decides nothing about who may see a row: the shell holds no
  * authorization service and asks nothing about the viewer, because a renderer
  * with opinions about the team model would be the second place in the platform
  * where a permission is interpreted. A row the viewer may not have never
@@ -68,7 +68,7 @@ final class Navigation
      * EXACTLY ONE ROW IS CURRENT — among siblings, at every level of the tree.
      *
      * "Where am I" is the sidebar's whole job and two lit rows answer it worse
-     * than none, so the crown refuses rather than rendering a nav that cannot
+     * than none, so the shell refuses rather than rendering a nav that cannot
      * be read. The check is per sibling list rather than per sidebar, and the
      * distinction is the tree's: an area's row and the row of the screen you
      * are on inside it are both lit, on purpose — that is one PATH, drawn. Two
@@ -76,8 +76,8 @@ final class Navigation
      * is a location.
      *
      * Zero is allowed and always will be: a viewer can be somewhere the nav
-     * does not list, and a crown that refused to draw a sidebar on a sign-in
-     * page would be a crown nobody could sign in to.
+     * does not list, and a shell that refused to draw a sidebar on a sign-in
+     * page would be a shell nobody could sign in to.
      *
      * @param list<NavItem> $items
      */

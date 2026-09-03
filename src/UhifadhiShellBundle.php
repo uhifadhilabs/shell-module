@@ -20,9 +20,9 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Uhifadhi\Shell\DependencyInjection\ShellConfiguration;
 
 /**
- * The SHELL — the visible crown every uhifadhi page grows into.
+ * The SHELL — the visible shell every uhifadhi page grows into.
  *
- * The seed is planted, the seam carries, the branches are the modules and this
+ * An application registers this bundle and every module renders into it. This
  * is what you see: the document, the shell (sidebar + top bar), the page frame
  * (breadcrumbs, page head, actions, tabs, flashes, body), the navigation seams
  * and the theme. A module writes a page by filling this bundle's blocks; it
@@ -89,14 +89,14 @@ final class UhifadhiShellBundle extends AbstractBundle
     }
 
     /**
-     * THE CROWN'S OWN GLYPHS, registered under the `shell:` prefix.
+     * THE SHELL'S OWN GLYPHS, registered under the `shell:` prefix.
      *
      * Four icons — the sidebar's collapse chevron, the tree's caret, the theme
      * toggle and the catalogue's lens marker — shipped with the bundle and
      * resolved from disk. This is the ring gate's lesson in the container: a
-     * freshly planted installation has configured no icon set, and a crown
+     * freshly planted installation has configured no icon set, and a shell
      * whose own chrome needed a network round trip to draw itself would not be
-     * a crown that works out of the box.
+     * a shell that works out of the box.
      *
      * It is a PREFIX OF ITS OWN, not an addition to the host's set: a bundle
      * that quietly extended `lucide:` would be a bundle that decides what a
@@ -127,7 +127,7 @@ final class UhifadhiShellBundle extends AbstractBundle
         // The wordmark beside the brand tile, and where the tile links. Neither
         // can be hardcoded: the shell is installed BY an application and does
         // not know its route names, and a deployment is entitled to its own
-        // name over the crown of its own installation.
+        // name over the shell of its own installation.
         $builder->setParameter(
             'shell.brand_name',
             \is_string($config['brand_name'] ?? null) ? $config['brand_name'] : 'Uhifadhi',
@@ -138,7 +138,7 @@ final class UhifadhiShellBundle extends AbstractBundle
         );
 
         // Which theme a visitor who has never chosen one gets. Light by default
-        // because the platform's own default is light and a crown that opened
+        // because the platform's own default is light and a shell that opened
         // dark on a ranger's midday screen would be a worse first frame than a
         // wrong preference.
         $builder->setParameter(

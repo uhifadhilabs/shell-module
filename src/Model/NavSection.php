@@ -17,7 +17,7 @@ namespace Uhifadhi\Shell\Model;
  * A LABELLED GROUP OF SIDEBAR ROWS — the org level a set of rows belongs to.
  *
  * `position` is a declared order with registration as the tie-break. A contract
- * field nothing reads is a lie in the contract, so the crown reads it: a
+ * field nothing reads is a lie in the contract, so the shell reads it: a
  * contributing bundle that wants to sit under the host's own sections says so
  * with a number rather than by hoping about container compilation order.
  */

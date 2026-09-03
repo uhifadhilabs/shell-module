@@ -24,15 +24,15 @@ use Uhifadhi\Shell\Tests\Integration\Fixtures\HostKernel;
  * THE HONEST SPLIT, decided rather than fudged, because the brief for this
  * bundle asked for it to be decided:
  *
- *   THE CROWN OWNS THE STRIP. That a set of sibling screens is expressed as an
+ *   THE SHELL OWNS THE STRIP. That a set of sibling screens is expressed as an
  *   underlined tab strip; that it sits between the page head and the page body
  *   and nowhere else; that exactly one tab is lit; that a tab the viewer may
  *   not have is ABSENT rather than disabled; that one tab is no strip at all.
  *   These are layout decisions and there is no second opinion worth having.
  *
- *   THE CROWN OWNS NOT ONE TAB. Overview, Modules, Zones and Settings are not
+ *   THE SHELL OWNS NOT ONE TAB. Overview, Modules, Zones and Settings are not
  *   layout — they are the host's model of what an area is, and one of them
- *   (Modules) is the seam's. A crown carrying that list would be a crown that
+ *   (Modules) is the seam's. A shell carrying that list would be a shell that
  *   has to be released whenever the host grows a screen, and the first
  *   deployment that wants a fifth tab would have to fork it.
  *
@@ -43,7 +43,7 @@ use Uhifadhi\Shell\Tests\Integration\Fixtures\HostKernel;
  * copies already have to be edited together, which is the tell.
  *
  * WHY IT IS NOT AN AREA-MODULE'S. It was worth asking, since "area" sounds like
- * a domain and the tree has room for an area bundle. The answer is that the
+ * a domain and the platform has room for an area bundle. The answer is that the
  * strip has no behaviour to own: it is markup plus a rule about lighting, and a
  * bundle whose entire content is one Twig partial is a dependency, not a ring.
  * If an area module is ever planted, it implements this source; it does not
@@ -81,7 +81,7 @@ final class AreaShellTest extends ContractTestCase
      * default" the strip to the four tabs every area has. Unit/BoundaryTest
      * sweeps for module names; this sweeps for the host's screen names.
      */
-    public function testTheCrownNamesNoTab(): void
+    public function testTheShellNamesNoTab(): void
     {
         $templates = glob(__DIR__.'/../../../templates/*.html.twig') ?: [];
         // A sweep over nothing passes, and a test that passes in the red suite
@@ -99,11 +99,11 @@ final class AreaShellTest extends ContractTestCase
             }
         }
 
-        self::assertSame([], $offenders, 'Which tabs an area has is the host\'s model, never the crown\'s markup.');
+        self::assertSame([], $offenders, 'Which tabs an area has is the host\'s model, never the shell\'s markup.');
     }
 
     /**
-     * EXACTLY ONE TAB IS LIT, and the crown refuses rather than renders when it
+     * EXACTLY ONE TAB IS LIT, and the shell refuses rather than renders when it
      * is handed two. A tab strip's only job is to say which of these sibling
      * screens you are on.
      */
@@ -128,8 +128,8 @@ final class AreaShellTest extends ContractTestCase
      * NAV row is a promise about the future; a disabled TAB is a statement about
      * the viewer.
      *
-     * Gating happens in the source, so by the time the crown sees the list the
-     * tab is simply not in it — and the crown must not have a "disabled" state
+     * Gating happens in the source, so by the time the shell sees the list the
+     * tab is simply not in it — and the shell must not have a "disabled" state
      * to fall back on.
      */
     public function testThereIsNoWayToRenderADisabledTab(): void
@@ -199,7 +199,7 @@ final class AreaShellTest extends ContractTestCase
      * THE STRIP AND THE SIDEBAR TREE READ THE SAME LIST. The host currently
      * keeps two copies — the partial and SidebarRuntime::tabs() — and they have
      * to be edited together, which means one day they will not be. One source,
-     * two renderings; the crown asserts they cannot disagree.
+     * two renderings; the shell asserts they cannot disagree.
      */
     public function testTheSidebarsAreaBranchAndTheStripCannotDisagree(): void
     {

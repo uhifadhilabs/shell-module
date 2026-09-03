@@ -1,11 +1,11 @@
 {# ONE ROW OF THE NAV, AT ANY DEPTH — and its branch, if it has one.
 
-   Recursive on purpose: the source decides the nesting and the crown renders
+   Recursive on purpose: the source decides the nesting and the shell renders
    whatever nesting it is given, because how deep a location tree goes is not
    something a layout can know. Three treatments, by depth:
 
      1. a section's own row     — icon + label, the collapsed rail's only survivor
-     2. a place inside it       — the emphasised row the tree hangs from
+     2. a place inside it       — the emphasised row the branch hangs from
      3. and below               — the rows of the place you are in
 
    A ROW WITH NOWHERE TO GO RENDERS INERT rather than vanishing. The host needs

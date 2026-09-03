@@ -29,7 +29,7 @@ use Uhifadhi\Shell\DependencyInjection\ShellConfiguration;
  */
 final class ShellConfigurationTest extends TestCase
 {
-    public function testItDefaultsToTheLightCrownOfAnUhifadhiInstallation(): void
+    public function testItDefaultsToTheLightShellOfAnUhifadhiInstallation(): void
     {
         self::assertSame([
             'brand_name' => 'Uhifadhi',
@@ -39,7 +39,7 @@ final class ShellConfigurationTest extends TestCase
         ], $this->process([]));
     }
 
-    public function testADeploymentNamesItsOwnCrown(): void
+    public function testADeploymentNamesItsOwnShell(): void
     {
         $config = $this->process([['brand_name' => 'Kilimo', 'home_route' => 'app_home']]);
 

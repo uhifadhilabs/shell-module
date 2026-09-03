@@ -33,12 +33,12 @@ use PHPUnit\Framework\TestCase;
  *  2. THE SHELL NAMES NO HOST. It is installed BY an application; it does not
  *     reach back into one.
  *  3. THE SHELL REMEMBERS NOTHING. No entities, no repositories, no doctrine,
- *     no database. A crown with entities has failed its boundary, and the
+ *     no database. A shell with entities has failed its boundary, and the
  *     absence of a postgres service in CI is the same statement in another file.
  *  4. THE SHELL ROUTES NOWHERE. It draws pages; it does not own URLs. The area
  *     URL space, its permission gates and its entity resolution are the host's.
  *  5. THE SHELL REQUIRES NO OTHER RING. Least obvious and most load-bearing:
- *     see the README's boundary ruling on why the crown does not depend on the
+ *     see the README's boundary ruling on why the shell does not depend on the
  *     seam even though it draws the seam's answers.
  */
 final class BoundaryTest extends TestCase
@@ -72,7 +72,7 @@ final class BoundaryTest extends TestCase
 
         self::assertSame([], $offenders, \sprintf(
             'The shell must not name the "%s" module — not in src/, and above all not in a template. '
-            .'A nav row and a module card are data handed to the crown, never a slug it recognises.',
+            .'A nav row and a module card are data handed to the shell, never a slug it recognises.',
             $name,
         ));
     }
@@ -93,7 +93,7 @@ final class BoundaryTest extends TestCase
     }
 
     /**
-     * THE SHELL REMEMBERS NOTHING. This is the rule that makes the crown
+     * THE SHELL REMEMBERS NOTHING. This is the rule that makes the shell
      * cheap: it can be booted, rendered and tested without a database, which is
      * why this repository's CI has no postgres service while every sibling's
      * does. The day an entity appears here, that stops being true and the whole
@@ -101,9 +101,9 @@ final class BoundaryTest extends TestCase
      */
     public function testTheShellOwnsNoData(): void
     {
-        self::assertDirectoryDoesNotExist(self::ROOT.'/src/Entity', 'Entities belong to the seam and the branches.');
-        self::assertDirectoryDoesNotExist(self::ROOT.'/src/Repository', 'A crown reads what it is handed.');
-        self::assertDirectoryDoesNotExist(self::ROOT.'/migrations', 'A crown owns no schema.');
+        self::assertDirectoryDoesNotExist(self::ROOT.'/src/Entity', 'Entities belong to the seam and to the modules.');
+        self::assertDirectoryDoesNotExist(self::ROOT.'/src/Repository', 'A shell reads what it is handed.');
+        self::assertDirectoryDoesNotExist(self::ROOT.'/migrations', 'A shell owns no schema.');
 
         $offenders = [];
         foreach (self::phpSources() as $path => $code) {
@@ -121,7 +121,7 @@ final class BoundaryTest extends TestCase
     }
 
     /**
-     * THE SHELL ROUTES NOWHERE. The grid's UI is the crown's (see the README);
+     * THE SHELL ROUTES NOWHERE. The grid's UI is the shell's (see the README);
      * the grid's URL is not. `/areas/{uuid}/modules` is the host's URL space,
      * gated by the host's permissions and resolving the host's area entity — a
      * controller here would drag all three across the boundary to save one
@@ -129,7 +129,7 @@ final class BoundaryTest extends TestCase
      */
     public function testTheShellOwnsNoUrls(): void
     {
-        self::assertDirectoryDoesNotExist(self::ROOT.'/src/Controller', 'The crown draws pages; the host owns their URLs.');
+        self::assertDirectoryDoesNotExist(self::ROOT.'/src/Controller', 'The shell draws pages; the host owns their URLs.');
         self::assertFileDoesNotExist(self::ROOT.'/config/routes.php');
         self::assertFileDoesNotExist(self::ROOT.'/config/routes.yaml');
 
@@ -146,10 +146,10 @@ final class BoundaryTest extends TestCase
 
     /**
      * THE SHELL REQUIRES NO OTHER RING, and this is the ruling worth arguing —
-     * the README argues it at length. The short form: the crown draws the
+     * the README argues it at length. The short form: the shell draws the
      * seam's answers but does not read them. They arrive already composed,
      * because composing them needs an area, a viewer and a department lens,
-     * none of which the seam has either. A require here would make the crown
+     * none of which the seam has either. A require here would make the shell
      * unusable on an installation with no module seam, and would put seam
      * entities inside templates, which is exactly where a `module.getSlug()`
      * comparison gets typed.
@@ -166,7 +166,7 @@ final class BoundaryTest extends TestCase
 
     /**
      * FLAT FOLDERS, BY TECHNICAL KIND. src/Domain and its relatives are banned
-     * across the tree; the crown has no domain to put in one anyway. templates/
+     * across the platform; the shell has no domain to put in one anyway. templates/
      * is not an exception to the rule — it is not a domain folder, it is this
      * bundle's entire subject, and it must exist.
      */

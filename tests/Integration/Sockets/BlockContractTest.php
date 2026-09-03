@@ -41,7 +41,7 @@ use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
  * adding is a minor version and a new row here; renaming is a major version,
  * a deprecation cycle, and the old name kept as an alias block for one release.
  *
- * WHY THIS IS NOT PARANOIA. Before the crown existed, every module bundle
+ * WHY THIS IS NOT PARANOIA. Before the shell existed, every module bundle
  * carried its own `{% block content %}<div class="page">…{% endblock %}` copied
  * from the host, and each copy also re-implemented flashes. A change to the
  * page frame reached the copies somebody remembered. The frame was a
@@ -72,7 +72,7 @@ final class BlockContractTest extends ContractTestCase
             //                 importmap's deferred modules (the Leaflet rule).
             'importmap',    // filled by: nobody, normally. Here so a host can.
             'body',         // filled by: nobody. The shell owns it; a page that
-            //                 fills this has left the crown.
+            //                 fills this has left the shell.
 
             /*
              * THE SHELL — @UhifadhiShell/shell.html.twig
@@ -120,7 +120,7 @@ final class BlockContractTest extends ContractTestCase
     {
         self::assertSame(self::contractV1(), LayoutContract::BLOCKS, <<<'WHY'
             A socket was added, removed or renamed. That is a change to a public
-            API — every module bundle in the tree fills these names.
+            API — every module bundle fills these names.
 
             Adding one: append it to contractV1() above, in the group it belongs
             to, with the comment saying who fills it; bump the minor version.
@@ -135,7 +135,7 @@ final class BlockContractTest extends ContractTestCase
 
     public function testTheContractIsVersionedSoAHostCanCheckWhatItIsMounting(): void
     {
-        // A module bundle can require a crown that has the sockets it fills.
+        // A module bundle can require a shell that has the sockets it fills.
         // Without a number, "the shell supports shell_page_tabs" is a fact
         // nobody can assert except by rendering.
         self::assertSame(1, LayoutContract::VERSION);
@@ -173,7 +173,7 @@ final class BlockContractTest extends ContractTestCase
 
     /**
      * The three frames are addressed by constant, not by string, because their
-     * paths appear in every module bundle in the tree and a path typed twice is
+     * paths appear in every module bundle and a path typed twice is
      * a path that eventually differs.
      */
     public function testTheFramesAreAddressableByConstant(): void
@@ -217,7 +217,7 @@ final class BlockContractTest extends ContractTestCase
      *
      * Every page in the host and every module bundle today fills
      * `{% block content %}` against the host's layout.html.twig. The extraction
-     * would break all of them at once if the crown renamed it, and a big-bang
+     * would break all of them at once if the shell renamed it, and a big-bang
      * rename across five repositories is exactly the "casual rewiring" this
      * bundle exists to end. So `content` stays, as the shell's main slot; the
      * page frame fills it with the framed page, and a page that wants the shell

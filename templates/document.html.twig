@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {# The page says what it is; the crown says where it is and whose it is. #}
+    {# The page says what it is; the shell says where it is and whose it is. #}
     {%- set _page %}{% block title %}{% endblock %}{% endset -%}
     <title>{{ shell_title(_page) }}</title>
 
@@ -25,7 +25,7 @@
        want has already answered.
 
        This is inline, in the head, ABOVE the stylesheet, on purpose. It is the
-       one script in the crown, it is four lines, and every one of them is load-
+       one script in the shell, it is four lines, and every one of them is load-
        bearing. #}
     <script>
         (function () {
@@ -47,13 +47,13 @@
     </script>
 
     {% block stylesheets %}
-        {# The crown's sheet, first. A module base calls parent() and then adds
+        {# The shell's sheet, first. A module base calls parent() and then adds
            its own, because its rules are written to override these. #}
         <link rel="stylesheet" href="{{ asset('bundles/uhifadhishell/shell.css') }}">
     {% endblock %}
 
     {% block javascripts %}
-        {# Bundles cannot contribute importmap entries, so the crown declares the
+        {# Bundles cannot contribute importmap entries, so the shell declares the
            socket and the host fills it with its own importmap line. #}
         {% block importmap %}{% endblock %}
     {% endblock %}

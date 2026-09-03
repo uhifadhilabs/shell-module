@@ -1,5 +1,5 @@
 /* ============================================================================
-   THE CROWN'S STYLESHEET — the token set, and the furniture the crown draws.
+   THE SHELL'S STYLESHEET — the token set, and the furniture the shell draws.
 
    TWO THINGS ARE HERE AND A THIRD IS DELIBERATELY NOT.
 
@@ -24,7 +24,7 @@
    definition is a second place the brand colour is decided.
 
    A token a module can read is a token a module will read, so anything the
-   crown declares that is NOT in the contract is prefixed --_ as private, and a
+   shell declares that is NOT in the contract is prefixed --_ as private, and a
    test sweeps this file to keep that true.
    ========================================================================== */
 
@@ -56,7 +56,7 @@
 }
 
 /* ==================== THE TOKENS — dark (night canvas) ====================
-   The selector is part of the contract: module stylesheets across the tree
+   The selector is part of the contract: module stylesheets across the platform
    write `html.dark .their-card { … }` too, so a move to a data attribute would
    silently unstyle every one of them. The class is put on <html> by the inline
    script in the document head, before the first paint. */
@@ -347,7 +347,7 @@ h2.zone::after { content: ""; flex: 1; height: 1px; background: var(--c-ln2); }
 
 /* ==================== THE PLATE, AND THE THINGS ON IT ====================
    The card every surface in the platform is built from, and the two vocabularies
-   that ride it: chips and the call to action. They live in the crown because a
+   that ride it: chips and the call to action. They live in the shell because a
    chip must read identically on a host page and inside a module. */
 .c {
     background: linear-gradient(180deg, rgb(var(--c-p1)), rgb(var(--c-p2)));
