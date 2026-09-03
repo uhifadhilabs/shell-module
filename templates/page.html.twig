@@ -2,7 +2,7 @@
 
    A module page extends THIS and fills sockets. It types no furniture: no
    `<div class="page">`, no crumb markup, no flash loop of its own. Before the
-   shell, every module bundle carried a copy of all three, and a change to the
+   shell, every module carried a copy of all three, and a change to the
    frame reached the copies somebody remembered.
 
    THE VERTICAL ORDER IS PART OF THE CONTRACT — trail, page head, tabs, flashes,
@@ -35,7 +35,7 @@
         {%- block shell_flashes -%}
             {# ONE FLASH MARKUP, RENDERED ONCE, BY THE FRAME. This block is
                overridable and a module overriding it is a bug report: before the
-               shell, the host said "saved" one way, and two module bundles said
+               shell, the host said "saved" one way, and two modules said
                it two other ways, each with its own class and its own tick. #}
             {%- include '@UhifadhiShell/_flashes.html.twig' with {flashes: app.flashes} only -%}
         {%- endblock -%}

@@ -53,7 +53,7 @@ use Uhifadhi\Shell\UhifadhiShellBundle;
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
-    // The frozen manifest, as a service, so a host or a module bundle can ask
+    // The frozen manifest, as a service, so a host or a module can ask
     // the container which contract version it is mounting rather than reading
     // a constant off a class it had to guess the name of.
     $services->set('shell.contract', LayoutContract::class);
@@ -61,7 +61,7 @@ return static function (ContainerConfigurator $container): void {
     /*
      * THE NAV SEAM'S COLLECTOR. A tagged iterator, and nothing else: whatever
      * carries the tag contributes, whether that is the host folding areas and
-     * permissions into rows or a module bundle adding one platform-wide row.
+     * permissions into rows or a module adding one platform-wide row.
      *
      * The iterator is lazy and is walked on every render, which is what makes
      * the seam's same-day promise true — switch a contributor off and its rows

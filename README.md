@@ -2,7 +2,7 @@
 
 The **shell**: what an uhifadhi installation looks like — the document, the page
 frame, the navigation seams and the theme every module's pages mount into.
-A [uhifadhi](https://github.com/uhifadhilabs) platform bundle.
+A [uhifadhi](https://github.com/uhifadhilabs) platform module.
 
 > Installs with `composer require uhifadhi/shell-module`, registers via Flex,
 > and provides three page frames with twenty-three named blocks, two navigation
@@ -38,9 +38,9 @@ A [uhifadhi](https://github.com/uhifadhilabs) platform bundle.
 
 ## The architecture
 
-**Uhifadhi is one skeleton and a set of bundles.**
+**Uhifadhi is one skeleton and a set of modules.**
 [`uhifadhi/uhifadhi`](https://github.com/uhifadhilabs/uhifadhi) is the project
-skeleton — copied once, never updated; everything else arrives as a bundle,
+skeleton — copied once, never updated; everything else arrives as a module,
 updated forever. A module **registers with the seam**
 ([`uhifadhi/seam-module`](https://github.com/uhifadhilabs/seam-module)) and
 **renders in the shell** ([`uhifadhi/shell-module`](https://github.com/uhifadhilabs/shell-module)
@@ -139,7 +139,7 @@ sockets, and the reason the bundle exists.
 | `shell_page` | module — **the body**, the one socket a page must fill |
 
 `content` is in the contract on purpose and is the one socket named for
-compatibility rather than clarity: every host page and every module bundle fills
+compatibility rather than clarity: every host page and every module page fills
 it today against `layout.html.twig`. Renaming it would break five repositories in
 one commit — exactly the casual rewiring this bundle exists to end. It stays as
 the shell's main slot; the page frame fills it with the framed page, and a
@@ -153,11 +153,11 @@ always lands before a module's.
 
 ### How a module fills them
 
-The whole point, in the shortest page that works. A module bundle's page extends
+The whole point, in the shortest page that works. A module's page extends
 the frame, fills sockets, and types no furniture:
 
 ```twig
-{# templates/sightings/index.html.twig (your bundle) #}
+{# templates/sightings/index.html.twig (your module) #}
 {% extends '@UhifadhiShell/page.html.twig' %}
 
 {% block shell_page %}
@@ -173,7 +173,7 @@ it does not — an empty block renders no element, so there is nothing to pay fo
 a subtitle you never wrote:
 
 ```twig
-{# templates/sightings/index.html.twig (your bundle) #}
+{# templates/sightings/index.html.twig (your module) #}
 {% extends '@UhifadhiShell/page.html.twig' %}
 
 {% block title %}Sightings{% endblock %}
@@ -205,13 +205,13 @@ emitted as markup, so escape your own values.
 
 **Do not write `<div class="page">`, a `.crumb`, a `.pghead` or a flash loop.**
 The frame owns all four. Every one of them was, at some point, copied into a
-module bundle from whichever host template was open at the time — which is the
+module from whichever host template was open at the time — which is the
 reason this package exists.
 
 **Your stylesheet goes after the shell's, and `parent()` is what puts it there.**
 
 ```twig
-{# templates/sightings/_base.html.twig (your bundle) #}
+{# templates/sightings/_base.html.twig (your module) #}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/sightings/sightings.css') }}">
@@ -231,7 +231,7 @@ sibling screens, with the right one lit. A page outside any place says so by
 saying nothing:
 
 ```twig
-{# templates/sightings/index.html.twig (your bundle) #}
+{# templates/sightings/index.html.twig (your module) #}
 {% block shell_page_tabs %}{% endblock %}
 ```
 
@@ -257,7 +257,7 @@ Content arrives through `NavigationSourceInterface`, tagged `shell.nav_section`:
   has the areas, the viewer, the permission voters and the seam's per-area
   ledger; folding those four into "these rows, in this order" is a reading for a
   person on a page.
-- a **module bundle** may implement one too, for the rare platform-wide row that
+- a **module** may implement one too, for the rare platform-wide row that
   belongs to nobody's area.
 
 Pinned by test: sections come out in declared-position order with registration as
@@ -439,7 +439,7 @@ enforced by the frozen lists refusing to agree with anything else:
 
 - **Adding** a socket or a token: append it to the frozen list in the test, in
   the group it belongs to, with the comment saying who fills it; bump the minor
-  version. `LayoutContract::VERSION` exists so a module bundle can require a
+  version. `LayoutContract::VERSION` exists so a module can require a
   shell that has the sockets it fills.
 - **Renaming**: major version, a deprecation cycle, and the old name kept as an
   alias block for one release. `content` is the worked example.
@@ -567,7 +567,7 @@ composer require uhifadhi/shell-module
 ```
 
 Every code block below opens with a comment naming the file it belongs in. Where
-a block belongs to the application rather than to a module bundle, the comment
+a block belongs to the application rather than to a module, the comment
 says so.
 
 The bundle registers via Flex (`"type": "symfony-bundle"`), which adds

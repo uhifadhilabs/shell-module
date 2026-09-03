@@ -17,7 +17,7 @@ namespace Uhifadhi\Shell\Contract;
  * THE FROZEN MANIFEST — the shell's public API, as data.
  *
  * Three frames, twenty-three sockets, twenty-three theme tokens and one
- * version number. Everything a module bundle is allowed to know about the
+ * version number. Everything a module is allowed to know about the
  * shell is on this class, and everything on this class is pinned by a test
  * that types the same list out by hand (tests/Sockets/BlockContractTest and
  * tests/Theme/ThemeContractTest). The manifest and the test disagree loudly, on
@@ -32,7 +32,7 @@ namespace Uhifadhi\Shell\Contract;
 final class LayoutContract
 {
     /**
-     * The socket list's version, so a module bundle can require a shell that
+     * The socket list's version, so a module can require a shell that
      * has the blocks it fills. Without a number, "the shell supports
      * shell_page_tabs" is a fact nobody can assert except by rendering.
      */

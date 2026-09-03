@@ -33,7 +33,7 @@ use Uhifadhi\Shell\DependencyInjection\ShellConfiguration;
  * the theme tokens are a versioned, test-enforced API — Symfony-extension-point
  * grade. Renaming a block is a breaking change and has to be made as one: the
  * manifest is frozen in a test that fails if the list moves at all. This exists
- * because the alternative was in production — every module bundle re-declaring
+ * because the alternative was in production — every module re-declaring
  * `{% block content %}<div class="page">…` by copy, so that a change to the
  * frame reached the modules that happened to be remembered.
  *
@@ -55,9 +55,9 @@ use Uhifadhi\Shell\DependencyInjection\ShellConfiguration;
 final class UhifadhiShellBundle extends AbstractBundle
 {
     /**
-     * The shell's stylesheet, as a host and every module bundle must link it.
+     * The shell's stylesheet, as a host and every module must link it.
      *
-     * Published as a constant for the reason every module bundle's own is: the
+     * Published as a constant for the reason every module's own is: the
      * path is written in more than one place (the shell links it; a module base
      * extends the shell; a shared surface renders a contributor's sheet beside
      * it), and a path typed twice is a path that eventually differs.
