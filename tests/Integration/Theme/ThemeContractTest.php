@@ -15,6 +15,7 @@ namespace Uhifadhi\Shell\Tests\Integration\Theme;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Uhifadhi\Shell\Contract\LayoutContract;
+use Uhifadhi\Shell\Service\Theme;
 use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
 
 /**
@@ -228,6 +229,40 @@ final class ThemeContractTest extends ContractTestCase
     public function testTheSystemPreferenceIsHonouredRatherThanFlattenedToTheDefault(): void
     {
         self::assertStringContainsString('prefers-color-scheme', $this->render('@fixtures/bare_document_page.html.twig'));
+    }
+
+    /**
+     * A LINK MAY CARRY THE ANSWER. `?theme=dark` forces a theme for that view —
+     * which is how a screenshot, a projector, a support call and a design review
+     * ask for the other palette without touching anybody's saved preference.
+     *
+     * It is resolved in the same inline script, before the first paint, for the
+     * same reason everything else about the theme is: an override applied after
+     * the first frame is a flash of the theme the visitor explicitly did not
+     * ask for.
+     */
+    public function testALinkMayOverrideTheThemeForOneViewWithoutChangingTheChoice(): void
+    {
+        $head = $this->render('@fixtures/bare_document_page.html.twig');
+
+        self::assertStringContainsString('theme', $head);
+        self::assertMatchesRegularExpression(
+            '/URLSearchParams|searchParams/',
+            $head,
+            'The pre-paint script must read the URL override, not a controller that connects later.',
+        );
+    }
+
+    /**
+     * THE KEY IS PUBLISHED. The toggle that writes the choice lives in the
+     * application (a bundle cannot contribute an importmap entry), so the name
+     * of the key the shell READS has to be a constant the application can name
+     * rather than a string in a template that the two copy separately.
+     */
+    public function testTheKeyTheChoiceIsRememberedUnderIsPublished(): void
+    {
+        self::assertSame('shell-theme', Theme::CHOICE_KEY);
+        self::assertStringContainsString(Theme::CHOICE_KEY, $this->render('@fixtures/bare_document_page.html.twig'));
     }
 
     /**

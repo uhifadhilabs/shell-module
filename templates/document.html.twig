@@ -30,8 +30,15 @@
     <script>
         (function () {
             try {
-                var stored = localStorage.getItem('shell-theme');
-                var choice = stored || '{{ shell_default_theme()|e('js') }}';
+                // Four answers, in the order they outrank each other: what this
+                // link asked for, what the visitor chose, what the deployment
+                // defaults to, and — if that default is "system" — what the
+                // operating system prefers. The link override is here rather
+                // than in a controller so that a screenshot or a projector gets
+                // the palette it asked for on the FIRST frame.
+                var asked = new URLSearchParams(window.location.search).get('theme');
+                var choice = asked || localStorage.getItem('shell-theme')
+                    || '{{ shell_default_theme()|e('js') }}';
                 var dark = choice === 'dark' || (choice === 'system'
                     && window.matchMedia('(prefers-color-scheme: dark)').matches);
                 document.documentElement.classList.toggle('dark', dark);
