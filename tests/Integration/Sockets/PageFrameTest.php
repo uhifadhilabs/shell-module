@@ -188,6 +188,27 @@ final class PageFrameTest extends ContractTestCase
         self::assertStringContainsString('shell.css', $this->render('@fixtures/bare_document_page.html.twig'));
     }
 
+    /**
+     * ATTRIBUTES ON <body> ARE NOT CONTENT, and no block can put them there —
+     * which is why the one variable in the whole contract exists. A host sets
+     * it outside any block and the document's tag picks it up, so a
+     * platform-wide setting every map controller reads can ride on a document
+     * the shell owns without the shell knowing that maps exist.
+     *
+     * The value is emitted as markup — attributes are markup, and an escaped
+     * `data-x="y"` is a broken tag — so a host escapes its own values. A page
+     * that sets nothing gets a bare tag, with no stray space in it.
+     */
+    public function testTheBodyTagCarriesTheAttributesAPageGivesItAndNoOthers(): void
+    {
+        self::assertStringContainsString(
+            '<body data-basemap="esri" data-basemap-key="">',
+            $this->render('@fixtures/body_attributes_page.html.twig'),
+        );
+
+        self::assertStringContainsString('<body>', $this->render('@fixtures/bare_document_page.html.twig'));
+    }
+
     public function testTheFrameIsTheOneAddressAModuleNeedsToKnow(): void
     {
         // A module bundle's base extends exactly this string, and nothing else

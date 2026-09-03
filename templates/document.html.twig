@@ -51,7 +51,21 @@
         {% block importmap %}{% endblock %}
     {% endblock %}
 </head>
-<body>
+{# `shell_body_attributes` — the one variable, rather than block, in the whole
+   contract, and it exists because attributes on <body> are not content: a block
+   cannot put them there. A host or a module sets it at the top of a template,
+   outside any block, and it reaches this tag:
+
+     {% set shell_body_attributes = map_basemap_attributes() %}
+
+   That is how a platform-wide setting every map controller reads — the one
+   place a deployment's basemap is decided — rides on a document the shell owns
+   without the shell knowing that maps exist.
+
+   IT IS EMITTED AS MARKUP, because attributes are markup and an escaped
+   `data-x="y"` is a broken tag. Whatever a host puts here is its own to escape:
+   build it from values you control, never from a request. #}
+<body{% if shell_body_attributes is defined %} {{ shell_body_attributes|raw }}{% endif %}>
 {% block body %}{% endblock %}
 </body>
 </html>

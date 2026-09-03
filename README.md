@@ -189,6 +189,12 @@ a subtitle you never wrote:
 
 Four rules a module author needs and nothing else:
 
+**Attributes on `<body>` are the one variable, not a block.** A block cannot put
+them there, so set `shell_body_attributes` at the top of your template, outside
+any block, and the document's tag picks it up — that is how a platform-wide
+setting the map controllers read rides on a document the shell owns. It is
+emitted as markup, so escape your own values.
+
 **Do not write `<div class="page">`, a `.crumb`, a `.pghead` or a flash loop.**
 The frame owns all four. Every one of them was, at some point, copied into a
 module bundle from whichever host template was open at the time — which is the

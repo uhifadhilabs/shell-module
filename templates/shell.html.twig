@@ -56,13 +56,24 @@
                 {% block shell_topbar %}
                     <header class="topbar">
                         <span class="tb-right">
-                            {# The crown ships the theme toggle and nothing else. The
-                               alerts bell, the user pill and the sign-out link need a
-                               viewer, and a crown that reached for one would fail on
-                               every installation that has not grown a team yet. #}
-                            <button class="tb-icon" type="button" data-controller="theme" data-action="theme#toggle"
-                                    title="Toggle theme" aria-label="Toggle theme">{{ ux_icon('shell:sun') }}</button>
-                            {% block shell_topbar_actions %}{% endblock %}
+                            {# THE THEME TOGGLE IS THIS SOCKET'S DEFAULT CONTENT, not
+                               something bolted on beside it — so a host that adds its
+                               own chrome decides where the toggle sits among it by
+                               where it calls parent():
+
+                                 {% block shell_topbar_actions %}
+                                     …alerts…
+                                     {{ parent() }}
+                                     …the user pill…
+                                 {% endblock %}
+
+                               The toggle is here and the rest is not because the rest
+                               needs a viewer, and the shell must render on an
+                               installation that has not grown a team yet. #}
+                            {% block shell_topbar_actions %}
+                                <button class="tb-icon" type="button" data-controller="theme" data-action="theme#toggle"
+                                        title="Toggle theme" aria-label="Toggle theme">{{ ux_icon('shell:sun') }}</button>
+                            {% endblock %}
                         </span>
                     </header>
                 {% endblock %}
