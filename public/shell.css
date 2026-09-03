@@ -431,6 +431,14 @@ h2.zone::after { content: ""; flex: 1; height: 1px; background: var(--c-ln2); }
 .welcome .wcard p { margin: 0; max-width: none; font-size: 13.5px; }
 .welcome .wcard-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
 .welcome .wpkg { font-size: 13px; font-weight: 700; color: rgb(var(--c-tx)); }
+/* WHAT THIS INSTALLATION IS MADE OF: one row per package, read from composer.
+   A list, not tiles — it is a fact to scan, and it grows with every module. */
+.welcome .wpkgs { display: flex; flex-direction: column; gap: 6px; margin: 0 0 18px; }
+.welcome .wpkg-row {
+    display: flex; align-items: center; gap: 10px; padding: 9px 13px;
+    border: 1px solid var(--c-ln); border-radius: 10px; background: rgb(var(--c-p2));
+}
+.welcome .wpkg-note { font-size: 11.5px; color: rgb(var(--c-dim)); margin-left: auto; }
 .welcome code { font-size: 12.5px; color: rgb(var(--c-tx)); background: rgb(var(--c-raised)); border-radius: 5px; padding: 2px 6px; }
 .welcome .wpre {
     font-size: 13px;

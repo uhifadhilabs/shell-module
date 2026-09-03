@@ -128,7 +128,7 @@ final class FurnitureBehaviourTest extends ContractTestCase
      * `symfony-ux` (PackageJsonSynchronizer::resolvePackageJson), so without it
      * the controllers below are shipped, mapped, named in the templates — and
      * never written into the host's assets/controllers.json, which means never
-     * loaded. Everything installs; nothing binds. This was found by planting the
+     * loaded. Everything installs; nothing binds. This was found by installing the
      * package, not by reading it.
      */
     public function testThePackageIsMarkedAsAUxPackageOrFlexWillNotLookInside(): void

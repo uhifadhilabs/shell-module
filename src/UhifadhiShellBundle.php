@@ -75,7 +75,7 @@ final class UhifadhiShellBundle extends AbstractBundle
      *
      * Shipped rather than left to the host because a document that declares no
      * icon is a document every browser asks `/favicon.ico` for, and a fresh
-     * plant answered that with a 404 in its first minute. A deployment with a
+     * installation answered that with a 404 in its first minute. A deployment with a
      * brand of its own replaces the link through the head's sockets.
      */
     public const string FAVICON = 'bundles/uhifadhishell/favicon.svg';
@@ -123,7 +123,7 @@ final class UhifadhiShellBundle extends AbstractBundle
      * Four icons — the sidebar's collapse chevron, the tree's caret, the theme
      * toggle and the catalogue's lens marker — shipped with the bundle and
      * resolved from disk. This is the ring gate's lesson in the container: a
-     * freshly planted installation has configured no icon set, and a shell
+     * fresh installation has configured no icon set, and a shell
      * whose own chrome needed a network round trip to draw itself would not be
      * a shell that works out of the box.
      *
@@ -145,7 +145,7 @@ final class UhifadhiShellBundle extends AbstractBundle
         //
         // The shell's own controls — the theme toggle, the sidebar's collapse,
         // the tree's carets — were markup here and behaviour in the host the
-        // shell was extracted from, so on a fresh plant every one of them was
+        // shell was extracted from, so on a fresh installation every one of them was
         // dead. A bundle contributes no importmap entry, but it does contribute
         // an AssetMapper path and a `symfony.controllers` block in
         // assets/package.json, which is how every symfony/ux package ships a

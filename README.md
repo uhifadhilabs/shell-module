@@ -350,7 +350,7 @@ hosts that had the right build.
 ship only the markup: the theme toggle, the sidebar's collapse and the tree's
 carets each carried a `data-action` naming a Stimulus controller the host was
 expected to write. The host this bundle was extracted from had written them, so
-the defect was invisible there and total everywhere else — a fresh plant got a
+the defect was invisible there and total everywhere else — a fresh installation got a
 sun button that did nothing, a collapse button that collapsed nothing, and
 carets that folded nothing. Furniture that looks operable and is not is worse
 than furniture that is absent.
@@ -394,7 +394,7 @@ jumps to 66px on every load.
 **The favicon is the full masterbrand mark** — the knockout U tile with the child
 tile in the cut corner — shipped at `public/favicon.svg` and linked by the
 document. Until it existed, every page of every installation drew a `/favicon.ico`
-request and every plant answered it with a 404 in its first minute.
+request and every installation answered it with a 404 in its first minute.
 
 One SVG, at every size, in both palettes: a favicon is fetched on its own, with
 no `shell.css`, no `html.dark` and no tokens, so the paint is written into the
@@ -496,7 +496,8 @@ because this is precisely the kind of ruling that gets quietly reversed by one
 | The seams | `src/Contract/` |
 | The shapes that cross them | `src/Model/` |
 | The frames and partials | `templates/` |
-| The welcome page a fresh plant serves at `/` | `templates/welcome.html.twig` |
+| The welcome page a fresh installation serves at `/` | `templates/welcome.html.twig` |
+| What this installation is made of, read from composer | `src/Service/Installation.php` |
 | The token set and the shell's own CSS | `public/shell.css` |
 | The tab icon: the masterbrand mark, both palettes in one SVG | `public/favicon.svg` |
 | The furniture's behaviour, as UX-packaged Stimulus controllers | `assets/controllers/` |
@@ -543,12 +544,19 @@ and whatever the page put in `shell_page`. Nothing is a placeholder and nothing
 is a stub.
 
 **And it has one page of its own**, `@UhifadhiShell/welcome.html.twig` — the
-screen a plant serves at `/` before it has grown a home screen. Until it
+screen an installation serves at `/` before it has grown a home screen. Until it
 existed, an installation of the seam and the shell answered `/` with Symfony's
 welcome-404: a correct installation looking like a broken one, on its first
-minute. The page says what the two installed packages are, why the sidebar
-beside it is empty, and that `composer require uhifadhi/<name>-module` is what
-fills it.
+minute. The page lists what is installed, says why the sidebar beside it is
+empty, and says that `composer require uhifadhi/<name>-module` is what fills it.
+
+**The list is read from composer at render time** — `Composer\InstalledVersions`,
+through the `shell_packages()` function — because a page whose whole job is to
+report on an installation cannot report a list somebody typed: the first module
+anybody installs makes it wrong, and installing one is the instruction this same
+page gives. Two rows carry a line of description, the shell's own and the seam's,
+and no others do: a shell that described a module would be a shell that knew what
+modules are.
 
 This is a template, not a route — the shell still owns no URLs, and
 `tests/Unit/BoundaryTest` still fails the build if it acquires one. The

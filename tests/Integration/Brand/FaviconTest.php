@@ -19,7 +19,7 @@ use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
  * THE TAB ICON — the one piece of the brand a browser asks for by itself.
  *
  * A document that declares no icon gets a request for `/favicon.ico` from every
- * browser that loads it, and a freshly planted installation answers that
+ * browser that loads it, and a fresh installation answers that
  * request with a 404 in its log on its first minute — the shell's own version
  * of the welcome-404: a correct installation looking like a broken one. So the
  * document declares the icon, and the bundle ships the file it points at.

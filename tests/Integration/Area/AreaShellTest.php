@@ -46,7 +46,7 @@ use Uhifadhi\Shell\Tests\Integration\Fixtures\HostKernel;
  * a domain and the platform has room for an area bundle. The answer is that the
  * strip has no behaviour to own: it is markup plus a rule about lighting, and a
  * bundle whose entire content is one Twig partial is a dependency, not a ring.
- * If an area module is ever planted, it implements this source; it does not
+ * If an area module is ever created, it implements this source; it does not
  * take the strip.
  */
 final class AreaShellTest extends ContractTestCase

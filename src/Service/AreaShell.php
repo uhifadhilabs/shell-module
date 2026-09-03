@@ -24,7 +24,7 @@ use Uhifadhi\Shell\Model\AreaTab;
  * fixes. The host kept two hand-written copies of it and they had to be edited
  * together, which is the tell.
  *
- * The source is OPTIONAL. A freshly planted installation has no places to have
+ * The source is OPTIONAL. A fresh installation has no places to have
  * sibling screens of, and it gets pages with no strip rather than a container
  * that will not compile.
  */

@@ -20,7 +20,7 @@
 
     {# THE TAB ICON. Declared here rather than left to the host, because a
        document that declares none is a document every browser asks
-       `/favicon.ico` for — and a fresh plant answered that with a 404 on its
+       `/favicon.ico` for — and a fresh installation answered that with a 404 on its
        first minute. It is the full masterbrand mark as a single SVG: one file
        at every size, both palettes inside it. A deployment with a brand of its
        own overrides `stylesheets` and links its own after this one. #}
@@ -75,7 +75,7 @@
            that a bundle cannot contribute an importmap entry. True, and beside
            the point: a shell whose own controls need Stimulus and whose own
            document never emits the importmap ships furniture that cannot work,
-           which is precisely what a fresh plant had. The shell requires
+           which is precisely what a fresh installation had. The shell requires
            symfony/asset-mapper and symfony/stimulus-bundle, so `app` is the
            entrypoint every installation of it has.
 

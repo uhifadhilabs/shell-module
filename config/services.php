@@ -15,6 +15,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Uhifadhi\Shell\Contract\LayoutContract;
 use Uhifadhi\Shell\Service\AreaShell;
+use Uhifadhi\Shell\Service\Installation;
 use Uhifadhi\Shell\Service\Navigation;
 use Uhifadhi\Shell\Service\Theme;
 use Uhifadhi\Shell\Twig\ShellExtension;
@@ -75,7 +76,7 @@ return static function (ContainerConfigurator $container): void {
      * to prevent.
      *
      * nullOnInvalid() is the ring gate written into the container: a freshly
-     * planted installation declares no such source, and it must get pages with
+     * installation declares no such source, and it must get pages with
      * no tab strip rather than a container that will not compile.
      */
     $services->set('shell.area_shell', AreaShell::class)
@@ -86,6 +87,12 @@ return static function (ContainerConfigurator $container): void {
     $services->set('shell.theme', Theme::class)
         ->args(['%shell.default_theme%']);
 
+    // WHAT THIS INSTALLATION IS MADE OF, read from composer's runtime API. No
+    // arguments: the answer is a property of the vendor directory, not of any
+    // configuration, and a welcome screen that reported a list somebody typed
+    // would be wrong the first time anybody installed a module.
+    $services->set('shell.installation', Installation::class);
+
     $services->set('shell.twig.extension', ShellExtension::class)
         ->tag('twig.extension');
 
@@ -94,6 +101,7 @@ return static function (ContainerConfigurator $container): void {
             service('shell.navigation'),
             service('shell.area_shell'),
             service('shell.theme'),
+            service('shell.installation'),
             service('router'),
             '%shell.brand_name%',
             '%shell.home_route%',

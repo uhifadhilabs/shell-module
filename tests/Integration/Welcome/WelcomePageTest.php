@@ -18,7 +18,7 @@ use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
 /**
  * THE FIRST PAGE A NEW INSTALLATION HAS.
  *
- * A fresh plant is the seam and the shell and nothing else, so it has no
+ * A fresh installation is the seam and the shell and nothing else, so it has no
  * routes, no controllers and — until now — no answer at `/` but Symfony's own
  * welcome-404. The shell cannot fix that with a route, because it owns no URLs
  * (Unit/BoundaryTest); it can ship the PAGE and let the application point a URL
@@ -26,7 +26,7 @@ use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
  * Symfony's TemplateController.
  *
  * So this template is not chrome and it is not a stub: it is the one screen
- * that explains, to the person who has just planted an installation, what they
+ * that explains, to the person who has just installed it, what they
  * are looking at. It is written to be deleted the day they grow a real home
  * screen.
  *
@@ -53,18 +53,96 @@ final class WelcomePageTest extends ContractTestCase
     }
 
     /**
-     * IT NAMES THE TWO PACKAGES THAT ARE ACTUALLY INSTALLED, by their composer
-     * names, because "the seam" and "the shell" are words that mean nothing to
-     * somebody on their first day and `composer show` is where they will look
-     * next. Naming a package is not naming a module: the shell still recognises
-     * no module slug anywhere (Unit/BoundaryTest sweeps these same templates).
+     * IT LISTS WHAT IS ACTUALLY INSTALLED, and it asks Composer rather than
+     * remembering. The page used to state that two packages were installed and
+     * name them both in prose — true of the installation it was written for and wrong
+     * the moment anybody ran a `composer require`, which is the one instruction
+     * the page itself gives. A first-day operator would then be told, on the
+     * platform's own welcome screen, that the module they had just installed
+     * was not there.
+     *
+     * The list comes from Composer\InstalledVersions: every uhifadhi/* package
+     * this installation has, with its version. Naming a package is still not
+     * naming a module — nothing here is recognised, compared or switched on;
+     * the shell prints whatever the vendor directory reports.
      */
-    public function testItNamesWhatIsInstalledSoAFirstDayOperatorCanFindIt(): void
+    public function testItListsEveryInstalledPackageRatherThanTheTwoItWasWrittenFor(): void
     {
-        $html = $this->render(self::WELCOME);
+        $crawler = $this->crawl(self::WELCOME);
+        $rows = $crawler->filter('div.pgbody .wpkgs .wpkg-row');
 
-        self::assertStringContainsString('uhifadhi/seam-module', $html);
-        self::assertStringContainsString('uhifadhi/shell-module', $html);
+        $installed = array_values(array_filter(
+            \Composer\InstalledVersions::getInstalledPackages(),
+            static fn (string $package): bool => str_starts_with($package, 'uhifadhi/'),
+        ));
+
+        self::assertNotSame([], $installed, 'The suite runs inside an installation of this very package.');
+        self::assertCount(\count($installed), $rows, 'The list is Composer\'s, not a list somebody typed.');
+
+        $text = $rows->text();
+        foreach ($installed as $package) {
+            self::assertStringContainsString($package, $text);
+        }
+    }
+
+    /**
+     * A NAME WITHOUT A VERSION IS HALF AN ANSWER — "which shell am I running"
+     * is the question this page is looked at to answer on the day something is
+     * wrong, and `composer show` is the second place somebody looks, not the
+     * first.
+     */
+    public function testEveryPackageIsShownWithItsVersion(): void
+    {
+        $rows = $this->crawl(self::WELCOME)->filter('div.pgbody .wpkgs .wpkg-row');
+
+        foreach ($rows as $row) {
+            $name = (new \Symfony\Component\DomCrawler\Crawler($row))->filter('.wpkg')->text();
+            $version = (new \Symfony\Component\DomCrawler\Crawler($row))->filter('.chip')->text();
+
+            self::assertStringStartsWith('uhifadhi/', trim($name));
+            self::assertNotSame('', trim($version), \sprintf('%s is listed with no version.', $name));
+        }
+    }
+
+    /**
+     * THE TEACHING IS ON THE LIST, not beside it. "The seam" and "the shell"
+     * are words that mean nothing on a first day, so the two packages the shell
+     * can honestly speak for carry a line saying what they are — as annotations
+     * on their own rows. There is no second inventory anywhere on the page: one
+     * list, one source of truth, and the descriptions live on it.
+     */
+    public function testTheTwoPackagesTheShellCanSpeakForAreDescribedOnTheirOwnRows(): void
+    {
+        $crawler = $this->crawl(self::WELCOME);
+
+        $described = $crawler->filter('div.pgbody .wpkgs .wpkg-row:has(.wpkg-note)');
+        self::assertGreaterThan(0, $described->count());
+
+        foreach ($described as $row) {
+            $name = trim((new \Symfony\Component\DomCrawler\Crawler($row))->filter('.wpkg')->text());
+            self::assertContains($name, ['uhifadhi/seam-module', 'uhifadhi/shell-module'], \sprintf(
+                'The shell described %s. It can speak for itself and for the seam, and for nothing else.',
+                $name,
+            ));
+        }
+
+        self::assertStringContainsString(
+            'uhifadhi/shell-module',
+            $described->text(),
+            'This suite runs inside an installation of the shell, so the shell describes itself here.',
+        );
+    }
+
+    /**
+     * A PACKAGE THE SHELL CANNOT SPEAK FOR GETS NO INVENTED SENTENCE, and the
+     * page says the honest generic thing once instead: that a package without
+     * sidebar rows is not a broken one.
+     */
+    public function testItSaysOnceThatAPackageWithoutRowsIsNotBroken(): void
+    {
+        $text = $this->crawl(self::WELCOME)->filter('div.pgbody')->text();
+
+        self::assertStringContainsString('not a broken', $text);
     }
 
     /**
@@ -102,7 +180,7 @@ final class WelcomePageTest extends ContractTestCase
     {
         $crawler = $this->crawl(self::WELCOME);
 
-        self::assertCount(0, $crawler->filter('nav.nav .nav-hd'), 'A fresh plant has no rows to show, and shows none.');
+        self::assertCount(0, $crawler->filter('nav.nav .nav-hd'), 'A fresh installation has no rows to show, and shows none.');
         self::assertCount(0, $crawler->filter('div.atabs'), 'It is inside no place, and says so by saying nothing.');
     }
 }
