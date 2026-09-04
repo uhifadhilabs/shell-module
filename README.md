@@ -604,6 +604,14 @@ welcome-404: a correct installation looking like a broken one, on its first
 minute. The page lists what is installed, says why the sidebar beside it is
 empty, and says that `composer require uhifadhi/<name>-module` is what fills it.
 
+**Who can read it is not the shell's question.** On an installation with no
+firewall — the skeleton, the seam and the shell and nothing else — the page is
+open because nothing is closed. On one that has installed identity
+(`uhifadhi/team-module`), whose documented `security.yaml` is default-closed, the
+same page is a signed-in view and a stranger asking for `/` is sent to `/login`
+instead. Neither is something this bundle does or could do: the shell renders
+what it is asked for, and `access_control` is the application's file.
+
 **The list is read from composer at request time** — `Composer\InstalledVersions`,
 through `src/Service/Installation.php` — because a page whose whole job is to
 report on an installation cannot report a list somebody typed: the first module
