@@ -41,7 +41,7 @@ use PHPUnit\Framework\TestCase;
  *     either way. The area URL space, its permission gates and its entity
  *     resolution stay the host's.
  *  5. THE SHELL REQUIRES NO OTHER RING. Least obvious and most load-bearing:
- *     see the README's boundary ruling on why the shell does not depend on the
+ *     see docs/boundaries.md on why the shell does not depend on the
  *     seam even though it draws the seam's answers.
  */
 final class BoundaryTest extends TestCase
@@ -191,7 +191,7 @@ final class BoundaryTest extends TestCase
 
     /**
      * THE SHELL REQUIRES NO OTHER RING, and this is the ruling worth arguing —
-     * the README argues it at length. The short form: the shell draws the
+     * docs/boundaries.md argues it at length. The short form: the shell draws the
      * seam's answers but does not read them. They arrive already composed,
      * because composing them needs an area, a viewer and a department lens,
      * none of which the seam has either. A require here would make the shell

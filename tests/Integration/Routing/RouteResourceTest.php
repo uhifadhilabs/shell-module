@@ -46,7 +46,7 @@ final class RouteResourceTest extends TestCase
      * THE RESOURCE EXISTS WHERE THE PUBLISHED CONSTANT SAYS IT DOES.
      *
      * The path is written in four places outside this repository — the recipe,
-     * the skeleton, the README and every installation's routes file — so it is
+     * the skeleton, the documentation and every installation's routes file — so it is
      * published as a constant here for the same reason the stylesheet's path
      * is: a path typed twice is a path that eventually differs.
      */

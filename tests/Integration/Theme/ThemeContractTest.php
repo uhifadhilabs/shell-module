@@ -113,8 +113,7 @@ final class ThemeContractTest extends ContractTestCase
         self::assertSame(self::contractV1(), LayoutContract::TOKENS, <<<'WHY'
             A theme token was added, removed or renamed. Module stylesheets
             across the platform are written against these names — the same change
-            policy applies as to the blocks (see the README, "Changing the
-            contract").
+            policy applies as to the blocks (see docs/changing-the-contract.md).
             WHY);
     }
 

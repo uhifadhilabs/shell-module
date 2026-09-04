@@ -37,7 +37,7 @@ use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
  *
  * There is no way to move a socket without editing this file, which is the
  * point: "sloppiness must not compile". A socket is an API. The policy for
- * changing one is in the README under "Changing the contract", and it is short:
+ * changing one is in docs/changing-the-contract.md, and it is short:
  * adding is a minor version and a new row here; renaming is a major version,
  * a deprecation cycle, and the old name kept as an alias block for one release.
  *
@@ -125,8 +125,8 @@ final class BlockContractTest extends ContractTestCase
             Adding one: append it to contractV1() above, in the group it belongs
             to, with the comment saying who fills it; bump the minor version.
             Renaming one: major version, and the old name stays as an alias block
-            for one release. Removing one: same, plus a note in the README's
-            "Changing the contract" section.
+            for one release. Removing one: same, plus a note in
+            docs/changing-the-contract.md.
 
             Editing this test to make a build pass is the failure mode it exists
             to catch.

@@ -25,7 +25,7 @@ namespace Uhifadhi\Shell\Contract;
  * templates happen to say, and would have nothing to report the day somebody
  * renames a block.
  *
- * The change policy is in the README under "Changing the contract": adding is a
+ * The change policy is in docs/changing-the-contract.md: adding is a
  * minor version and a new row in the frozen test; renaming is a major version, a
  * deprecation cycle, and the old name kept as an alias block for one release.
  */

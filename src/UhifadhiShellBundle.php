@@ -91,7 +91,7 @@ final class UhifadhiShellBundle extends AbstractBundle
      *         resource: '@UhifadhiShellBundle/config/routes/welcome.php'
      *
      * Published as a constant for the reason the stylesheet's path is: this
-     * string is written in the recipe, in the skeleton, in the README and in
+     * string is written in the recipe, in the skeleton, in docs/boundaries.md and in
      * every installation, and a path typed twice is a path that eventually
      * differs.
      */

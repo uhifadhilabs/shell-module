@@ -31,7 +31,7 @@ use Uhifadhi\Shell\UhifadhiShellBundle;
  * without a connection has stopped being a layout.
  *
  * Note also what is missing and is NOT the boundary: a seam. The shell does
- * not require one (see the README's boundary ruling) — module rows and module
+ * not require one (see docs/boundaries.md) — module rows and module
  * cards reach it as data, through the seams, from whoever composed them. This
  * kernel proves it by booting a shell with no seam runtime under it at all.
  */
