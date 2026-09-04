@@ -36,8 +36,8 @@ use Uhifadhi\Shell\Tests\Integration\ContractTestCase;
  *   for a particular viewer on a particular area, and it needs three things the
  *   shell does not have and must not acquire: the area, the viewer's identity,
  *   and the department lens. The host's ModuleGridService already does exactly
- *   this and stays where it is; the seam's README argued the same boundary
- *   from the other side.
+ *   this and stays where it is; the seam's docs/boundaries.md argued the same
+ *   boundary from the other side.
  *
  *   THE URL IS NOT, EITHER. /areas/{uuid}/modules is the host's URL space,
  *   gated by the host's module.view and resolving the host's area entity. A
