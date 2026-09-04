@@ -97,6 +97,9 @@ check ever reaches.
   sidebar and tabs reach a page.
 - [The theme](docs/theming.md) — the token set, the Stimulus controllers the
   furniture moves by, and the tab icon.
+- [The component vocabulary](docs/components.md) — the classes a module writes on
+  its own elements: the plate, the card's tab, the KPI, the register table, the
+  pager and the person's mark.
 - [Boundaries](docs/boundaries.md) — what the shell is not: the one URL it ships,
   why it requires no seam, and how much of the module grid it claims.
 - [Changing the contract](docs/changing-the-contract.md) — the policy for adding,

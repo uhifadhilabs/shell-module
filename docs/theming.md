@@ -41,6 +41,12 @@ Deliberately **not** here: the map chrome tokens (`--z-ink`, `--z-paper`,
 owns how a layer draws; a legend palette in the shell could not be changed
 without a shell release.
 
+**Tokens are not the whole of the sheet.** The same file ships the platform's
+[component vocabulary](components.md) — `.kpi`, `table.tbl`, `.avatar`, the
+card's tab, the pager — which is what a module writes on its own elements. Every
+one of those rules spends the tokens above and names no colour of its own, which
+is why there is no dark half of that section.
+
 **What ships here and what does not.** Tokens are values — custom properties the
 browser resolves — so the bundle ships them, in `public/shell.css`, along with
 plain CSS for the classes its own templates emit. It ships no utility classes:

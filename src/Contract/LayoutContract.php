@@ -158,4 +158,61 @@ final class LayoutContract
         '--font-body',
         '--font-mono',
     ];
+
+    /**
+     * THE COMPONENT VOCABULARY — the class names a module may write.
+     *
+     * The tokens say what jade is; these say what a KPI plate is. Both are
+     * public API and both are frozen, for the same reason: four modules
+     * independently wrote `class="kpi"` against a rule that lived in none of
+     * them, and the day the shell renames it they all render as running text.
+     *
+     * These are the ENTRY classes. Their parts — `.kpi .sub`, `.rdf-page .pg`,
+     * `.tbl .num`, the chip's and the grid's modifiers — are documented in
+     * docs/components.md rather than listed here, because a part without its
+     * entry is not a thing a module can write.
+     *
+     * Note what is NOT on the list, and why: `.pgbody`, `.pghead`, `.crumb`,
+     * `.atabs`, `.side`, `.topbar` and the rest of the furniture. The shell
+     * writes those itself, from its own templates; a module that typed one
+     * would be drawing the frame instead of filling it.
+     *
+     * @var list<string>
+     */
+    public const array COMPONENTS = [
+        // the plate and its vocabulary
+        'c',
+        'chip',
+        'cta',
+        'grid',
+
+        // type, and the colour words
+        'mono',
+        'disp',
+        'fog',
+        'acc',
+        'g',
+        'w',
+        'r',
+        'd',
+        'muted',
+
+        // the card's tab, and the line saying what the card is for
+        'tab',
+        'use',
+
+        // the KPI plate, and the strip it sits in
+        'kpi',
+        'kstrip',
+
+        // the register table, and the pager under it
+        'tbl',
+        'rdf-foot',
+        'rdf-page',
+
+        // the person's mark, and the two quiet buttons
+        'avatar',
+        'open-btn',
+        'tgl',
+    ];
 }

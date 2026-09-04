@@ -304,6 +304,16 @@ h1.pg { font-family: var(--font-display); font-size: 27px; font-weight: 700; let
 .pgact .cta { display: inline-flex; align-items: center; gap: 7px; }
 .pgact .cta svg { width: 15px; height: 15px; }
 
+/* The module's own content, and the only rule the frame imposes on it. A
+   wrapper with no styles is not neutral: the first element a module puts here
+   collapses its top margin THROUGH the wrapper and into the frame, so the gap
+   under a page's tabs moved depending on whether the module led with a heading,
+   a paragraph or a card. `flow-root` ends the collapsing, and zeroing the first
+   child's top margin means the frame — not the module — decides where a page's
+   content starts. Nothing else: what goes in here is the module's business. */
+.pgbody { display: flow-root; }
+.pgbody > :first-child { margin-top: 0; }
+
 h2.zone {
     font-family: var(--font-mono);
     font-size: 10.5px;
@@ -391,6 +401,147 @@ h2.zone::after { content: ""; flex: 1; height: 1px; background: var(--c-ln2); }
 .chip.fail { color: rgb(var(--c-fail)); border-color: color-mix(in srgb, rgb(var(--c-fail)) 40%, transparent); }
 .chip.idle { color: rgb(var(--c-dim)); border: 1px dashed color-mix(in srgb, rgb(var(--c-fog)) 45%, transparent); font-weight: 600; }
 .chip.acc { color: rgb(var(--c-acc)); border-color: color-mix(in srgb, rgb(var(--c-acc)) 45%, transparent); }
+
+/* ==================== THE COMPONENT VOCABULARY ====================
+   The classes a module writes on its own elements: the card's tab, the KPI
+   plate, the register table, the pager, the person's mark and the two quiet
+   buttons. Ported from the design workspace's vendor sheet, which is where the
+   platform's shared vocabulary has always lived — the design keeps them in one
+   file and every screen's own sheet says "not repeated here".
+
+   THEY SHIP HERE BECAUSE THEY WERE NOWHERE. A module that needed `.kpi` restated
+   it in its own stylesheet, marked "on loan", and the modules that did not
+   restate it drew a strip of plates as one line of running text. One definition,
+   in the frame, is the difference between a design system and four of them.
+
+   THE LINE THE LIST WAS DRAWN ON: could a third-party module use this class
+   without the shell knowing that module exists? Everything below passes. What
+   does not pass stays in the module's own sheet however generic it looks, and
+   what does pass hoists under a generic name however specific it was named.
+
+   UNSCOPED, on purpose: a module's sheet loads after this one and may override,
+   but it must never have to opt in. And EVERY RULE SPENDS TOKENS — no rule below
+   names a colour — which is what makes all of it correct in both palettes
+   without a single html.dark override. */
+
+/* ---- THE CARD'S TAB — a widget says what it is on its own top edge -------
+   A card header is not a heading inside the plate: it is a small mono pill that
+   straddles the border, which is what makes a screen of cards scannable. The
+   trailing `.src` is the qualifier — "Roster · the table" — in sentence case, so
+   the two halves read as label and note rather than as one shout. */
+.c > .tab {
+    position: absolute; top: -9px; left: 13px; z-index: 2;
+    background: rgb(var(--c-cv)); border: 1px solid var(--c-ln2); border-radius: 7px;
+    padding: 3px 10px;
+    font-family: var(--font-mono); font-size: 9.5px; font-weight: 600;
+    letter-spacing: .18em; text-transform: uppercase; color: rgb(var(--c-fog));
+    display: flex; gap: 8px; align-items: center;
+    white-space: nowrap; max-width: 92%; overflow: hidden;
+}
+.c > .tab .src { letter-spacing: .03em; color: rgb(var(--c-dim)); text-transform: none; }
+
+/* The line under a widget that says what it is FOR. Prose, so it is set at
+   reading size and not in the tab's mono. */
+.use { font-size: 12.5px; color: rgb(var(--c-fog)); margin: 10px 2px 4px; line-height: 1.55; }
+.use b { color: rgb(var(--c-tx)); }
+
+/* ---- THE KPI PLATE — a label on the tab, one number, one sub-line --------
+   The number is display type at 30px and BLOCK, and the block is the whole
+   composition: as an inline run the label, the count and the sub-line collapse
+   into a sentence ("People 2 2 active") that states a number nobody can find. */
+.kpi b, .kpi .disp {
+    font-family: var(--font-display); font-size: 30px; font-weight: 700; letter-spacing: -.035em;
+    display: block; line-height: 1; font-variant-numeric: tabular-nums;
+}
+/* The unit or denominator, which is not the number and must not be read as it. */
+.kpi b em, .kpi .disp em {
+    font-style: normal; font-size: 13px; color: rgb(var(--c-fog)); font-weight: 500; margin-left: 4px;
+}
+.kpi .sub {
+    font-family: var(--font-mono); font-size: 9.5px; color: rgb(var(--c-dim));
+    margin-top: 8px; display: flex; align-items: center; gap: 9px;
+}
+/* One plate in a strip may be the one that matters. Exactly one. */
+.kpi.hot b, .kpi.hot .disp { color: rgb(var(--c-acc)); }
+
+/* A strip of plates is not the page's four-up: the same strip has to sit in
+   twelve columns and in six, so the plates fold on their own content width
+   rather than on the page's breakpoint. A modifier on `.grid`, never alone. */
+.kstrip { grid-template-columns: repeat(auto-fit, minmax(196px, 1fr)); }
+
+/* ---- THE REGISTER TABLE -------------------------------------------------
+   Header cells are mono small-caps and LEFT aligned; the browser's centred bold
+   default is the single loudest thing on an unstyled page. Numbers are mono and
+   right-aligned through `.num`, so a column of them can be compared by eye. */
+table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+table.tbl th {
+    font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase;
+    color: rgb(var(--c-fog)); text-align: left; padding: 8px 10px;
+    border-bottom: 1px solid var(--c-ln2); font-weight: 600;
+}
+table.tbl td {
+    padding: 9px 10px;
+    border-bottom: 1px dashed color-mix(in srgb, rgb(var(--c-fog)) 18%, transparent);
+    font-variant-numeric: tabular-nums;
+}
+table.tbl tr:hover td { background: color-mix(in srgb, rgb(var(--c-acc)) 4%, transparent); }
+table.tbl a { color: rgb(var(--c-acc)); text-decoration: none; font-weight: 600; }
+table.tbl .num { text-align: right; font-family: var(--font-mono); font-size: 12px; }
+
+/* ---- THE PAGER, and the foot it sits in --------------------------------- */
+.rdf-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 8px 14px; border-top: 1px solid var(--c-ln2);
+    color: rgb(var(--c-fog)); font-size: 10.5px; font-family: var(--font-mono);
+}
+.rdf-page { display: inline-flex; align-items: center; gap: 6px; }
+.rdf-page a, .rdf-page button {
+    background: none; border: 1px solid var(--c-ln2); color: rgb(var(--c-fog)); border-radius: 6px;
+    width: 22px; height: 22px; cursor: pointer; font-size: 12px; line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center; text-decoration: none;
+}
+.rdf-page a:hover, .rdf-page button:hover { border-color: rgb(var(--c-fog)); color: rgb(var(--c-tx)); }
+/* The page you are on, which is a fact and not a control. */
+.rdf-page .pg { color: rgb(var(--c-tx)); font-weight: 700; }
+
+/* ---- THE PERSON'S MARK, and the two quiet buttons ----------------------- */
+.avatar {
+    width: 30px; height: 30px; border-radius: 9px;
+    background: rgb(var(--c-acc)); color: rgb(var(--c-accT));
+    font-family: var(--font-display); font-weight: 700; font-size: 12px;
+    display: grid; place-items: center; flex-shrink: 0;
+}
+/* The always-visible row affordance, so a register row reads as openable. It
+   fills on the row's hover, not its own: the target is the row. */
+.open-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: .06em;
+    color: rgb(var(--c-acc)); text-decoration: none; white-space: nowrap;
+    border: 1px solid color-mix(in srgb, rgb(var(--c-acc)) 45%, transparent);
+    border-radius: 7px; padding: 4px 10px; background: none; cursor: pointer;
+}
+table.tbl tr:hover .open-btn {
+    background: rgb(var(--c-acc)); color: rgb(var(--c-accT)); border-color: rgb(var(--c-acc));
+}
+/* The secondary to .cta: same row, deliberately quieter. */
+.tgl {
+    border: 1px solid var(--c-ln2); background: none; color: rgb(var(--c-fog));
+    border-radius: 8px; padding: 5px 11px; font-size: 11px; cursor: pointer;
+    font-family: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 7px;
+}
+.tgl:hover { color: rgb(var(--c-tx)); border-color: rgb(var(--c-fog)); }
+.tgl svg { width: 15px; height: 15px; flex: none; }
+
+/* ---- THE COLOUR WORDS ----------------------------------------------------
+   Single letters the design uses inline to colour ONE word of a sentence. They
+   are the palette's own names — `.fog` and `.acc` above are the same idea — and
+   not the beginning of a utility set: a fifth grey belongs in the token list or
+   nowhere. */
+.g { color: rgb(var(--c-ok)); }
+.w { color: rgb(var(--c-warn)); }
+.r { color: rgb(var(--c-fail)); }
+.d { color: rgb(var(--c-dim)); }
+.muted { color: rgb(var(--c-dim)); }
 
 /* ==================== THE CATALOGUE PICTURE ==================== */
 .mtile { display: flex; flex-direction: column; gap: 9px; padding: 15px 16px; text-decoration: none; transition: border-color .15s, transform .12s; }
