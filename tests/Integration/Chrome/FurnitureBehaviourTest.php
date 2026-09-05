@@ -156,7 +156,7 @@ final class FurnitureBehaviourTest extends ContractTestCase
         self::assertIsArray($symfony);
         $controllers = $symfony['controllers'] ?? null;
         self::assertIsArray($controllers);
-        self::assertSame(['theme', 'sidebar', 'sidebar-tree'], array_keys($controllers));
+        self::assertSame(['theme', 'sidebar', 'sidebar-tree', 'localtime'], array_keys($controllers));
 
         foreach ($controllers as $name => $config) {
             self::assertIsArray($config);
@@ -233,6 +233,63 @@ final class FurnitureBehaviourTest extends ContractTestCase
         self::assertStringContainsString("'rail'", $sidebar);
 
         self::assertStringContainsString('closed', self::controller('sidebar_tree_controller.js'));
+    }
+
+    /**
+     * THE FRAME LOCALISES EVERY `<time>`, SO A MODULE NAMES NO CONTROLLER. The
+     * three controls above are furniture the shell draws and wires by hand;
+     * `localtime` is different in kind — it is mounted once, on the document
+     * root, and sweeps `time[datetime]` for the whole page. That is what keeps a
+     * module's template portable: it emits a plain `<time datetime>` and carries
+     * no dependency on the shell, so the same template renders in a host that
+     * has no shell and simply keeps its server-rendered UTC text.
+     *
+     * Two facts in the source are load-bearing and would fail silently if lost:
+     * it reads the `datetime` attribute rather than the visible text (the text
+     * is the no-JS fallback), and it calls `Intl.DateTimeFormat(undefined, …)`
+     * with NO `timeZone` argument, because the reader's own zone is the one
+     * thing the server cannot print.
+     */
+    public function testTheLocaltimeScannerReadsTheMachineAttributeAndFormatsInTheReadersZone(): void
+    {
+        $js = self::controller('localtime_controller.js');
+
+        self::assertStringContainsString('time[datetime]', $js, 'The frame sweeps every machine time element on the page.');
+        self::assertStringContainsString("getAttribute('datetime')", $js, 'The instant is read from the machine attribute, not the visible text.');
+        self::assertStringContainsString('Intl.DateTimeFormat(undefined', $js, 'No locale and no timeZone argument: the reader\'s own is the point.');
+        self::assertStringNotContainsString('timeZone:', $js, 'Naming a zone would defeat viewer-local formatting.');
+        self::assertStringContainsString('turbo:load', $js, 'A Turbo-navigated page must localise too.');
+    }
+
+    /**
+     * THE SCANNER IS MOUNTED ON THE <body> THE SHELL OWNS. A controller that
+     * ships but is mounted nowhere localises nothing; it rides on the document's
+     * `<body>` in the bottom rung, so every page — framed, bare document, print
+     * view — and every host that renders through this frame localises its times
+     * without asking.
+     */
+    public function testTheDocumentBodyMountsTheLocaltimeScanner(): void
+    {
+        $html = $this->render('@fixtures/bare_document_page.html.twig');
+
+        self::assertMatchesRegularExpression(
+            '/<body[^>]*\bdata-controller="[^"]*'.preg_quote(UhifadhiShellBundle::CONTROLLER_PREFIX.'localtime', '/').'/',
+            $html,
+            'The frame localises times only if the scanner is mounted on the <body> it owns.',
+        );
+    }
+
+    /**
+     * THE SCANNER COMPOSES WITH THE ONE BODY VARIABLE. A host sets its basemap
+     * on `<body>` through `shell_body_attributes`; the scanner must ride
+     * alongside those, not instead of them, and neither may swallow the other.
+     */
+    public function testTheScannerAndTheBodyBasemapAttributesBothSurvive(): void
+    {
+        $html = $this->render('@fixtures/body_attributes_page.html.twig');
+
+        self::assertStringContainsString(UhifadhiShellBundle::CONTROLLER_PREFIX.'localtime', $html);
+        self::assertStringContainsString('data-basemap="esri"', $html, 'The host\'s body attributes must survive beside the scanner.');
     }
 
     /**

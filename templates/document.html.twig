@@ -98,7 +98,13 @@
    IT IS EMITTED AS MARKUP, because attributes are markup and an escaped
    `data-x="y"` is a broken tag. Whatever a host puts here is its own to escape:
    build it from values you control, never from a request. #}
-<body{% if shell_body_attributes is defined %} {{ shell_body_attributes|raw }}{% endif %}>
+{# `localtime` on the <body> the shell owns, not on any element a module draws:
+   the frame localises every `<time datetime>` on the page to the reader's own
+   zone, so a module names no controller and its templates stay portable to a
+   host that renders through this same frame. `shell_body_attributes` never
+   carries a second `data-controller` (it is basemap data only), so the two do
+   not collide. See docs/theming.md, "A time reads in the reader's zone". #}
+<body data-controller="uhifadhi--shell-module--localtime"{% if shell_body_attributes is defined %} {{ shell_body_attributes|raw }}{% endif %}>
 {% block body %}{% endblock %}
 </body>
 </html>

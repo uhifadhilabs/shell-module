@@ -196,17 +196,22 @@ final class PageFrameTest extends ContractTestCase
      * the shell owns without the shell knowing that maps exist.
      *
      * The value is emitted as markup — attributes are markup, and an escaped
-     * `data-x="y"` is a broken tag — so a host escapes its own values. A page
-     * that sets nothing gets a bare tag, with no stray space in it.
+     * `data-x="y"` is a broken tag — so a host escapes its own values. The one
+     * attribute the shell puts there itself is the `localtime` scanner (see
+     * theming.md): a page's own attributes ride alongside it, with no stray
+     * space, and a page that sets nothing gets the scanner and nothing else.
      */
     public function testTheBodyTagCarriesTheAttributesAPageGivesItAndNoOthers(): void
     {
         self::assertStringContainsString(
-            '<body data-basemap="esri" data-basemap-key="">',
+            '<body data-controller="uhifadhi--shell-module--localtime" data-basemap="esri" data-basemap-key="">',
             $this->render('@fixtures/body_attributes_page.html.twig'),
         );
 
-        self::assertStringContainsString('<body>', $this->render('@fixtures/bare_document_page.html.twig'));
+        self::assertStringContainsString(
+            '<body data-controller="uhifadhi--shell-module--localtime">',
+            $this->render('@fixtures/bare_document_page.html.twig'),
+        );
     }
 
     public function testTheFrameIsTheOneAddressAModuleNeedsToKnow(): void

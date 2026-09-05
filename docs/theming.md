@@ -136,6 +136,60 @@ script puts on `<html>` and the stylesheet draws the rail from — otherwise a
 remembered rail arrives when the controller connects and a 236px sidebar visibly
 jumps to 66px on every load.
 
+## A time reads in the reader's zone
+
+**The frame localises every `<time>` on the page; a module names no controller.**
+The three controls above are furniture the shell *draws* and wires by hand. The
+`localtime` controller is different in kind: it is mounted **once, on the
+`<body>`** the shell owns (in the bottom rung), and on connect it sweeps
+`time[datetime]` across the whole page and rewrites each to the reader's own
+zone. Every host that renders through this frame inherits it — the localisation
+is the frame's, so a host needs nothing of its own.
+
+It answers a defect every module shares: an instant is stored as UTC and printed
+once, server-side, in whatever single zone the server runs in — so a ranger in
+the field and an analyst three timezones away read the same printed wall-clock
+and one of them reads it wrong.
+
+**A module emits only semantic markup.** It prints the instant as an ISO-8601
+`datetime`, with a human UTC fallback as the text:
+
+```twig
+<time datetime="{{ t|date('c') }}">{{ t|date('D j M')|lower }} · {{ t|date('H:i') }}</time>
+```
+
+That is the module's *whole* contribution, and it deliberately carries no
+`data-controller` and no other dependency on the shell — so the identical
+template renders in a host that has no shell installed, where it simply keeps its
+server-rendered text. Coupling the element to a named controller would break that
+host; not coupling it is the point.
+
+On connect (and on `turbo:load`/`turbo:render`, and for nodes a `MutationObserver`
+sees added later) the frame reads each element's machine `datetime` attribute —
+never the visible text — and rewrites the text with `Intl.DateTimeFormat(undefined,
+…)`: no locale and no `timeZone` argument, so it resolves to the *reader's* own
+locale and zone, the one thing the server cannot know. With no JavaScript the
+server-rendered text stays exactly as it is.
+
+An element may hint the shape it wants with `data-localtime-format`, a plain data
+attribute the frame reads (and a shell-less host harmlessly ignores):
+
+| `data-localtime-format` | What it renders |
+|---|---|
+| absent / `datetime` | date and time — day, short month, year, hour, minute |
+| `date` | day, short month, year |
+| `time` | hour and minute |
+
+A tight cell that printed only `05:55` asks for `time`, so localising it does not
+blow the cell out to a full date.
+
+Two things a caller must hold to. **The `datetime` attribute is the real
+instant** — offset-qualified or `Z`. `{{ t|date('c') }}` on a stored instant is
+already unambiguous; a *zoneless* value is one the browser parses in *its* own
+zone, which reintroduces the bug. **The visible text is disposable**: the frame
+overwrites it, so a design's own custom wording survives only when JavaScript is
+off.
+
 ## The tab icon
 
 **The favicon is the full masterbrand mark** — the knockout U tile with the child

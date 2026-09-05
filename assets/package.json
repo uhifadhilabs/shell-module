@@ -18,6 +18,11 @@
                 "main": "controllers/sidebar_tree_controller.js",
                 "fetch": "eager",
                 "enabled": true
+            },
+            "localtime": {
+                "main": "controllers/localtime_controller.js",
+                "fetch": "eager",
+                "enabled": true
             }
         },
         "importmap": {}
