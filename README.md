@@ -95,8 +95,8 @@ check ever reaches.
   and how a module page fills them.
 - [The nav seam and the area shell](docs/navigation.md) — how rows reach the
   sidebar and tabs reach a page.
-- [The theme](docs/theming.md) — the token set, the Stimulus controllers the
-  furniture moves by, and the tab icon.
+- [The theme](docs/theming.md) — the box model every page is measured in, the
+  token set, the Stimulus controllers the furniture moves by, and the tab icon.
 - [The component vocabulary](docs/components.md) — the classes a module writes on
   its own elements: the plate, the card's tab, the KPI, the register table, the
   pager and the person's mark.

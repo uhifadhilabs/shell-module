@@ -1,7 +1,41 @@
 # The theme, the furniture's behaviour and the tab icon
 
-The token set a module's stylesheet is written against, the Stimulus controllers
-the shell's own controls move by, and the mark the browser tab draws.
+The box model a module's stylesheet is measured in, the token set it is written
+against, the Stimulus controllers the shell's own controls move by, and the mark
+the browser tab draws.
+
+## The box model
+
+**The frame guarantees `border-box`.** `public/shell.css` opens with
+
+```css
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+```
+
+and every page the platform draws loads that sheet, so padding and border are
+measured **inside** the width an element was given, everywhere, without a module
+asking for it.
+
+This is not a house style. It is the measurement the designs are drawn in: the
+design workspace's replicas open with the same reset, so every number a design
+hands a module is a border box — a 78px calendar cell is 78px *including* its
+padding and its rule. Port that faithfully into a frame that reset nothing and
+the cell comes out 108px: correct in the replica, wrong in the product, and
+wrong by a different amount in every rule. Two shipped bugs came from exactly
+that — a position rail that hung 24px out of the column it lived in, and a
+sign-in card floating on 52px of scroll that was not there.
+
+**What a module may stop writing:** `box-sizing: border-box` on its own rules.
+Keeping it is harmless, and where a module wants the assumption said out loud at
+the point of use it is honest — it is simply no longer load-bearing.
+
+**What a module must never write:** `box-sizing: content-box`. A sheet that
+takes the guarantee back for part of a page leaves the platform with a box model
+that depends on which rule the reader found first.
 
 ## The theme
 

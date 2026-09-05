@@ -93,6 +93,15 @@ heading, a paragraph or a card. It is now a `flow-root` with the first child's
 top margin zeroed, and nothing else — what goes inside stays the module's
 business.
 
+## What you get without asking
+
+The same sheet that carries this vocabulary opens with the platform's [box
+model](theming.md#the-box-model): `border-box`, on every element and both
+pseudo-elements, for every page the frame draws. Each rule above is written
+against it, and so is yours — the number in a design is a border box, and now so
+is the box the browser gives you. A module may stop restating
+`box-sizing: border-box` on its own rules; it must never write `content-box`.
+
 ## Adding to it
 
 Same policy as the sockets and the tokens: see [changing the
